@@ -1,18 +1,18 @@
+# plugins
+plugins=(git)
 #------------------------------------
 # Oh-My-Zsh stuff
 #------------------------------------
-export ZSH="$HOME/.oh-my-zsh"
+ZSH_THEME="gnzh"
 # old theme
 # PS1=$'%{\e[1;31m%}%n%{\e[31m%}@%{\e[0m%}%m%{\e[0m%} :: %{\e[1;38m%}%/ %{\e[0m%}'
+export ZSH="$HOME/.oh-my-zsh"
 source ~/.oh-my-zsh/oh-my-zsh.sh
-ZSH_THEME="gnzh"
 
 HYPHEN_INSENSITIVE="true"
 zstyle ':omz:update' mode disabled  # disable automatic updates
 # Don't check untracked files (default behavior is to mark untracked files as dirty)
 DISABLE_UNTRACKED_FILES_DIRTY="true"
-# plugins
-plugins=(git)
 
 #------------------------------------
 # Aliases
