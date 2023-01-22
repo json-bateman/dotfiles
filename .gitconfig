@@ -1,0 +1,20 @@
+[user]
+	name = JackTrusler
+	email = jtrus93@gmail.com
+[pull]
+	ff = only
+[color]
+	ui = true
+[core]
+	editor=nvim
+	
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+[url "git@github.com:"]
+	insteadOf = https://github.com/
+[alias]
+	ac = ! git add . && git commit -m
+	a = add .
