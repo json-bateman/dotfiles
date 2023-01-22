@@ -22,7 +22,6 @@ packer.startup(function(use)
   use 'wbthomason/packer.nvim' -- Packer manages itself
   use 'nvim-lua/plenary.nvim' -- Avoids callbacks, used by other plugins
   use 'nvim-lua/popup.nvim' -- Popup for other plugins
-  use 'lewis6991/impatient.nvim' -- Compiles lua files to bytecode and caches them
   use {
     "nvim-telescope/telescope.nvim",
   }
@@ -37,7 +36,7 @@ packer.startup(function(use)
   use "nvim-lualine/lualine.nvim" -- Tab line top and bottom
   use 'tpope/vim-commentary' -- gc to comment out
   use 'tpope/vim-surround' -- easy text surrounding shortcuts
-  use { 'Everblush/everblush.nvim', as = 'everblush' }
+  use "EdenEast/nightfox.nvim"
 
   if Packer_Bootstrap then
     require('packer').sync()
