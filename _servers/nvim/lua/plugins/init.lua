@@ -36,7 +36,8 @@ packer.startup(function(use)
   use "nvim-lualine/lualine.nvim" -- Tab line top and bottom
   use 'tpope/vim-commentary' -- gc to comment out
   use 'tpope/vim-surround' -- easy text surrounding shortcuts
-  use "EdenEast/nightfox.nvim"
+  use "sickill/vim-monokai"
+  use "lewis6991/impatient.nvim"
 
   if Packer_Bootstrap then
     require('packer').sync()
