@@ -4,9 +4,9 @@
 export ZSH="$HOME/.oh-my-zsh"
 # old theme
 # PS1=$'%{\e[1;31m%}%n%{\e[31m%}@%{\e[0m%}%m%{\e[0m%} :: %{\e[1;38m%}%/ %{\e[0m%}'
-source $ZSH/oh-my-zsh.sh
+source ~/.oh-my-zsh/oh-my-zsh.sh
+ZSH_THEME="gnzh"
 
-ZSH_THEME="murilasso"
 HYPHEN_INSENSITIVE="true"
 zstyle ':omz:update' mode disabled  # disable automatic updates
 # Don't check untracked files (default behavior is to mark untracked files as dirty)
