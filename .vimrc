@@ -44,8 +44,8 @@ colorscheme slate
 " ----------------------------
 " Remaps
 " ----------------------------
-nnoremap ,ed :vsplit $MYVIMRC<CR>
-nnoremap ,s <CMD>w<CR><CMD>so%<CR>
+nnoremap <leader>E :vsplit $MYVIMRC<CR>
+nnoremap <leader>w <CMD>w<CR><CMD>so%<CR>
 
 let mapleader = " "
 " Normal Mode

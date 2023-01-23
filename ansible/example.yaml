@@ -1,0 +1,36 @@
+- name: Ping Servers
+  hosts: allservers
+  tasks:
+    - name: Ping hosts
+      ansible.builtin.ping:
+- name: Update CentOS 9 Stream
+  hosts: centOS9 
+  tasks:
+    - name: Upgrade all packages
+      ansible.builtin.dnf:
+        name: "*"
+        state: latest
+- name: Make a file on Free BSD
+  hosts: freebsd 
+  tasks:
+    - name: make a file
+      command: touch ansibleMadeThis
+      become: yes
+- name: Local stuff
+  hosts: localhost
+  connection: local
+  tasks:
+    - name: execute ls -lrt
+      shell: ls -lrt
+      register: output
+    - debug: var=output.stdout_lines
+  tags:
+  - mac
+- name: testing more local stuff
+  hosts: localhost
+  connection: local
+  tasks:
+    - name: make a file
+      shell: touch afile
+  tags:
+  - mac

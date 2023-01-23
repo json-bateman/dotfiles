@@ -1,0 +1,15 @@
+allservers:
+  hosts:
+    root@jsonbateman:
+      ansible_host: root@jsonbateman.com
+    root@jacktrusler:
+      ansible_host: root@jacktrusler.com
+centOS9:
+  hosts:
+    root@jsonbateman:
+      ansible_host: root@jsonbateman.com
+
+freebsd:
+  hosts:
+    root@jacktrusler:
+      ansible_host: root@jacktrusler.com
