@@ -6,7 +6,7 @@ let g:netrw_banner=0 "turns netrw banner off
 let g:netrw_liststyle=3 "changes the way the explorer tree looks
 
 " set splitbelow "causes splits to happen below current window instead of above
-set termguicolors "enables 24-bit RGB color in the TUI
+" set termguicolors "enables 24-bit RGB color in the TUI
 set nohlsearch "turns off highlighting on search
 set expandtab "insert mode puts in spaces when tabbing
 set tabstop=4 "number of spaces a tab counts for
@@ -44,8 +44,8 @@ colorscheme slate
 " ----------------------------
 " Remaps
 " ----------------------------
-nnoremap <leader>E :vsplit $MYVIMRC<CR>
-nnoremap <leader>w <CMD>w<CR><CMD>so%<CR>
+nnoremap <leader>E :e $MYVIMRC<CR>
+nnoremap <leader>W <CMD>w<CR><CMD>so%<CR>
 
 let mapleader = " "
 " Normal Mode

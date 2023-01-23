@@ -1,20 +1,33 @@
-[user]
-	name = JackTrusler
-	email = jtrus93@gmail.com
-[pull]
-	ff = only
+[url "git@github.com:"]
+    insteadOf = https://github.com/
 [color]
-	ui = true
+    ui = "true"
+[user]
+	email = jtrus93@gmail.com
+	name = Jack Trusler
 [core]
-	editor=nvim
-	
+	editor = nvim
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
 	required = true
-[url "git@github.com:"]
-	insteadOf = https://github.com/
+[init]
+	defaultBranch = master
+[github]
+	user = jacktrusler
 [alias]
-	ac = ! git add . && git commit -m
-	a = add .
+        a = add .
+        c = commit -m
+        ac = ! git add . && git commit -m
+        s = status
+        co = checkout
+        graph = log --graph --pretty=format:'%C(yellow)%h%Creset -%C(cyan)%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset' --abbrev-commit --date=relative
+        rh = reset --hard HEAD
+        rhp = reset --hard HEAD^
+        rs = reset --soft HEAD
+        rsp = reset --soft HEAD^
+        last = ! git log -1 HEAD | cat
+        l = log --oneline --decorate --graph
+[credential]
+	helper = store
