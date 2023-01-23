@@ -1,5 +1,5 @@
-local present, cmp = pcall(require, "cmp")
-if (not present) then return end
+local ok, cmp = pcall(require, "cmp")
+if (not ok) then return end
 
 local lspkind = require('lspkind')
 local luasnip = require('luasnip')
@@ -9,7 +9,11 @@ cmp.setup({
     { name = 'nvim_lsp' },
     { name = 'luasnip' }, -- For luasnip users.
   }, {
-    { name = 'buffer' },
+    { name = 'buffer',
+      option = {
+        keyword_length = 5;
+      }
+    },
   }),
 
   snippet = {

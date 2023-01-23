@@ -34,7 +34,6 @@ keymap("n", "<leader>S", ":Sex<CR>", opts)
 keymap("n", "<leader>e", ":Explore<CR>", opts)
 keymap("n", "<leader>q", ":Neotree <CR>", opts)
 keymap("n", "<leader>Q", ":Neotree <C-R>=expand('%:h')<CR><CR>", opts)
-keymap("n", "<leader>/", ":Neotree toggle reveal_force_cwd<CR>", opts)
 keymap("n", "<leader>br", ":Neotree toggle buffers right<CR>", opts)
 keymap("n", "<leader>git", ":Neotree float git_status<CR>", opts)
 -- Buffers and buffer movement
