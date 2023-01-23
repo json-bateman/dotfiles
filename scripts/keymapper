@@ -1,0 +1,4 @@
+#! /usr/bin/env bash
+
+systemctl start input-remapper
+input-remapper-control --command autoload

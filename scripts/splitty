@@ -1,0 +1,41 @@
+#!/bin/bash 
+
+while :; do 
+  if [[ $# -eq 0 ]] ; then
+    tmux split-window -h 
+    tmux new-window
+    tmux send-keys -t "$session_name" "nvim ." enter
+    exit 0;
+  fi
+
+  case $1 in
+    -s | --start)
+      tmux send-keys -t "$session_name" "npm start" enter
+      tmux split-window -h 
+      tmux new-window
+      tmux send-keys -t "$session_name" "nvim ." enter
+      exit
+      ;;
+    -d | --start)
+      tmux send-keys -t "$session_name" "npm run dev" enter
+      tmux split-window -h 
+      tmux new-window
+      tmux send-keys -t "$session_name" "nvim ." enter
+      exit
+      ;;
+    -h | --help)
+      echo "Usage: splitty [Optional]"
+      echo "Utility for splitting Tmux and starting Nvim"
+      echo
+      echo "Optional flags:"
+      printf '  "-s | --start" \t run splitty and npm start \n'
+      printf '  "-d | --dev" \t \t run splitty and npm run dev \n'
+      exit
+      ;;
+    *) 
+      echo "invalid flag, either run with no arguments or pass -h or --help for options"
+      exit 1
+      break;
+  esac
+  shift
+done
