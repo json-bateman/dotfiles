@@ -3,8 +3,24 @@ if (not ok) then return end
 
 treesitter.setup {
   -- A list of parser names, or "all"
-  ensure_installed = { "rust", "lua", "javascript", "typescript", "tsx", "html", "css", "json" },
+  ensure_installed = {
+    "bash",
+    "markdown_inline",
+    "markdown",
+    "rust",
+    "java",
+    "lua",
+    "javascript",
+    "typescript",
+    "tsx",
+    "html",
+    "css",
+    "json"
+  },
+
   -- Automatically install missing parsers when entering buffer
+  -- auto_install = true,
+
   ignore_install = { "help" },
 
   highlight = {
