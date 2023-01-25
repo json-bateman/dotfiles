@@ -51,17 +51,10 @@ lspconfig.sumneko_lua.setup {
   },
 }
 
-lspconfig.tsserver.setup{
+local all_servers = {"tsserver", "jsonls", "html", "cssls", "solargraph", "yamlls", "rust_analyzer" }
+for _, server in ipairs(all_servers) do
+  lspconfig[server].setup{
     on_attach = on_attach,
     capabilities = capabilities,
-}
-
-lspconfig.rust_analyzer.setup{
-    on_attach = on_attach,
-    capabilities = capabilities,
-}
-
-lspconfig.solargraph.setup{
-    on_attach = on_attach,
-    capabilities = capabilities,
-}
+  }
+end
