@@ -1,5 +1,5 @@
+require "settings/options"
 require "plugins"
 require "lspconfig"
 require "settings/keymaps"
-require "settings/options"
 require "settings/styles"

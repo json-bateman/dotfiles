@@ -2,7 +2,7 @@ local g = vim.g
 local opt = vim.opt
 
 g.netrw_banner = 0
-opt.hidden = false -- when false buffers are abandoned when unloaded
+-- opt.hidden = false -- when false buffers are abandoned when unloaded
 opt.autowrite = true -- writes the file when moving buffers
 -- Colors
 opt.termguicolors = true -- enables 24-bit RGB color for terminal
@@ -46,14 +46,14 @@ vim.api.nvim_create_autocmd("BufEnter",
 )
 
 -- Force syntax on when entering every buffer
-vim.api.nvim_create_autocmd("BufEnter",
-  {
-    callback = function()
-      vim.cmd [[syntax enable]]
-      vim.cmd [[syntax on]]
-    end
-  }
-)
+-- vim.api.nvim_create_autocmd("BufEnter",
+--   {
+--     callback = function()
+--       vim.cmd [[syntax enable]]
+--       vim.cmd [[syntax on]]
+--     end
+--   }
+-- )
 -- Highlights yanked text
 vim.api.nvim_create_autocmd("TextYankPost",
   {

@@ -17,16 +17,11 @@ treesitter.setup {
     "css",
     "json"
   },
-
-  -- Automatically install missing parsers when entering buffer
   -- auto_install = true,
-
   ignore_install = { "help" },
-
   highlight = {
     -- `false` will disable the whole extension
     enable = true,
     disable = {},
   },
 }
-
