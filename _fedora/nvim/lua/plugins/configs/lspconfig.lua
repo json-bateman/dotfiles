@@ -51,7 +51,7 @@ lspconfig.sumneko_lua.setup {
   },
 }
 
-local all_servers = {"tsserver", "jsonls", "html", "cssls", "solargraph", "yamlls", "rust_analyzer" }
+local all_servers = {"jdtls", "tsserver", "jsonls", "html", "cssls", "solargraph", "yamlls", "rust_analyzer" }
 for _, server in ipairs(all_servers) do
   lspconfig[server].setup{
     on_attach = on_attach,

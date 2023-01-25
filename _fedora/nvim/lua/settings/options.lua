@@ -3,7 +3,7 @@ local opt = vim.opt
 
 g.netrw_banner = 0
 -- opt.hidden = false -- when false buffers are abandoned when unloaded
-opt.autowrite = true -- writes the file when moving buffers
+-- opt.autowrite = true -- writes the file when moving buffers, hidden has to be true
 -- Colors
 opt.termguicolors = true -- enables 24-bit RGB color for terminal
 opt.hlsearch = false --turns off highlighting on search

@@ -21,9 +21,9 @@ require("lazy").setup({
   "ellisonleao/gruvbox.nvim", -- The groooviest box
   "tjdevries/colorbuddy.nvim", -- Changing colors easily
   "onsails/lspkind.nvim", -- pictograms for completion
-  "saadparwaiz1/cmp_luasnip", -- luasnip completion
   "L3MON4D3/LuaSnip", -- More snippets
   "nvim-telescope/telescope.nvim", -- Grep and fuzzy find with UI
+  "rafamadriz/friendly-snippets", -- Big collection of snippets
   ---------------------------
   -- plugins with extra options
   ---------------------------
@@ -53,7 +53,7 @@ require("lazy").setup({
     "williamboman/mason-lspconfig.nvim", -- Bridges mason and lspconfig
     config = function()
       require("mason-lspconfig").setup ({
-        ensure_installed = {"tsserver", "jsonls", "html", "cssls", "solargraph", "yamlls", "sumneko_lua", "rust_analyzer" }
+        ensure_installed = {"jdtls", "tsserver", "jsonls", "html", "cssls", "solargraph", "yamlls", "sumneko_lua", "rust_analyzer" }
       })
     end,
   },
@@ -66,13 +66,12 @@ require("lazy").setup({
   {
     "hrsh7th/nvim-cmp",
     dependencies = {
+      "hrsh7th/cmp-nvim-lsp-signature-help",
       "hrsh7th/cmp-nvim-lsp",
-      "hrsh7th/cmp-buffer",
+      "hrsh7th/cmp-nvim-lua",
       "hrsh7th/cmp-path",
       "hrsh7th/cmp-cmdline",
-      "hrsh7th/cmp-calc",
-      "lukas-reineke/cmp-rg",
-      "hrsh7th/cmp-nvim-lsp-signature-help",
+      "saadparwaiz1/cmp_luasnip", -- luasnip completion
     },
     config = function()
       require("plugins.configs.cmp")

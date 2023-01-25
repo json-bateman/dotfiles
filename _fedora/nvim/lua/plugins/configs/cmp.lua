@@ -1,4 +1,6 @@
-local cmp = require("cmp")
+local ok, cmp = pcall(require, "cmp")
+if (not ok) then return end
+
 local lspkind = require("lspkind")
 
 cmp.setup({
@@ -8,12 +10,12 @@ cmp.setup({
       maxwidth = 50,
       mode = "symbol_text",
       menu = {
-        buffer = "BUF",
-        rg = "RG",
+        -- buffer = "BUF",
+        -- rg = "RG",
+        -- calc = "CALC",
         nvim_lsp = "LSP",
         path = "PATH",
         luasnip = "SNIP",
-        calc = "CALC",
       },
     }),
   },
@@ -33,7 +35,7 @@ cmp.setup({
     ["<C-e>"] = cmp.mapping.close(),
     ["<CR>"] = cmp.mapping.confirm({
       behavior = cmp.ConfirmBehavior.Replace,
-      select = false,
+      select = true,
     }),
     ["<Tab>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
@@ -51,11 +53,9 @@ cmp.setup({
   sources = {
     { name = "nvim_lsp" },
     { name = "nvim_lsp_signature_help" },
-    { name = "buffer", keyword_length = 5 },
+    { name = "nvim_lua" },
     { name = "luasnip" },
-    { name = "calc" },
     { name = "path" },
-    { name = "rg", keyword_length = 5 },
   },
 })
 
