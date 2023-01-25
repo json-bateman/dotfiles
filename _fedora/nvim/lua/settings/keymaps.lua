@@ -55,8 +55,6 @@ keymap("n", "<leader>p", '"+p', opts)
 keymap("x", "<leader>p", '"+p', opts)
 keymap("v", "<leader>y", '"+y', opts)
 
-keymap("x", "<leader>p", '"_dP', opts)
-
 keymap("c", "%%", "<C-R>=expand('%:h')<CR>", opts)
 
 keymap("t", "qq", '<C-\\><C-N>:q!<CR>', opts)

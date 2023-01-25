@@ -15,7 +15,9 @@ treesitter.setup {
     "tsx",
     "html",
     "css",
-    "json"
+    "json",
+    "python",
+    "ruby",
   },
   -- auto_install = true,
   ignore_install = { "help" },

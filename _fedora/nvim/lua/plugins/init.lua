@@ -53,7 +53,7 @@ require("lazy").setup({
     "williamboman/mason-lspconfig.nvim", -- Bridges mason and lspconfig
     config = function()
       require("mason-lspconfig").setup ({
-        ensure_installed = { "sumneko_lua", "rust_analyzer" }
+        ensure_installed = {"tsserver", "jsonls", "html", "cssls", "solargraph", "yamlls", "sumneko_lua", "rust_analyzer" }
       })
     end,
   },
