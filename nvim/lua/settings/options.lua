@@ -5,7 +5,6 @@ g.netrw_banner = 0
 -- opt.hidden = false -- when false buffers are abandoned when unloaded
 -- opt.autowrite = true -- writes the file when moving buffers, hidden has to be true
 -- Colors
-opt.termguicolors = true -- enables 24-bit RGB color for terminal
 opt.hlsearch = false --turns off highlighting on search
 ---------------
 -- Indenting
@@ -31,10 +30,16 @@ opt.signcolumn = "no" -- don't expand column on errors
 opt.ignorecase = true -- can sEarch case ignoring caps
 opt.incsearch = true -- jumps to what you're searching
 opt.cursorline = true -- highlights current line
--- Mouse
-opt.mouse = 'a'
+---------------
+-- folding
+---------------
+vim.opt.foldmethod = "indent"
+vim.opt.foldlevel = 0
+---------------
 -- living dangerously
+---------------
 vim.api.nvim_command("set noswapfile")
+opt.mouse = 'a'
 
 -- Don't automatically make more comments lines on enter
 vim.api.nvim_create_autocmd("BufEnter",

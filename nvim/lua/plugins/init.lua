@@ -9,9 +9,12 @@ if not vim.loop.fs_stat(lazypath) then
     lazypath,
   })
 end
+
 vim.opt.rtp:prepend(lazypath)
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
+-- Need this for colorizer
+vim.opt.termguicolors = true -- enables 24-bit RGB color for terminal
 
 require("lazy").setup({
   "nvim-lua/plenary.nvim", -- Avoids callbacks, used by other plugins
@@ -69,6 +72,7 @@ require("lazy").setup({
       "hrsh7th/cmp-nvim-lsp-signature-help",
       "hrsh7th/cmp-nvim-lsp",
       "hrsh7th/cmp-nvim-lua",
+      "hrsh7th/cmp-buffer",
       "hrsh7th/cmp-path",
       "hrsh7th/cmp-cmdline",
       "saadparwaiz1/cmp_luasnip", -- luasnip completion

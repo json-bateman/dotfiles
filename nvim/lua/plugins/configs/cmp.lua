@@ -10,12 +10,12 @@ cmp.setup({
       maxwidth = 50,
       mode = "symbol_text",
       menu = {
-        -- buffer = "BUF",
+        buffer = "[buf]",
+        nvim_lsp = "[LSP]",
+        path = "[path]",
+        luasnip = "[snip]",
         -- rg = "RG",
         -- calc = "CALC",
-        nvim_lsp = "LSP",
-        path = "PATH",
-        luasnip = "SNIP",
       },
     }),
   },
@@ -51,11 +51,13 @@ cmp.setup({
     end, { "i", "s" }),
   },
   sources = {
-    { name = "nvim_lsp" },
+    -- the order you call these in determines the way they show up in completion window
+    { name = "nvim_lua", max_item_count = 20 },
     { name = "nvim_lsp_signature_help" },
-    { name = "nvim_lua" },
     { name = "luasnip" },
     { name = "path" },
+    { name = "nvim_lsp" },
+    { name = "buffer", keyword_length = 5 },
   },
 })
 
