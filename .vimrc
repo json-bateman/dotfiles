@@ -6,7 +6,7 @@ let g:netrw_banner=0 "turns netrw banner off
 let g:netrw_liststyle=3 "changes the way the explorer tree looks
 
 " set splitbelow "causes splits to happen below current window instead of above
-" set termguicolors "enables 24-bit RGB color in the TUI
+set termguicolors "enables 24-bit RGB color in the TUI
 set nohlsearch "turns off highlighting on search
 set expandtab "insert mode puts in spaces when tabbing
 set tabstop=4 "number of spaces a tab counts for
@@ -25,20 +25,6 @@ set formatoptions-=cro "comments don't continue when enter is pressed
 
 set noswapfile "Living life on the edge
 
-" ----------------------------
-" Status Line 
-" ----------------------------
-  set laststatus=2                             " always show statusbar  
-  set statusline=  
-  set statusline+=%-4.3n\                      " buffer number  
-  set statusline+=%f\                          " filename   
-  set statusline+=%h%m%r%w                     " status flags  
-  set statusline+=\[%{strlen(&ft)?&ft:'none'}] " file type  
-  set statusline+=%=                           " right align remainder  
-  set statusline+=0x%-8B                       " character value  
-  set statusline+=%-14(%l,%c%V%)               " line, character  
-  set statusline+=%<%P                         " file position  
-
 colorscheme slate 
 
 " ----------------------------
@@ -48,6 +34,7 @@ nnoremap <leader>E :e $MYVIMRC<CR>
 nnoremap <leader>W <CMD>w<CR><CMD>so%<CR>
 
 let mapleader = " "
+
 " Normal Mode
 nnoremap <leader>V :Vexplore<CR>
 nnoremap <leader>v :vsplit<CR>
@@ -60,15 +47,17 @@ nnoremap <leader>bo :%bd\|e#<CR>
 nnoremap <tab> :bn<CR>
 nnoremap <S-tab> :bp<CR>
 
-" Visual Mode
-vnoremap <leader>y ygv<Esc>
+" If you have the + register
+" vnoremap <leader>y "+y
+" nnoremap <leader>p "+p
+" vnoremap <leader>y "+p
 
-" Visual Block
-xnoremap <leader>p "+p
+" Visual Mode
+vnoremap <leader>Y ygv<Esc>
 
 " Command Mode
 cnoremap %% <C-R>=expand('%:h')<CR> 
 
 " Terminal Mode
 tnoremap qq <C-\><C-N>:q!<CR>
-tnoremap <ESC> <C-\><C-N>
+tnoremap qj <C-\><C-N><C-W>j<CR>
