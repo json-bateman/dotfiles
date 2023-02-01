@@ -37,6 +37,7 @@ keymap("n", "<leader>q", ":Neotree <CR>", opts)
 keymap("n", "<leader>Q", ":Neotree <C-R>=expand('%:h')<CR><CR>", opts)
 keymap("n", "<leader>br", ":Neotree toggle buffers right<CR>", opts)
 keymap("n", "<leader>git", ":Neotree float git_status<CR>", opts)
+keymap("n", "<leader>u", ":UndotreeToggle | UndotreeFocus<CR>", opts)
 -- Buffers and buffer movement
 keymap("n", "<TAB>", ":bn<CR>", opts)
 keymap("n", "<S-TAB>", ":bp<CR>", opts)
@@ -68,13 +69,13 @@ function P(table)
 end
 
 -- Snippets
-vim.keymap.set({ "i", "s" }, "<c-k>", function ()
+vim.keymap.set({ "i", "s" }, "<c-k>", function()
   if ls.expand_or_jumpable() then
     ls.expand_or_jump()
   end
 end, { silent = true })
 
-vim.keymap.set({ "i", "s" }, "<c-j>", function ()
+vim.keymap.set({ "i", "s" }, "<c-j>", function()
   if ls.jumpable(-1) then
     ls.jump(-1)
   end

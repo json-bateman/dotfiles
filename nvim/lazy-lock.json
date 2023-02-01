@@ -11,6 +11,7 @@
   "friendly-snippets": { "branch": "main", "commit": "046e4d3491baf664e0eef5231d28beb49333578b" },
   "gruvbox.nvim": { "branch": "main", "commit": "e863942494d7c72a7c8d2c54cf651f28fc5a76ab" },
   "lazy.nvim": { "branch": "main", "commit": "9b208696e139a404d159963b975a5b90af38439b" },
+  "lazygit.nvim": { "branch": "main", "commit": "32bffdebe273e571588f25c8a708ca7297928617" },
   "lspkind.nvim": { "branch": "master", "commit": "c68b3a003483cf382428a43035079f78474cd11e" },
   "lualine.nvim": { "branch": "master", "commit": "0050b308552e45f7128f399886c86afefc3eb988" },
   "markdown-preview.nvim": { "branch": "master", "commit": "02cc3874738bc0f86e4b91f09b8a0ac88aef8e96" },
@@ -26,6 +27,7 @@
   "plenary.nvim": { "branch": "master", "commit": "1c7e3e6b0f4dd5a174fcea9fda8a4d7de593b826" },
   "popup.nvim": { "branch": "master", "commit": "b7404d35d5d3548a82149238289fa71f7f6de4ac" },
   "telescope.nvim": { "branch": "master", "commit": "dce1156ca103b8222e4abbfc63f9c6887abf5ec6" },
+  "undotree": { "branch": "master", "commit": "1a23ea84bd02c34f50d8e10a8b4bfc89597ffe4e" },
   "vim-commentary": { "branch": "master", "commit": "e87cd90dc09c2a203e13af9704bd0ef79303d755" },
   "vim-surround": { "branch": "master", "commit": "3d188ed2113431cf8dac77be61b842acb64433d9" }
 }

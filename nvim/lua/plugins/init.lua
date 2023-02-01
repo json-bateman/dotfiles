@@ -31,6 +31,14 @@ require("lazy").setup({
   -- plugins with extra options
   ---------------------------
   {
+    "kdheepak/lazygit.nvim", -- lazygit, a cool git interface
+    cmd = "LazyGit",
+  },
+  {
+    "mbbill/undotree",
+    cmd = "UndotreeToggle",
+  },
+  {
     "norcalli/nvim-colorizer.lua",
     config = function()
       require("plugins.configs.colorizer")
@@ -50,13 +58,14 @@ require("lazy").setup({
     "williamboman/mason.nvim", -- UI for fetching/downloading LSPs
     config = function()
       require("mason").setup()
-     end,
+    end,
   },
   {
     "williamboman/mason-lspconfig.nvim", -- Bridges mason and lspconfig
     config = function()
-      require("mason-lspconfig").setup ({
-        ensure_installed = {"jdtls", "tsserver", "jsonls", "html", "cssls", "solargraph", "yamlls", "sumneko_lua", "rust_analyzer" }
+      require("mason-lspconfig").setup({
+        ensure_installed = { "jdtls", "tsserver", "jsonls", "html", "cssls", "solargraph", "yamlls", "sumneko_lua",
+          "rust_analyzer" }
       })
     end,
   },
@@ -84,15 +93,15 @@ require("lazy").setup({
   {
     "nvim-lualine/lualine.nvim",
     event = "BufAdd",
-    config = function ()
+    config = function()
       require("plugins.configs.lualine")
     end
   },
   {
     "nvim-neo-tree/neo-tree.nvim", -- Directory tree
     dependencies = {
-        "kyazdani42/nvim-web-devicons",
-        "MunifTanjim/nui.nvim",
+      "kyazdani42/nvim-web-devicons",
+      "MunifTanjim/nui.nvim",
     },
     keys = {
       { "<leader>/", "<cmd>Neotree toggle<cr>", desc = "NeoTree" },
