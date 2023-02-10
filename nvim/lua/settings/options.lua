@@ -33,8 +33,11 @@ opt.cursorline = true -- highlights current line
 ---------------
 -- folding
 ---------------
-vim.opt.foldmethod = "indent"
-vim.opt.foldlevel = 0
+opt.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
+opt.foldcolumn = '0' -- fold column
+opt.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
+opt.foldlevelstart = 99
+opt.foldenable = true
 ---------------
 -- living dangerously
 ---------------
@@ -50,15 +53,15 @@ vim.api.nvim_create_autocmd("BufEnter",
   }
 )
 
--- Force syntax on when entering every buffer
+-- Unfold everything on buffer enter
 -- vim.api.nvim_create_autocmd("BufEnter",
 --   {
 --     callback = function()
---       vim.cmd [[syntax enable]]
---       vim.cmd [[syntax on]]
+--       vim.cmd [[execute "normal! \zR"]]
 --     end
 --   }
 -- )
+
 -- Highlights yanked text
 vim.api.nvim_create_autocmd("TextYankPost",
   {
