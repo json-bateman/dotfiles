@@ -10,7 +10,7 @@ set termguicolors "enables 24-bit RGB color in the TUI
 set nohlsearch "turns off highlighting on search
 set expandtab "insert mode puts in spaces when tabbing
 set tabstop=4 "number of spaces a tab counts for
-set softtabstop=4 "editing operations (like <BS>) are deleting 2 spaces
+set softtabstop=4 "editing operations (like <BS>) are deleting 4 spaces
 set shiftwidth=4 "number of spaces to use for each autoindent
 set nowrap "makes it so text runs off the screen instead of wrapping
 set number "sets number on side column
@@ -25,13 +25,13 @@ set formatoptions-=cro "comments don't continue when enter is pressed
 
 set noswapfile "Living life on the edge
 
-colorscheme slate 
+colorscheme slate
 
 " ----------------------------
 " Remaps
 " ----------------------------
 nnoremap <leader>E :e $MYVIMRC<CR>
-nnoremap <leader>W <CMD>w<CR><CMD>so%<CR>
+nnoremap <leader>W <CMD>w\|so%<CR>
 
 let mapleader = " "
 
@@ -42,8 +42,8 @@ nnoremap <leader>S :Sexplore<CR>
 nnoremap <leader>s :split<CR>
 nnoremap <leader>e :Explore<CR>
 nnoremap <leader>D :bd<CR>
-nnoremap <leader>d :bp \| sp \| bn \| bd<CR>
-nnoremap <leader>bo :%bd\|e#<CR>
+nnoremap <leader>d :bp \| sp \| bn \| bd<CR> " Keep splits, delete buffer
+nnoremap <leader>bo :%bd\|e#\|bd#<CR>" Only keep current buffer
 nnoremap <tab> :bn<CR>
 nnoremap <S-tab> :bp<CR>
 
@@ -53,11 +53,11 @@ nnoremap <S-tab> :bp<CR>
 " vnoremap <leader>y "+p
 
 " Visual Mode
-vnoremap <leader>Y ygv<Esc>
+vnoremap <leader>Y ygv<Esc>" Yank but keep cursor at current position
 
 " Command Mode
 cnoremap %% <C-R>=expand('%:h')<CR> 
 
 " Terminal Mode
 tnoremap qq <C-\><C-N>:q!<CR>
-tnoremap qj <C-\><C-N><C-W>j<CR>
+tnoremap <ESC> <C-\><C-N><CR>
