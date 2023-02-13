@@ -50,8 +50,8 @@ keymap('n', '<leader>fh', ":Telescope help_tags<CR>", { noremap = true })
 keymap("n", "<leader>fg", ":Telescope git_files<CR>", { noremap = true })
 keymap("n", "<leader>rg", ":Telescope live_grep<CR>", { noremap = true })
 keymap("n", "<leader>fd", ":Telescope diagnostics<CR>", { noremap = true })
-keymap("n", "<leader>t", ":botright vsplit | term <CR>a", opts)
-keymap("n", "<leader>T", ":botright 16split | term <CR>a", opts)
+keymap("n", "<leader>t", "<Plug>PlenaryTestFile", opts)
+keymap("n", "<leader>T", ":botright vsplit | term <CR>a", opts)
 -- Ufo
 vim.keymap.set('n', 'zR', require('ufo').openAllFolds)
 vim.keymap.set('n', 'zM', require('ufo').closeAllFolds)
@@ -72,15 +72,15 @@ function P(table)
 end
 
 -- Snippets
-vim.keymap.set({ "i", "s" }, "<c-k>", function()
+vim.keymap.set({ "i", "s" }, "<c-j>", function()
    if ls.expand_or_jumpable() then
       ls.expand_or_jump()
    end
 end, { silent = true })
 
-vim.keymap.set({ "i", "s" }, "<c-j>", function()
-   if ls.jumpable(-1) then
-      ls.jump(-1)
+vim.keymap.set({ "i", "s" }, "<c-k>", function()
+   if ls.jumpable( -1) then
+      ls.jump( -1)
    end
 end, { silent = true })
 

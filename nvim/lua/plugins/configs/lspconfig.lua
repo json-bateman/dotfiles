@@ -47,23 +47,23 @@ capabilities.textDocument.completion.completionItem.snippetSupport = true
 -- }
 
 lspconfig.sumneko_lua.setup {
-   on_attach = on_attach,
-   capabilities = capabilities,
+    on_attach = on_attach,
+    capabilities = capabilities,
 
-   settings = {
-      Lua = {
-         diagnostics = {
-            globals = { "vim" },
-         },
-      },
-   },
+    settings = {
+        Lua = {
+            diagnostics = {
+                globals = { "vim", "P", "it", "describe" },
+            },
+        },
+    },
 }
 
 
 local all_servers = { "sqlls", "jdtls", "tsserver", "jsonls", "html", "cssls", "solargraph", "yamlls", "rust_analyzer" }
 for _, server in ipairs(all_servers) do
    lspconfig[server].setup {
-      on_attach = on_attach,
-      capabilities = capabilities,
+       on_attach = on_attach,
+       capabilities = capabilities,
    }
 end

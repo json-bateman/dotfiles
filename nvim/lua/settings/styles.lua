@@ -26,7 +26,7 @@ Color.new('red', '#cc6666')
 Color.new('light_green', '#99ec99')
 Color.new('yellow', '#cc9966')
 
--- Group.new('Function', colors.light_green, nil, nil)
+Group.new('Function', colors.gruv_green, nil, styles.bold)
 -- Group.new('luaFunctionCall', groups.Function, groups.Function, groups.Function)
 Group.new('Comment', colors.dark_gray, nil, styles.italic)
 Group.new('String', colors.gruv_green, nil, styles.none)
