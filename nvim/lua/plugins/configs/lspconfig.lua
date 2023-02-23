@@ -14,7 +14,7 @@ vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist, opts)
 local on_attach = function(_, bufnr)
    -- Enable completion triggered by <c-x><c-o>
    vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
-   vim.cmd [[autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()]]
+   vim.cmd [[autocmd BufWritePre <buffer> lua vim.lsp.buf.format()]]
 
    -- Mappings.
    -- See `:help vim.lsp.*` for documentation on any of the below functions
@@ -46,24 +46,24 @@ capabilities.textDocument.completion.completionItem.snippetSupport = true
 --    lineFoldingOnly = true
 -- }
 
-lspconfig.sumneko_lua.setup {
-    on_attach = on_attach,
-    capabilities = capabilities,
+lspconfig.lua_ls.setup {
+   on_attach = on_attach,
+   capabilities = capabilities,
 
-    settings = {
-        Lua = {
-            diagnostics = {
-                globals = { "vim", "P", "it", "describe" },
-            },
-        },
-    },
+   settings = {
+      Lua = {
+         diagnostics = {
+            globals = { "vim", "P", "it", "describe", "before_each" },
+         },
+      },
+   },
 }
 
 
 local all_servers = { "sqlls", "jdtls", "tsserver", "jsonls", "html", "cssls", "solargraph", "yamlls", "rust_analyzer" }
 for _, server in ipairs(all_servers) do
    lspconfig[server].setup {
-       on_attach = on_attach,
-       capabilities = capabilities,
+      on_attach = on_attach,
+      capabilities = capabilities,
    }
 end
