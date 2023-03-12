@@ -17,28 +17,30 @@ vim.g.maplocalleader = " "
 vim.opt.termguicolors = true -- enables 24-bit RGB color for terminal
 
 require("lazy").setup({
-   "nvim-lua/plenary.nvim", -- Avoids callbacks, used by other plugins
-   "nvim-lua/popup.nvim", -- Popup for other plugins
-   "tpope/vim-commentary", -- gc to comment out
-   "tpope/vim-surround", -- easy text surrounding shortcuts
-   "ellisonleao/gruvbox.nvim", -- The groooviest box
-   "tjdevries/colorbuddy.nvim", -- Changing colors easily
-   "onsails/lspkind.nvim", -- pictograms for completion
-   "L3MON4D3/LuaSnip", -- More snippets
+   "nvim-lua/plenary.nvim",         -- Avoids callbacks, used by other plugins
+   "nvim-lua/popup.nvim",           -- Popup for other plugins
+   "tpope/vim-commentary",          -- gc to comment out
+   "tpope/vim-surround",            -- easy text surrounding shortcuts
+   "ellisonleao/gruvbox.nvim",      -- The groooviest box
+   "tjdevries/colorbuddy.nvim",     -- Changing colors easily
+   "onsails/lspkind.nvim",          -- pictograms for completion
+   "L3MON4D3/LuaSnip",              -- More snippets
    "nvim-telescope/telescope.nvim", -- Grep and fuzzy find with UI
-   "rafamadriz/friendly-snippets", -- Big collection of snippets
-   "mbbill/undotree", -- Undotree visualizer
-   "nanotee/luv-vimdocs", -- puts lua docs into vim docs
-   "milisims/nvim-luaref", -- puts nvim-lua reference docs into vim docs
+   "rafamadriz/friendly-snippets",  -- Big collection of snippets
+   "mbbill/undotree",               -- Undotree visualizer
+   "nanotee/luv-vimdocs",           -- puts lua docs into vim docs
+   "milisims/nvim-luaref",          -- puts nvim-lua reference docs into vim docs
    ---------------------------
    -- plugins with extra options
    ---------------------------
-   { "jose-elias-alvarez/null-ls.nvim", -- Use Neovim as a language server
+   {
+      "jose-elias-alvarez/null-ls.nvim", -- Use Neovim as a language server
       config = function()
          require("plugins.configs.null_ls")
       end
    },
-   { 'ibhagwan/fzf-lua',
+   {
+      'ibhagwan/fzf-lua',
       requires = { 'nvim-tree/nvim-web-devicons' }
    },
    {
@@ -57,10 +59,12 @@ require("lazy").setup({
          require("plugins.configs.treesitter")
       end,
    },
-   { "iamcco/markdown-preview.nvim",
+   {
+      "iamcco/markdown-preview.nvim",
       build = "cd app && npm install",
       init = function() vim.g.mkdp_filetypes = { "markdown" } end,
-      ft = { "markdown" }, },
+      ft = { "markdown" },
+   },
    {
       "williamboman/mason.nvim", -- UI for fetching/downloading LSPs
       config = function()
@@ -71,8 +75,17 @@ require("lazy").setup({
       "williamboman/mason-lspconfig.nvim", -- Bridges mason and lspconfig
       config = function()
          require("mason-lspconfig").setup({
-            ensure_installed = { "jdtls", "tsserver", "jsonls", "html", "cssls", "solargraph", "yamlls", "lua_ls",
-               "rust_analyzer" }
+            ensure_installed = {
+               "jdtls",
+               "tsserver",
+               "jsonls",
+               "html",
+               "cssls",
+               "solargraph",
+               "yamlls",
+               "lua_ls",
+               "rust_analyzer"
+            }
          })
       end,
    },
@@ -93,7 +106,8 @@ require("lazy").setup({
          )
       end,
    },
-   { 'kevinhwang91/nvim-ufo',
+   {
+      'kevinhwang91/nvim-ufo',
       dependencies = 'kevinhwang91/promise-async',
       config = function()
          require("plugins.configs.ufo")

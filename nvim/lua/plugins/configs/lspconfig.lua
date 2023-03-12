@@ -59,8 +59,30 @@ lspconfig.lua_ls.setup {
    },
 }
 
+lspconfig.yamlls.setup {
+   on_attach = on_attach,
+   capabilities = capabilities,
 
-local all_servers = { "sqlls", "jdtls", "tsserver", "jsonls", "html", "cssls", "solargraph", "yamlls", "rust_analyzer" }
+   settings = {
+      yaml = {
+         schemaStore = {
+            url = "https://www.schemastore.org/api/json/catalog.json",
+            enable = true,
+         }
+      }
+   },
+}
+
+local all_servers = {
+   "sqlls",
+   "jdtls",
+   "tsserver",
+   "jsonls",
+   "html",
+   "cssls",
+   "solargraph",
+   "rust_analyzer"
+}
 for _, server in ipairs(all_servers) do
    lspconfig[server].setup {
       on_attach = on_attach,
