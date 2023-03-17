@@ -81,7 +81,9 @@ local all_servers = {
    "html",
    "cssls",
    "solargraph",
-   "rust_analyzer"
+   "rust_analyzer",
+   "eslint",
+   "tailwindcss",
 }
 for _, server in ipairs(all_servers) do
    lspconfig[server].setup {

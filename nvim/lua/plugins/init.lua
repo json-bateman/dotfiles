@@ -30,6 +30,7 @@ require("lazy").setup({
    "mbbill/undotree",               -- Undotree visualizer
    "nanotee/luv-vimdocs",           -- puts lua docs into vim docs
    "milisims/nvim-luaref",          -- puts nvim-lua reference docs into vim docs
+   "f-person/git-blame.nvim",       -- virtual git blame text
    ---------------------------
    -- plugins with extra options
    ---------------------------

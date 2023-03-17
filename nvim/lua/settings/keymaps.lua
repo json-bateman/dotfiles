@@ -35,13 +35,13 @@ keymap("n", "<leader>s", "<cmd>split<CR>", opts)
 keymap("n", "<leader>S", "<cmd>Sex<CR>", opts)
 keymap("n", "<leader>/", "<cmd>Neotree toggle<CR>", opts)
 keymap("n", "<leader>q", "<cmd>Neotree <CR>", opts)
-keymap("n", "<leader>Q", "<cmd>Neotree dir=%:p:h:h reveal_file=%:p<CR><CR>", opts)
+keymap("n", "<leader>Q", "<cmd>Neotree dir=%:p:h reveal_file=%:p<CR><CR>", opts)
 keymap("n", "<leader>br", "<cmd>Neotree toggle buffers right<CR>", opts)
 keymap("n", "<leader>git", "<cmd>Neotree float git_status<CR>", opts)
 keymap("n", "<leader>u", "<cmd>UndotreeToggle | UndotreeFocus<CR>", opts)
 -- Buffers and buffer movement
-keymap("n", "<TAB>", "<cmd>bn<CR>", opts)
-keymap("n", "<S-TAB>", "<cmd>bp<CR>", opts)
+keymap("n", "gn", "<cmd>bn<CR>", opts)
+keymap("n", "gp", "<cmd>bp<CR>", opts)
 keymap("n", "<leader>d", "<cmd>bp | sp | bn | bd<CR>", opts)
 keymap("n", "<leader>bo", "<cmd>%bd|e#|bd#<CR>", opts)
 keymap("n", "<C-u>", "<C-u>zz", opts)
@@ -80,8 +80,8 @@ vim.keymap.set({ "i", "s" }, "<c-j>", function()
 end, { silent = true })
 
 vim.keymap.set({ "i", "s" }, "<c-k>", function()
-   if ls.jumpable( -1) then
-      ls.jump( -1)
+   if ls.jumpable(-1) then
+      ls.jump(-1)
    end
 end, { silent = true })
 

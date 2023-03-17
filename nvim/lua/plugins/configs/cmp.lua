@@ -37,14 +37,26 @@ cmp.setup({
          behavior = cmp.ConfirmBehavior.Replace,
          select = true,
       }),
-      ["<Tab>"] = cmp.mapping(function(fallback)
+      ["<c-n>"] = cmp.mapping(function(fallback)
          if cmp.visible() then
             cmp.select_next_item()
          else
             fallback()
          end
       end, { "i", "s" }),
-      ["<S-Tab>"] = cmp.mapping(function()
+      ["<c-p>"] = cmp.mapping(function()
+         if cmp.visible() then
+            cmp.select_prev_item()
+         end
+      end, { "i", "s" }),
+      ["<TAB>"] = cmp.mapping(function(fallback)
+         if cmp.visible() then
+            cmp.select_next_item()
+         else
+            fallback()
+         end
+      end, { "i", "s" }),
+      ["<S-TAB>"] = cmp.mapping(function()
          if cmp.visible() then
             cmp.select_prev_item()
          end
@@ -52,12 +64,12 @@ cmp.setup({
    },
    sources = {
       -- the order you call these in determines the way they show up in completion window
-      { name = "nvim_lua", max_item_count = 20 },
+      { name = "nvim_lua",               max_item_count = 20 },
       { name = "nvim_lsp_signature_help" },
       { name = "luasnip" },
       { name = "path" },
       { name = "nvim_lsp" },
-      { name = "buffer", keyword_length = 5 },
+      { name = "buffer",                 keyword_length = 5 },
    },
 })
 
