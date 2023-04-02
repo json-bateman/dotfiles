@@ -85,7 +85,8 @@ require("lazy").setup({
                "solargraph",
                "yamlls",
                "lua_ls",
-               "rust_analyzer"
+               "rust_analyzer",
+               "tailwindcss",
             }
          })
       end,
@@ -95,17 +96,6 @@ require("lazy").setup({
       config = function()
          require("plugins.configs.lspconfig")
       end
-   },
-   {
-      "luukvbaal/statuscol.nvim",
-      config = function()
-         require("statuscol").setup(
-            {
-               foldfunc = "builtin",
-               setopt = true
-            }
-         )
-      end,
    },
    {
       'kevinhwang91/nvim-ufo',
