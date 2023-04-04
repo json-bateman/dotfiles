@@ -31,9 +31,13 @@ require("lazy").setup({
    "nanotee/luv-vimdocs",           -- puts lua docs into vim docs
    "milisims/nvim-luaref",          -- puts nvim-lua reference docs into vim docs
    "f-person/git-blame.nvim",       -- virtual git blame text
+   "tpope/vim-fugitive",            -- In the words of Tpope "a git wrapper so awesome it should be illegal"
    ---------------------------
    -- plugins with extra options
    ---------------------------
+   {
+      "dpayne/CodeGPT.nvim",
+   },
    {
       "jose-elias-alvarez/null-ls.nvim", -- Use Neovim as a language server
       config = function()
@@ -96,6 +100,17 @@ require("lazy").setup({
       config = function()
          require("plugins.configs.lspconfig")
       end
+   },
+   {
+      "luukvbaal/statuscol.nvim",
+      config = function()
+         require("statuscol").setup(
+            {
+               foldfunc = "builtin",
+               setopt = true
+            }
+         )
+      end,
    },
    {
       'kevinhwang91/nvim-ufo',

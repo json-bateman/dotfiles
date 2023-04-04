@@ -102,3 +102,15 @@ for _, server in ipairs(all_servers) do
       capabilities = capabilities,
    }
 end
+
+local patterns = { '*.lua', '*.tsx', '*.jsx', '*.ts', '*.js', '*.css', '*.html', '*.yaml', '*.rb', '*.java', '*.rs',
+   '*.json', '*.sql' }
+
+vim.api.nvim_create_augroup('AutoFormatting', {})
+vim.api.nvim_create_autocmd('BufWritePre', {
+   pattern = patterns,
+   group = 'AutoFormatting',
+   callback = function()
+      vim.lsp.buf.format({ async = false })
+   end,
+})

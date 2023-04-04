@@ -70,5 +70,7 @@ vim.api.nvim_create_autocmd("TextYankPost",
       end
    }
 )
+
+-- vim.cmd [[au FocusLost * :wa]]
 -- Watches if files have changed and puts them back in the buffer
 -- vim.cmd [[au WinEnter,TabEnter,FocusGained * checktime]]
