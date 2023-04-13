@@ -91,6 +91,7 @@ require("lazy").setup({
                "lua_ls",
                "rust_analyzer",
                "tailwindcss",
+               "eslint",
             }
          })
       end,

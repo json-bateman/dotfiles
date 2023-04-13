@@ -56,6 +56,9 @@ keymap("n", "<leader>T", "<cmd>botright vsplit | term <CR>a", opts)
 -- Ufo
 vim.keymap.set('n', 'zR', require('ufo').openAllFolds)
 vim.keymap.set('n', 'zM', require('ufo').closeAllFolds)
+-- Fugitive
+keymap("n", "ga", "<cmd>diffget //2<cr>", {})
+keymap("n", "g;", "<cmd>diffget //3<cr>", {})
 -- pasting from and yanking to "+ register (clipboard)
 keymap("n", "<leader>p", '"+p', opts)
 keymap("x", "<leader>p", '"+p', opts)
