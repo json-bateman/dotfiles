@@ -15,6 +15,8 @@ local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
 -- after the language server attaches to the current buffer
 local on_attach = function(client, bufnr)
    -- Enable completion triggered by <c-x><c-o>
+   client.server_capabilities.semanticTokensProvider = nil
+
    vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
    if client.supports_method("textDocument/formatting") then
       vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
