@@ -1,17 +1,24 @@
-local colorscheme = 'gruvbox'
-local ok, _ = pcall(vim.api.nvim_command, "colorscheme " .. colorscheme)
-if not ok then
-   return
-end
+-- local colorscheme = 'gruvbox'
+
+local ok, onedark = pcall(require, 'onedark')
+if not ok then return end
+
+onedark.setup {
+   style = 'darker'
+}
+
+onedark.load()
+
+-- local ok, _ = pcall(vim.api.nvim_command, "colorscheme " .. colorscheme)
+-- if not ok then return end
 
 local present, colorbuddy = pcall(require, 'colorbuddy')
-if not present then
-   return
-end
+if not present then return end
 
 -- Folds and fold column matches gruvbox background
 -- vim.cmd[[highlight FoldColumn guibg=#282828]]
 vim.cmd [[highlight Folded guibg=#282828]]
+vim.cmd [[highlight CursorLine guibg=#282828]]
 
 -- Fugitive
 vim.cmd [[hi DiffAdd gui=NONE guifg=orange guibg=NONE]]
@@ -19,7 +26,7 @@ vim.cmd [[hi DiffChange gui=NONE guifg=orange guibg=NONE]]
 vim.cmd [[hi DiffDelete gui=NONE guifg=red guibg=NONE]]
 vim.cmd [[hi DiffText gui=NONE guifg=green guibg=NONE]]
 
-local Color, colors, Group, group, styles = colorbuddy.setup()
+local Color, colors, Group, _, styles = colorbuddy.setup()
 
 -- Use Color.new(<name>, <#rrggbb>) to create new colors
 -- They can be accessed through colors.<name>

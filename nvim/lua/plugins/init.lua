@@ -21,8 +21,6 @@ require("lazy").setup({
    "nvim-lua/popup.nvim",           -- Popup for other plugins
    "tpope/vim-commentary",          -- gc to comment out
    "tpope/vim-surround",            -- easy text surrounding shortcuts
-   "ellisonleao/gruvbox.nvim",      -- The groooviest box
-   "tjdevries/colorbuddy.nvim",     -- Changing colors easily
    "onsails/lspkind.nvim",          -- pictograms for completion
    "L3MON4D3/LuaSnip",              -- More snippets
    "nvim-telescope/telescope.nvim", -- Grep and fuzzy find with UI
@@ -31,6 +29,10 @@ require("lazy").setup({
    "milisims/nvim-luaref",          -- puts nvim-lua reference docs into vim docs
    "f-person/git-blame.nvim",       -- virtual git blame text
    "tpope/vim-fugitive",            -- In the words of Tpope "a git wrapper so awesome it should be illegal"
+   "ThePrimeagen/harpoon",          -- Blazingly Fast(tm) file switching
+   "tjdevries/colorbuddy.nvim",     -- Changing colors easily
+   "ellisonleao/gruvbox.nvim",      -- The groooviest box
+   "navarasu/onedark.nvim",         -- The darkest one
    ---------------------------
    -- plugins with extra options
    ---------------------------
