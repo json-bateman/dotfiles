@@ -1,10 +1,10 @@
+# plugins
+plugins=(autojump)
 # Path to your oh-my-zsh installation.
 export ZSH="/Users/tenzin/.oh-my-zsh"
-
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 # ~/.oh-my-zsh/themes
 ZSH_THEME="jacksCustom"
-
 source $ZSH/oh-my-zsh.sh
 
 #------------------------------------
@@ -13,6 +13,7 @@ source $ZSH/oh-my-zsh.sh
 
 alias vim='nvim'
 alias tks='tmux kill-server'
+alias lg='lazygit'
 
 #------------------------------------
 # Path and Environment Variables
@@ -32,6 +33,7 @@ export PATH=${PATH}:$GOBIN:$GOROOT/bin
 export PATH="$PATH:/usr/local/smlnj/bin"
 export PATH="$PATH:/Users/tenzin/scripts"
 export OPENAI_API_KEY="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"
+export PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND ;} history -a"
 eval "$(rbenv init - zsh)"
 
 #------------------------------------
@@ -39,16 +41,16 @@ eval "$(rbenv init - zsh)"
 #------------------------------------
 
 bindkey -s "^F" "tmux-sessionizer^M"
-bindkey "^K" up-line-or-beginning-search
-bindkey "^J" down-line-or-beginning-search
-bindkey "^H" backward-char
-bindkey "^L" forward-char
+bindkey -v "K" up-line-or-beginning-search
+bindkey -v "J" down-line-or-beginning-search
+# bindkey "H" backward-char
+# bindkey "L" forward-char
 
 #------------------------------------
 # Commands on Startup
 #------------------------------------
 # source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh
-# set -o vi
+set -o vi
 
 #------------------------------------
 # Miscellaneous 
