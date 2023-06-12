@@ -109,6 +109,7 @@ local all_servers = {
    "solargraph",
    "rust_analyzer",
    "tailwindcss",
+   "clangd",
 }
 for _, server in ipairs(all_servers) do
    lspconfig[server].setup {

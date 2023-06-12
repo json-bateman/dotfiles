@@ -26,7 +26,6 @@ require("lazy").setup({
    "onsails/lspkind.nvim",          -- pictograms for completion
    "L3MON4D3/LuaSnip",              -- More snippets
    "nvim-telescope/telescope.nvim", -- Grep and fuzzy find with UI
-   "rafamadriz/friendly-snippets",  -- Big collection of snippets
    "mbbill/undotree",               -- Undotree visualizer
    "nanotee/luv-vimdocs",           -- puts lua docs into vim docs
    "milisims/nvim-luaref",          -- puts nvim-lua reference docs into vim docs
@@ -92,6 +91,7 @@ require("lazy").setup({
                "rust_analyzer",
                "tailwindcss",
                "eslint",
+               "clangd",
             }
          })
       end,
