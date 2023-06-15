@@ -4,7 +4,7 @@ FROM fedora:latest
 ADD ./ ./root/
 
 # apt updates and install ansible, curl, git, neovim
-RUN dnf update -y && dnf install -y gcc g++ curl git ansible neovim vim zsh wget nodejs npm lua luarocks
+RUN dnf update -y && dnf install -y gcc g++ curl git ansible tree neovim vim zsh wget nodejs npm lua luarocks
 
 # install ohmyzsh
 RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
