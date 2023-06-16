@@ -1,10 +1,7 @@
 # plugins
 plugins=(autojump)
-# Path to your oh-my-zsh installation.
-export ZSH="/Users/tenzin/.oh-my-zsh"
-# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-# ~/.oh-my-zsh/themes
-ZSH_THEME="jacksCustom"
+export ZSH="/Users/jack/.oh-my-zsh"
+ZSH_THEME="af-magic"
 source $ZSH/oh-my-zsh.sh
 
 #------------------------------------
@@ -19,22 +16,7 @@ alias lg='lazygit'
 # Path and Environment Variables
 #------------------------------------
 
-export PATH="/opt/homebrew/opt/tcl-tk/bin:$PATH"
-export PATH=/usr/local/share/python:$PATH
-export PATH=$PATH:/Users/tenzin/Library/Python/3.8/bin
-export PATH=$PATH:/Users/tenzin/Library/Python/3.9/bin
-export PATH="$PATH:/Users/tenzin/.foundry/bin"
-export PATH="$PATH:/Users/tenzin/.foundry/bin"
-export PATH="$PATH:/Users/tenzin/go"
-export PATH="$PATH:/Users/tenzin/go/bin"
-export GOPATH=$HOME/go
-export GOBIN=$GOPATH/bin
-export PATH=${PATH}:$GOBIN:$GOROOT/bin
-export PATH="$PATH:/usr/local/smlnj/bin"
-export PATH="$PATH:/Users/tenzin/scripts"
-export OPENAI_API_KEY="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"
-export PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND ;} history -a"
-eval "$(rbenv init - zsh)"
+export PATH="/opt/homebrew/bin:$PATH"
 
 #------------------------------------
 # Keybinds
