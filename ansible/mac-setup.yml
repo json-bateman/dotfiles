@@ -1,0 +1,49 @@
+- hosts: localhost
+  become: true
+  tasks:
+  - name: Start Locate Database
+    command: "launchctl load -w /System/Library/LaunchDaemons/com.apple.locate.plist"
+    tags: 
+      - locate
+  - name: Create Folders
+    file:
+      path: "{{item}}"
+      state: directory
+    loop:
+      - "~/.cache/"
+      - "~/Coding/"
+    tags:
+      - dotfiles
+  - name: Install dotfiles
+    become_user: jack
+    git:
+      repo: https://github.com/jacktrusler/dotfiles
+      dest: ~/dotfiles
+    tags:
+      - dotfiles
+  - name: copy all dotfiles
+    become_user: jack
+    shell: | 
+      cp ~/dotfiles/.vimrc ~/dotfiles/.gitconfig ~/dotfiles/.tmux.conf ~/.
+      cp ~/dotfiles/_mac/.zshrc ~/.
+    tags: 
+      - move 
+  - name: Oh-my-zsh
+    shell: 
+      cmd: curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
+    become_user: jack
+    tags: 
+      - soy
+  - name: Soy install
+    command: "brew install node nvim tree wget autojump tmux"
+    become_user: jack
+    tags: 
+      - soy
+  - name: Nvim configure 
+    become_user: jack
+    command: "mkdir -p ~/.config && mv ~/dotfiles/nvim ~/.config"
+    tags: 
+      - nvim
+  - name: Applications
+    become_user: jack
+    command: "brew install spotify google-chrome telegram docker"
