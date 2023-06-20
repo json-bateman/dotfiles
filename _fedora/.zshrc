@@ -20,7 +20,6 @@ alias vim="nvim"
 alias open="xdg-open"
 alias task="go-task"
 alias gasx3='git push -f'
-alias lg='lazygit'
 alias g='git'
 alias tks='tmux kill-session'
 alias tkS='tmux kill-server'
@@ -39,14 +38,6 @@ bindkey -v "J" down-line-or-beginning-search
 #------------------------------------
 
 export PATH="$PATH:/home/jack/scripts"
-export PATH="$PATH:/opt/intellij_idea/bin"
-export GOPATH="$HOME/go"
-export LUA_PATH="/usr/share/lua/5.4/luarocks/?.lua;;"
-export OPENAI_API_KEY="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"
-export JAVA_HOME="/usr/lib/jvm/java-19-openjdk"
-export M2_HOME="/opt/maven"
-export PATH=$JAVA_HOME/bin:$PATH
-export PATH=${M2_HOME}/bin:${PATH}
 
 #------------------------------------
 # Other ZSH settings

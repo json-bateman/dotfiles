@@ -106,7 +106,6 @@ local all_servers = {
    "jsonls",
    "html",
    "cssls",
-   "solargraph",
    "rust_analyzer",
    "tailwindcss",
    "clangd",
@@ -118,7 +117,7 @@ for _, server in ipairs(all_servers) do
    }
 end
 
-local patterns = { '*.lua', '*.tsx', '*.jsx', '*.ts', '*.js', '*.css', '*.html', '*.yaml', '*.rb', '*.java', '*.rs',
+local patterns = { '*.lua', '*.tsx', '*.jsx', '*.ts', '*.js', '*.css', '*.html', '*.yaml', '*.java', '*.rs',
    '*.json', '*.sql' }
 
 vim.api.nvim_create_augroup('AutoFormatting', {})

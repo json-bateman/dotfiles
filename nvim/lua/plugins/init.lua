@@ -87,7 +87,6 @@ require("lazy").setup({
                "jsonls",
                "html",
                "cssls",
-               "solargraph",
                "yamlls",
                "lua_ls",
                "rust_analyzer",

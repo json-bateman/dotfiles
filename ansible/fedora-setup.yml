@@ -1,0 +1,44 @@
+- hosts: localhost
+  become: true
+  tasks:
+  - name: Start Locate Database
+    command: "updatedb"
+    tags: 
+      - locate
+  - name: Create Folders
+    file:
+      path: "{{item}}"
+      state: directory
+    loop:
+      - "~/.cache/"
+      - "~/Coding/"
+    tags:
+      - dotfiles
+  - name: copy all dotfiles
+    become_user: jack
+    shell: | 
+      cp ~/dotfiles/.vimrc ~/dotfiles/.gitconfig ~/dotfiles/.tmux.conf ~/.
+      cp ~/dotfiles/_fedora/.zshrc ~/.
+    tags: 
+      - move 
+  - name: Soy install
+    shell:
+      cmd: dnf install -y nodejs neovim tree wget autojump tmux zsh gcc clang g++ tree vim wget
+    tags: 
+      - soy
+  - name: Oh-my-zsh
+    shell: 
+      cmd: curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
+    become_user: jack
+    tags: 
+      - zsh
+  - name: Nvim configure 
+    become_user: jack
+    shell: |
+      mkdir -p ~/.config 
+      cp -r ~/dotfiles/nvim ~/.config
+    tags: 
+      - nvim
+  - name: Applications
+    shell: 
+      cmd: dnf install docker
