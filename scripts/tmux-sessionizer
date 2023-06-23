@@ -1,5 +1,5 @@
 #! /usr/bin/env bash
-session=$(find ~/Coding ~/Coding/taazaa -mindepth 1 -maxdepth 1 -type d | fzf)
+session=$(find ~/Coding -mindepth 1 -maxdepth 1 -type d | fzf)
 session_name=$(basename "$session" | tr . _)
 
 if [ -z "${TMUX}" ]; then
