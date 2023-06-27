@@ -33,6 +33,7 @@ require("lazy").setup({
    "tjdevries/colorbuddy.nvim",     -- Changing colors easily
    "ellisonleao/gruvbox.nvim",      -- The groooviest box
    "navarasu/onedark.nvim",         -- The darkest one
+   "justinmk/vim-sneak",            -- remapping s to sneak / to s
    ---------------------------
    -- plugins with extra options
    ---------------------------
