@@ -35,7 +35,7 @@
     tags: 
       - soy
   - name: Soy install
-    command: "brew install node nvim tree wget autojump tmux"
+    command: "brew install node nvim tree wget autojump tmux ripgrep fzf"
     become_user: jack
     tags: 
       - soy
