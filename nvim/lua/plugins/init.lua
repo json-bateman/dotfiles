@@ -17,26 +17,38 @@ vim.g.maplocalleader = " "
 vim.opt.termguicolors = true -- enables 24-bit RGB color for terminal
 
 require("lazy").setup({
-   "nvim-lua/plenary.nvim",         -- Avoids callbacks, used by other plugins
-   "nvim-lua/popup.nvim",           -- Popup for other plugins
-   "tpope/vim-commentary",          -- gc to comment out
-   "tpope/vim-surround",            -- easy text surrounding shortcuts
-   "onsails/lspkind.nvim",          -- pictograms for completion
-   "L3MON4D3/LuaSnip",              -- More snippets
-   "nvim-telescope/telescope.nvim", -- Grep and fuzzy find with UI
-   "mbbill/undotree",               -- Undotree visualizer
-   "nanotee/luv-vimdocs",           -- puts lua docs into vim docs
-   "milisims/nvim-luaref",          -- puts nvim-lua reference docs into vim docs
-   "f-person/git-blame.nvim",       -- virtual git blame text
-   "tpope/vim-fugitive",            -- In the words of Tpope "a git wrapper so awesome it should be illegal"
-   "ThePrimeagen/harpoon",          -- Blazingly Fast(tm) file switching
-   "tjdevries/colorbuddy.nvim",     -- Changing colors easily
-   "ellisonleao/gruvbox.nvim",      -- The groooviest box
-   "navarasu/onedark.nvim",         -- The darkest one
-   "justinmk/vim-sneak",            -- remapping s to sneak / to s
+   "nvim-lua/plenary.nvim",     -- Avoids callbacks, used by other plugins
+   "nvim-lua/popup.nvim",       -- Popup for other plugins
+   "tpope/vim-commentary",      -- gc to comment out
+   "tpope/vim-surround",        -- easy text surrounding shortcuts
+   "onsails/lspkind.nvim",      -- pictograms for completion
+   "L3MON4D3/LuaSnip",          -- More snippets
+   "mbbill/undotree",           -- Undotree visualizer
+   "nanotee/luv-vimdocs",       -- puts lua docs into vim docs
+   "milisims/nvim-luaref",      -- puts nvim-lua reference docs into vim docs
+   "f-person/git-blame.nvim",   -- virtual git blame text
+   "tpope/vim-fugitive",        -- In the words of Tpope "a git wrapper so awesome it should be illegal"
+   "ThePrimeagen/harpoon",      -- Blazingly Fast(tm) file switching
+   "tjdevries/colorbuddy.nvim", -- Changing colors easily
+   "ellisonleao/gruvbox.nvim",  -- The groooviest box
+   "navarasu/onedark.nvim",     -- The darkest one
    ---------------------------
    -- plugins with extra options
    ---------------------------
+   {
+      "nvim-telescope/telescope.nvim", -- Grep and fuzzy find with UI
+      config = function()
+         require("telescope").setup {
+            pickers = {
+               live_grep = {
+                  additional_args = function()
+                     return { "--hidden" }
+                  end
+               },
+            },
+         }
+      end
+   },
    {
       "dpayne/CodeGPT.nvim",
    },
