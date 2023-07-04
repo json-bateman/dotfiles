@@ -1,0 +1,43 @@
+- hosts: localhost
+  become: true
+  tasks:
+  - name: Soy install
+    shell:
+      cmd: dnf install -y git mlocate nodejs neovim tree wget autojump tmux zsh gcc clang g++ tree vim wget ripgrep fzf
+    tags: 
+      - soy
+  - name: Clone dotfiles
+    shell:
+      cmd: git clone https://github.com/jacktrusler/dotfiles
+    tags: 
+      - dotfiles 
+  - name: Create Folders
+    file:
+      path: "{{item}}"
+      state: directory
+    loop:
+      - "~/.cache/"
+      - "~/Coding/"
+    tags:
+      - dotfiles
+  - name: copy all dotfiles
+    shell: | 
+      cp ~/dotfiles/.vimrc ~/dotfiles/.gitconfig ~/dotfiles/.tmux.conf ~/.
+      cp ~/dotfiles/_fedora/.zshrc ~/.
+    tags: 
+      - dotfiles 
+  - name: Start Locate Database
+    command: "updatedb"
+    tags: 
+      - locate
+  - name: Oh-my-zsh
+    shell: 
+      cmd: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+    tags: 
+      - zsh
+  - name: Nvim configure 
+    shell: |
+      mkdir -p ~/.config 
+      cp -r ~/dotfiles/nvim ~/.config
+    tags: 
+      - nvim
