@@ -68,7 +68,7 @@ for _, value in ipairs(filetypes) do
       ),
       parse(
          "fce",
-         "export default function $1() {\nreturn (${2:<></>})$0\n}"
+         "export default function $1() {\n  return (\n    ${2:<></>}\n  )$0\n}"
       ),
       parse(
          "imp",

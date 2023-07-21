@@ -19,6 +19,7 @@ if not present then return end
 -- vim.cmd[[highlight FoldColumn guibg=#282828]]
 vim.cmd [[highlight Folded guibg=#282828]]
 vim.cmd [[highlight CursorLine guibg=#282828]]
+-- vim.cmd [[highlight Normal guibg=#000]]
 
 -- Fugitive
 vim.cmd [[hi DiffAdd gui=NONE guifg=orange guibg=NONE]]

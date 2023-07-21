@@ -4,7 +4,8 @@ local opt = vim.opt
 g.netrw_banner = 0
 -- opt.hidden = false -- when false buffers are abandoned when unloaded
 -- opt.autowrite = true -- writes the file when moving buffers, hidden has to be true
-opt.hlsearch = false -- turns off highlighting on search
+opt.hlsearch = false          -- turns off highlighting on search
+opt.guicursor = "n-v-c:block" -- sets cursor to block or line depending on mode
 ---------------
 -- Indenting
 ---------------
@@ -45,12 +46,12 @@ opt.mouse = 'a'
 
 -- Don't automatically make more comments lines on enter
 vim.api.nvim_create_autocmd("BufEnter",
-   {
-      callback = function()
-         vim.opt.formatoptions =
-             vim.opt.formatoptions - { "c", "r", "o" }
-      end
-   }
+  {
+    callback = function()
+      vim.opt.formatoptions =
+          vim.opt.formatoptions - { "c", "r", "o" }
+    end
+  }
 )
 
 -- Unfold everything on buffer enter
@@ -64,11 +65,11 @@ vim.api.nvim_create_autocmd("BufEnter",
 
 -- Highlights yanked text
 vim.api.nvim_create_autocmd("TextYankPost",
-   {
-      callback = function()
-         vim.highlight.on_yank { higroup = 'Question', timeout = 400 }
-      end
-   }
+  {
+    callback = function()
+      vim.highlight.on_yank { higroup = 'Question', timeout = 400 }
+    end
+  }
 )
 
 -- vim.cmd [[au FocusLost * :wa]]
