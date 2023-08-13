@@ -86,7 +86,7 @@ lspconfig.yamlls.setup {
    },
 }
 
-lspconfig.eslint.setup {
+lspconfig.eslint.setup({
    on_attach = function(_, bufnr)
       vim.api.nvim_create_autocmd("BufWritePre", {
          buffer = bufnr,
@@ -97,7 +97,7 @@ lspconfig.eslint.setup {
       workingDirectory = { mode = 'location' },
    },
    root_dir = lspconfig.util.find_git_ancestor,
-}
+})
 
 local all_servers = {
    "sqlls",
@@ -109,6 +109,7 @@ local all_servers = {
    "rust_analyzer",
    "tailwindcss",
    "clangd",
+   "pyright",
 }
 for _, server in ipairs(all_servers) do
    lspconfig[server].setup {

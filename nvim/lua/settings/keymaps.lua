@@ -56,9 +56,10 @@ keymap("n", "<leader>T", "<CMD>botright vsplit | term <CR>a", opts)
 -- Ufo
 vim.keymap.set('n', 'zR', require('ufo').openAllFolds)
 vim.keymap.set('n', 'zM', require('ufo').closeAllFolds)
--- Fugitive
+-- Git
 keymap("n", "ga", "<CMD>diffget //2<cr>", {})
 keymap("n", "g;", "<CMD>diffget //3<cr>", {})
+keymap("n", "<leader>gb", "<CMD>Gitsigns toggle_current_line_blame<CR>", {})
 -- Harpoon
 keymap("n", "<leader>a", "<CMD>lua require('harpoon.mark').add_file()<CR>", {})
 keymap("n", "<leader>0", "<CMD>lua require('harpoon.ui').toggle_quick_menu()<CR>", {})

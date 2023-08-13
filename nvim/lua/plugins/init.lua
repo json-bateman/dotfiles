@@ -32,7 +32,6 @@ require("lazy").setup({
    "tjdevries/colorbuddy.nvim",     -- Changing colors easily
    "ellisonleao/gruvbox.nvim",      -- The groooviest box
    "navarasu/onedark.nvim",         -- The darkest one
-   "justinmk/vim-sneak",            -- remapping s to sneak forward and back ; ,
    ---------------------------
    -- plugins with extra options
    ---------------------------
@@ -86,6 +85,7 @@ require("lazy").setup({
                "tailwindcss",
                "eslint",
                "clangd",
+               "pyright",
             }
          })
       end,
