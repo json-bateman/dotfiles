@@ -18,12 +18,11 @@ opt.wrap = false       -- makes it so text runs off the screen instead of wrappi
 -----------------
 -- Line Numbers
 -----------------
-opt.number = true         -- sets number on side column
-opt.relativenumber = true -- makes line number relative to cursor position
-opt.numberwidth = 2       -- number column char width
-opt.ruler = false         -- show line and cursor position, redundant with lualine
-opt.scrolloff = 10        -- scroll (x) lines from top and bottom
-opt.signcolumn = "no"     -- don't expand column on errors
+opt.number = true     -- sets number on side column
+opt.numberwidth = 2   -- number column char width
+opt.ruler = false     -- show line and cursor position, redundant with lualine
+opt.scrolloff = 10    -- scroll (x) lines from top and bottom
+opt.signcolumn = "no" -- don't expand column on errors
 ---------------
 -- Searching
 ---------------
@@ -46,12 +45,12 @@ opt.mouse = 'a'
 
 -- Don't automatically make more comments lines on enter
 vim.api.nvim_create_autocmd("BufEnter",
-  {
-    callback = function()
-      vim.opt.formatoptions =
-          vim.opt.formatoptions - { "c", "r", "o" }
-    end
-  }
+   {
+      callback = function()
+         vim.opt.formatoptions =
+             vim.opt.formatoptions - { "c", "r", "o" }
+      end
+   }
 )
 
 -- Unfold everything on buffer enter
@@ -65,11 +64,11 @@ vim.api.nvim_create_autocmd("BufEnter",
 
 -- Highlights yanked text
 vim.api.nvim_create_autocmd("TextYankPost",
-  {
-    callback = function()
-      vim.highlight.on_yank { higroup = 'Question', timeout = 400 }
-    end
-  }
+   {
+      callback = function()
+         vim.highlight.on_yank { higroup = 'Question', timeout = 400 }
+      end
+   }
 )
 
 -- vim.cmd [[au FocusLost * :wa]]

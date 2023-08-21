@@ -19,12 +19,9 @@ vim.g.maplocalleader = " "
 
 keymap("n", "<leader>E", "<CMD>edit $MYVIMRC<CR>", opts)
 keymap("n", "<leader>W", "<CMD>w<CR><CMD>so%<CR>", opts)
-keymap("n", "<leader>B", "<CMD>lua require'dap'.toggle_breakpoint()<CR>", opts)
-keymap("n", "<F5>", "<CMD>lua require'dap'.continue()<CR>", opts)
-keymap("n", "<leader><leader>t", "<Plug>PlenaryTestFile", opts)
+-- Window Movement
 keymap("n", "<leader>cc", "<CMD>cclose<CR>", opts)
 keymap("n", "<leader>co", "<CMD>copen<CR>", opts)
--- Window Movement
 keymap("n", "<C-h>", "<C-w>h", opts)
 keymap("n", "<C-j>", "<C-w>j", opts)
 keymap("n", "<C-k>", "<C-w>k", opts)

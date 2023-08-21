@@ -102,14 +102,15 @@ lspconfig.eslint.setup({
 local all_servers = {
    "sqlls",
    "jdtls",
-   "tsserver",
    "jsonls",
+   "tsserver",
    "html",
    "cssls",
    "rust_analyzer",
    "tailwindcss",
    "clangd",
    "pyright",
+   "gopls",
 }
 for _, server in ipairs(all_servers) do
    lspconfig[server].setup {

@@ -32,13 +32,28 @@ require("lazy").setup({
    "tjdevries/colorbuddy.nvim",     -- Changing colors easily
    "ellisonleao/gruvbox.nvim",      -- The groooviest box
    "navarasu/onedark.nvim",         -- The darkest one
+   --- Debugging ---
+   "mfussenegger/nvim-dap",
+   "rcarriga/nvim-dap-ui",
+   "leoluz/nvim-dap-go",
+   "mxsdev/nvim-dap-vscode-js",
+   {
+      "microsoft/vscode-js-debug",
+      build = "npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out"
+   },
    ---------------------------
    -- plugins with extra options
    ---------------------------
    {
+      "nvim-treesitter/nvim-treesitter", -- Language parsing completion engine
+      config = function()
+         require("plugins.configs.treesitter")
+      end,
+   },
+   {
       "lewis6991/gitsigns.nvim",
       config = function()
-         require("gitsigns").setup({})
+         require("gitsigns").setup()
       end,
    },
    {
@@ -49,12 +64,6 @@ require("lazy").setup({
       "norcalli/nvim-colorizer.lua",
       config = function()
          require("plugins.configs.colorizer")
-      end,
-   },
-   {
-      "nvim-treesitter/nvim-treesitter", -- Language parsing completion engine
-      config = function()
-         require("plugins.configs.treesitter")
       end,
    },
    {
@@ -86,9 +95,18 @@ require("lazy").setup({
                "eslint",
                "clangd",
                "pyright",
+               "gopls"
             }
          })
       end,
+   },
+   {
+      "williamboman/mason-nvim-dap.nvim", -- Mason for DAP
+      config = function()
+         require("mason-nvim-dap").setup({
+            ensure_installed = { "delve", "node-debug2-adapter", "chrome-debug-adapter" }
+         })
+      end
    },
    {
       "neovim/nvim-lspconfig", -- neovims configuation for the built in client

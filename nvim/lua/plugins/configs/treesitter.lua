@@ -18,6 +18,7 @@ treesitter.setup {
       "json",
       "python",
       "ruby",
+      "go",
    },
    -- auto_install = true,
    ignore_install = { "help" },
