@@ -11,8 +11,6 @@ if not vim.loop.fs_stat(lazypath) then
 end
 
 vim.opt.rtp:prepend(lazypath)
-vim.g.mapleader = " "
-vim.g.maplocalleader = " "
 -- Need this for colorizer
 vim.opt.termguicolors = true -- enables 24-bit RGB color for terminal
 
@@ -24,7 +22,6 @@ require("lazy").setup({
    "onsails/lspkind.nvim",          -- pictograms for completion
    "L3MON4D3/LuaSnip",              -- More snippets
    "nvim-telescope/telescope.nvim", -- Grep and fuzzy find with UI
-   "mbbill/undotree",               -- Undotree visualizer
    "nanotee/luv-vimdocs",           -- puts lua docs into vim docs
    "milisims/nvim-luaref",          -- puts nvim-lua reference docs into vim docs
    "tpope/vim-fugitive",            -- In the words of Tpope "a git wrapper so awesome it should be illegal"
@@ -32,15 +29,8 @@ require("lazy").setup({
    "tjdevries/colorbuddy.nvim",     -- Changing colors easily
    "ellisonleao/gruvbox.nvim",      -- The groooviest box
    "navarasu/onedark.nvim",         -- The darkest one
-   --- Debugging ---
-   "mfussenegger/nvim-dap",
-   "rcarriga/nvim-dap-ui",
-   "leoluz/nvim-dap-go",
-   "mxsdev/nvim-dap-vscode-js",
-   {
-      "microsoft/vscode-js-debug",
-      build = "npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out"
-   },
+   "andweeb/presence.nvim",         -- Shows Neovim on discord for weird flexing purposes
+   "nvim-pack/nvim-spectre",        -- Find and replace project-wide.
    ---------------------------
    -- plugins with extra options
    ---------------------------
@@ -68,7 +58,7 @@ require("lazy").setup({
    },
    {
       "iamcco/markdown-preview.nvim",
-      build = "cd app && npm install",
+      build = "cd app && npx --yes yarn install",
       init = function() vim.g.mkdp_filetypes = { "markdown" } end,
       ft = { "markdown" },
    },
@@ -95,35 +85,16 @@ require("lazy").setup({
                "eslint",
                "clangd",
                "pyright",
-               "gopls"
+               "gopls",
             }
          })
       end,
-   },
-   {
-      "williamboman/mason-nvim-dap.nvim", -- Mason for DAP
-      config = function()
-         require("mason-nvim-dap").setup({
-            ensure_installed = { "delve", "node-debug2-adapter", "chrome-debug-adapter" }
-         })
-      end
    },
    {
       "neovim/nvim-lspconfig", -- neovims configuation for the built in client
       config = function()
          require("plugins.configs.lspconfig")
       end
-   },
-   {
-      "luukvbaal/statuscol.nvim",
-      config = function()
-         require("statuscol").setup(
-            {
-               foldfunc = "builtin",
-               setopt = true
-            }
-         )
-      end,
    },
    {
       'kevinhwang91/nvim-ufo',

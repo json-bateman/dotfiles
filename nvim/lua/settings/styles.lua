@@ -22,10 +22,10 @@ vim.cmd [[highlight CursorLine guibg=#282828]]
 -- vim.cmd [[highlight Normal guibg=#000]]
 
 -- Fugitive
-vim.cmd [[hi DiffAdd gui=NONE guifg=orange guibg=NONE]]
-vim.cmd [[hi DiffChange gui=NONE guifg=orange guibg=NONE]]
-vim.cmd [[hi DiffDelete gui=NONE guifg=red guibg=NONE]]
-vim.cmd [[hi DiffText gui=NONE guifg=green guibg=NONE]]
+-- vim.cmd [[hi DiffAdd gui=NONE guifg=#FFe580 guibg=NONE]]
+-- vim.cmd [[hi DiffChange gui=NONE guifg=NONE guibg=NONE]]
+-- vim.cmd [[hi DiffDelete gui=NONE guifg=red guibg=NONE]]
+-- vim.cmd [[hi DiffText gui=NONE guifg=green guibg=NONE]]
 
 local Color, colors, Group, _, styles = colorbuddy.setup()
 

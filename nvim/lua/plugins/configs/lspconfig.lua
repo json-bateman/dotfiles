@@ -86,6 +86,11 @@ lspconfig.yamlls.setup {
    },
 }
 
+-- lspconfig.denols.setup {
+--    on_attach = on_attach,
+--    root_dir = lspconfig.util.root_pattern("deno.json", "deno.jsonc"),
+-- }
+
 lspconfig.eslint.setup({
    on_attach = function(_, bufnr)
       vim.api.nvim_create_autocmd("BufWritePre", {
@@ -99,11 +104,20 @@ lspconfig.eslint.setup({
    root_dir = lspconfig.util.find_git_ancestor,
 })
 
+lspconfig["solidity"].setup({
+   capabilities = capabilities,
+   on_attach = on_attach,
+   cmd = { "nomicfoundation-solidity-language-server", "--stdio" },
+   filetypes = { "solidity" },
+   root_dir = lspconfig.util.root_pattern("foundry.toml"),
+   single_file_support = true,
+})
+
 local all_servers = {
+   "tsserver",
    "sqlls",
    "jdtls",
    "jsonls",
-   "tsserver",
    "html",
    "cssls",
    "rust_analyzer",
@@ -112,6 +126,7 @@ local all_servers = {
    "pyright",
    "gopls",
 }
+
 for _, server in ipairs(all_servers) do
    lspconfig[server].setup {
       on_attach = on_attach,

@@ -19,6 +19,8 @@ treesitter.setup {
       "python",
       "ruby",
       "go",
+      "c",
+      "vimdoc",
    },
    -- auto_install = true,
    ignore_install = { "help" },

@@ -1,6 +1,9 @@
 local g = vim.g
 local opt = vim.opt
 
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
+
 g.netrw_banner = 0
 -- opt.hidden = false -- when false buffers are abandoned when unloaded
 -- opt.autowrite = true -- writes the file when moving buffers, hidden has to be true
@@ -27,6 +30,7 @@ opt.signcolumn = "no" -- don't expand column on errors
 -- Searching
 ---------------
 opt.ignorecase = true  -- can sEarch case ignoring caps
+opt.smartcase = true   -- if you use caps in search, assumes you meant it
 opt.incsearch = true   -- jumps to what you're searching
 opt.cursorline = false -- highlights current line
 ---------------
