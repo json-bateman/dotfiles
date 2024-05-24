@@ -7,8 +7,7 @@ vim.g.maplocalleader = " "
 g.netrw_banner = 0
 -- opt.hidden = false -- when false buffers are abandoned when unloaded
 -- opt.autowrite = true -- writes the file when moving buffers, hidden has to be true
-opt.hlsearch = false          -- turns off highlighting on search
-opt.guicursor = "n-v-c:block" -- sets cursor to block or line depending on mode
+opt.hlsearch = false -- turns off highlighting on search
 ---------------
 -- Indenting
 ---------------
@@ -21,11 +20,11 @@ opt.wrap = false       -- makes it so text runs off the screen instead of wrappi
 -----------------
 -- Line Numbers
 -----------------
-opt.number = true     -- sets number on side column
-opt.numberwidth = 2   -- number column char width
-opt.ruler = false     -- show line and cursor position, redundant with lualine
-opt.scrolloff = 10    -- scroll (x) lines from top and bottom
-opt.signcolumn = "no" -- don't expand column on errors
+opt.number = true      -- sets number on side column
+opt.numberwidth = 2    -- number column char width
+opt.ruler = false      -- show line and cursor position, redundant with lualine
+opt.scrolloff = 10     -- scroll (x) lines from top and bottom
+opt.signcolumn = "yes" -- don't expand column on errors
 ---------------
 -- Searching
 ---------------

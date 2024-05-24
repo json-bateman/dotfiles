@@ -15,29 +15,42 @@ vim.opt.rtp:prepend(lazypath)
 vim.opt.termguicolors = true -- enables 24-bit RGB color for terminal
 
 require("lazy").setup({
-   "nvim-lua/plenary.nvim",         -- Avoids callbacks, used by other plugins
-   "nvim-lua/popup.nvim",           -- Popup for other plugins
-   "tpope/vim-commentary",          -- gc to comment out
-   "tpope/vim-surround",            -- easy text surrounding shortcuts
-   "onsails/lspkind.nvim",          -- pictograms for completion
-   "L3MON4D3/LuaSnip",              -- More snippets
-   "nvim-telescope/telescope.nvim", -- Grep and fuzzy find with UI
-   "nanotee/luv-vimdocs",           -- puts lua docs into vim docs
-   "milisims/nvim-luaref",          -- puts nvim-lua reference docs into vim docs
-   "tpope/vim-fugitive",            -- In the words of Tpope "a git wrapper so awesome it should be illegal"
-   "ThePrimeagen/harpoon",          -- Blazingly Fast(tm) file switching
-   "tjdevries/colorbuddy.nvim",     -- Changing colors easily
-   "ellisonleao/gruvbox.nvim",      -- The groooviest box
-   "navarasu/onedark.nvim",         -- The darkest one
-   "andweeb/presence.nvim",         -- Shows Neovim on discord for weird flexing purposes
-   "nvim-pack/nvim-spectre",        -- Find and replace project-wide.
+   "nvim-lua/plenary.nvim",  -- Avoids callbacks, used by other plugins
+   "nvim-lua/popup.nvim",    -- Popup for other plugins
+   "tpope/vim-commentary",   -- gc to comment out
+   "tpope/vim-surround",     -- easy text surrounding shortcuts
+   "onsails/lspkind.nvim",   -- pictograms for completion
+   "L3MON4D3/LuaSnip",       -- More snippets
+   "nanotee/luv-vimdocs",    -- puts lua docs into vim docs
+   "milisims/nvim-luaref",   -- puts nvim-lua reference docs into vim docs
+   "tpope/vim-fugitive",     -- In the words of Tpope "a git wrapper so awesome it should be illegal"
+   "ThePrimeagen/harpoon",   -- Blazingly Fast(tm) file switching
+   "navarasu/onedark.nvim",  -- The darkest one
+   "catppuccin/nvim",        -- Pretty Cat theme for nvim
+   "andweeb/presence.nvim",  -- Shows Neovim on discord for weird flexing purposes
+   "nvim-pack/nvim-spectre", -- Find and replace project-wide.
+   "folke/neodev.nvim",      -- For Neovim API lua completion
+   "leoluz/nvim-dap-go",     -- Pluging to attach to go debugger Delve
+   "theHamsta/nvim-dap-virtual-text",
    ---------------------------
    -- plugins with extra options
    ---------------------------
    {
+      "mfussenegger/nvim-dap",
+      config = function()
+         require("plugins.configs.dap")
+      end
+   },
+   {
       "nvim-treesitter/nvim-treesitter", -- Language parsing completion engine
       config = function()
          require("plugins.configs.treesitter")
+      end,
+   },
+   {
+      "nvim-telescope/telescope.nvim", -- Grep and fuzzy find with UI
+      config = function()
+         require("plugins.configs.telescope")
       end,
    },
    {
@@ -86,6 +99,7 @@ require("lazy").setup({
                "clangd",
                "pyright",
                "gopls",
+               "solidity",
             }
          })
       end,

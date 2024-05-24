@@ -7,6 +7,7 @@ local opts = { noremap = true, silent = true }
 vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, opts)
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
+
 vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist, opts)
 
 local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
@@ -51,6 +52,20 @@ end
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 
+local function setup_diags()
+   vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+      vim.lsp.diagnostic.on_publish_diagnostics,
+      {
+         virtual_text = false,
+         signs = true,
+         update_in_insert = false,
+         underline = true,
+      }
+   )
+end
+
+setup_diags()
+
 -- Cmp stuff
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 -- Ufo stuff
@@ -67,6 +82,12 @@ lspconfig.lua_ls.setup {
       Lua = {
          diagnostics = {
             globals = { "vim", "P", "it", "describe", "before_each" },
+         },
+         workspace = {
+            library = {
+               -- Add path to your WoW API definitions here
+               -- ['/Users/jack/Coding/vscode-wow-api'] = true,
+            },
          },
       },
    },

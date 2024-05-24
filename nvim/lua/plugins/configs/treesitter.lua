@@ -21,6 +21,7 @@ treesitter.setup {
       "go",
       "c",
       "vimdoc",
+      "luadoc",
    },
    -- auto_install = true,
    ignore_install = { "help" },
