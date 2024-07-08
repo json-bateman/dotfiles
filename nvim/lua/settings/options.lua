@@ -25,6 +25,7 @@ opt.numberwidth = 2    -- number column char width
 opt.ruler = false      -- show line and cursor position, redundant with lualine
 opt.scrolloff = 10     -- scroll (x) lines from top and bottom
 opt.signcolumn = "yes" -- don't expand column on errors
+opt.cursorline = true  -- show a cursorline
 ---------------
 -- Searching
 ---------------
@@ -32,6 +33,7 @@ opt.ignorecase = true  -- can sEarch case ignoring caps
 opt.smartcase = true   -- if you use caps in search, assumes you meant it
 opt.incsearch = true   -- jumps to what you're searching
 opt.cursorline = false -- highlights current line
+
 ---------------
 -- Folding
 ---------------
@@ -45,6 +47,7 @@ opt.foldenable = true
 ---------------
 vim.api.nvim_command("set noswapfile")
 opt.mouse = 'a'
+vim.opt.clipboard = 'unnamedplus'
 
 -- Don't automatically make more comments lines on enter
 vim.api.nvim_create_autocmd("BufEnter",

@@ -1,9 +1,7 @@
 local ok, oneDark = pcall(require, "onedark")
 if not ok then return end
 
-oneDark.setup({
-})
-
+oneDark.setup({})
 oneDark.load()
 
 -- Folds and fold column matches gruvbox background

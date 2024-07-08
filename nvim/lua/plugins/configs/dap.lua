@@ -17,21 +17,21 @@ if not dap_text_ok then
 end
 
 
-local dap_ui_ok, dap_ui = pcall(require, "dapui")
-if not dap_ui_ok then
-   print("nvim-dap-ui not found!")
-   return
-end
+-- local dap_ui_ok, dap_ui = pcall(require, "dapui")
+-- if not dap_ui_ok then
+--    print("nvim-dap-ui not found!")
+--    return
+-- end
 
-local dap_vars_ok, dap_vars = pcall(require, "dap.ui.variables")
-if not dap_vars_ok then
-   print("dap.ui.variables not found!")
-   return
-end
+-- local dap_vars_ok, dap_vars = pcall(require, "dap.ui.variables")
+-- if not dap_vars_ok then
+--    print("dap.ui.variables not found!")
+--    return
+-- end
 
 dap_text.setup()
 dap_go.setup()
-dap_ui.setup()
+-- dap_ui.setup()
 
 dap.configurations.go = {
    {
@@ -51,7 +51,7 @@ keymap("n", "<F3>", function() dap.step_into() end)
 keymap("n", "<F4>", function() dap.step_out() end)
 keymap("n", "<space>B", function() dap.toggle_breakpoint() end)
 keymap("n", "<space>C", function() dap.clear_breakpoints() end)
-keymap("n", "<space>di", function() dap_vars.hover() end)
+-- keymap("n", "<space>di", function() dap_vars.hover() end)
 --- End Debugging Session ---
 keymap("n", "<F5>", function()
    dap.clear_breakpoints()
