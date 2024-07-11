@@ -1,0 +1,37 @@
+- hosts: localhost
+  become: true
+  tasks:
+  - name: Soy install
+    shell:
+      cmd: apt install -y git mlocate nodejs neovim tree wget autojump tmux zsh gcc clang g++ tree vim wget ripgrep fzf
+    tags: 
+      - soy
+  - name: Create Folders
+    file:
+      path: "{{item}}"
+      state: directory
+    loop:
+      - "/home/ken_b1tson/.cache/"
+      - "/home/ken_b1tson/Coding/"
+    tags:
+      - dotfiles
+  - name: copy all dotfiles
+    shell: | 
+      cp /home/ken_b1tson/dotfiles/.vimrc /home/ken_b1tson/dotfiles/.gitconfig /home/ken_b1tson/dotfiles/.tmux.conf /home/ken_b1tson/.
+    tags: 
+      - dotfiles 
+  - name: Start Locate Database
+    command: "updatedb"
+    tags: 
+      - locate
+  - name: Oh-my-zsh
+    shell: 
+      cmd: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+    tags: 
+      - zsh
+  - name: Nvim configure 
+    shell: |
+      mkdir -p /home/ken_b1tson/.config 
+      cp -r /home/ken_b1tson/dotfiles/_servers/nvim /home/ken_b1tson/.config
+    tags: 
+      - nvim
