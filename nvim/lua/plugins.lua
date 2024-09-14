@@ -36,6 +36,22 @@ require("lazy").setup({
   -- plugins with extra options
   -----------------------------
   {
+    "stevearc/oil.nvim", -- File system access easier
+    config = function()
+      require("oil").setup {
+        cleanup_delay_ms = 100,
+        columns = { "icon" },
+        view_options = {
+          show_hidden = true
+        },
+      }
+      -- Open parent directory in current window
+      vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
+      -- Open parent directory in floating window
+      vim.keymap.set("n", "<space>-", require("oil").toggle_float)
+    end
+  },
+  {
     "ThePrimeagen/harpoon", -- Poke the files you want
     branch = "harpoon2",
     config = function()
@@ -164,6 +180,15 @@ require("lazy").setup({
         },
       }
 
+      lspconfig["solidity"].setup({
+        capabilities = capabilities,
+        on_attach = on_attach,
+        cmd = { "nomicfoundation-solidity-language-server", "--stdio" },
+        filetypes = { "solidity" },
+        root_dir = lspconfig.util.root_pattern("foundry.toml"),
+        single_file_support = true,
+      })
+
       lspconfig.eslint.setup({
         on_attach = function(_, bufnr)
           vim.api.nvim_create_autocmd("BufWritePre", {
@@ -269,5 +294,131 @@ require("lazy").setup({
         },
       })
     end,
+  },
+  {
+    "nvim-treesitter/nvim-treesitter",
+    config = function()
+      local ok, treesitter = pcall(require, "nvim-treesitter.configs")
+      if (not ok) then return end
+
+      treesitter.setup({
+        ensure_installed = {
+          "bash",
+          "markdown_inline",
+          "markdown",
+          "rust",
+          "java",
+          "lua",
+          "javascript",
+          "typescript",
+          "tsx",
+          "html",
+          "css",
+          "json",
+          "python",
+          "ruby",
+          "go",
+          "c",
+          "vimdoc",
+          "luadoc",
+        },
+        sync_install = true,
+        auto_install = true,
+        ignore_install = { "help" },
+        highlight = {
+          -- `false` will disable the whole extension
+          enable = true,
+          disable = {},
+        },
+        modules = {},
+      })
+    end,
+  },
+  {
+    "rcarriga/nvim-dap-ui",
+    dependencies = {
+      "leoluz/nvim-dap-go",
+      "theHamsta/nvim-dap-virtual-text",
+      "nvim-neotest/nvim-nio",
+      "mfussenegger/nvim-dap",
+    },
+    config = function()
+      local dap_ok, dap = pcall(require, "dap")
+      if not dap_ok then
+        print("dap not found!")
+        return
+      end
+      local widgets_ok, widgets = pcall(require, "dap.ui.widgets")
+      if not widgets_ok then
+        print("widgets not found!")
+        return
+      end
+
+      local dap_go_ok, dap_go = pcall(require, "dap-go")
+      if not dap_go_ok then
+        print("dap-go not found!")
+        return
+      end
+
+      local dap_text_ok, dap_text = pcall(require, "nvim-dap-virtual-text")
+      if not dap_text_ok then
+        print("nvim-dap-virtual-text not found!")
+        return
+      end
+
+      local dapui_ok, dapui = pcall(require, "dapui")
+      if not dapui_ok then
+        print("nvim-dap-ui not found!")
+        return
+      end
+
+      dap.adapters.delve = {
+        type = "server",
+        port = "${port}",
+        executable = {
+          command = "/Applications/iTerm.app/Contents/MacOS/Iterm2",
+          args = { "dlv", "dap", "-l", "127.0.0.1:${port}" },
+          -- args = { "dlv" },
+        },
+      }
+
+      dap.configurations.go = {
+        {
+          type = 'go',
+          name = 'Debug',
+          request = 'launch',
+          program = '${file}',
+          showLog = true,
+        },
+      }
+
+      dap_text.setup({})
+      dap_go.setup()
+      dapui.setup()
+
+
+      dap.set_log_level("DEBUG")
+
+      --- Debugging Keymaps ---
+      local keymap = vim.keymap.set
+      --- Start Debugging Session ---
+      keymap("n", "<F1>", function() dap.continue() end)
+      keymap("n", "<F2>", function() dap.step_over() end)
+      keymap("n", "<F3>", function() dap.step_into() end)
+      keymap("n", "<F4>", function() dap.step_out() end)
+      keymap("n", "<F9>", function() dap.repl.open() end)
+      keymap("n", "<F10>", function()
+        widgets.preview()
+      end)
+      keymap("n", "<space>K", function() widgets.hover() end)
+      keymap("n", "<space>b", function() dap.toggle_breakpoint() end)
+      keymap("n", "<space>C", function() dap.clear_breakpoints() end)
+      --- End Debugging Session ---
+      keymap("n", "<F5>", function()
+        dap.clear_breakpoints()
+        dap.terminate()
+        print("Debugger session ended")
+      end)
+    end
   },
 })
