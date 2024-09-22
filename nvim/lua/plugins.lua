@@ -22,6 +22,10 @@ vim.opt.rtp:prepend(lazypath)
 -- Need this for colorizer
 vim.opt.termguicolors = true -- enables 24-bit RGB color for terminal
 
+-- Space as leader key
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
+
 require("lazy").setup({
   "tpope/vim-commentary",          -- gc to comment out "tpope/vim-surround"
   "nanotee/luv-vimdocs",           -- puts lua docs into vim docs
@@ -48,7 +52,7 @@ require("lazy").setup({
       -- Open parent directory in current window
       vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
       -- Open parent directory in floating window
-      vim.keymap.set("n", "<space>-", require("oil").toggle_float)
+      vim.keymap.set("n", "<leader>-", require("oil").toggle_float)
     end
   },
   {
@@ -57,6 +61,18 @@ require("lazy").setup({
     config = function()
       local harpoon = require("harpoon")
       harpoon:setup()
+      -- Harpoon Keymaps
+      vim.keymap.set("n", "<leader>a", function() harpoon:list():add() end)
+      vim.keymap.set("n", "<C-e>", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end)
+
+      vim.keymap.set("n", "<leader>1", function() harpoon:list():select(1) end)
+      vim.keymap.set("n", "<leader>2", function() harpoon:list():select(2) end)
+      vim.keymap.set("n", "<leader>3", function() harpoon:list():select(3) end)
+      vim.keymap.set("n", "<leader>4", function() harpoon:list():select(4) end)
+
+      -- Toggle previous & next buffers stored within Harpoon list
+      vim.keymap.set("n", "<C-S-P>", function() harpoon:list():prev() end)
+      vim.keymap.set("n", "<C-S-N>", function() harpoon:list():next() end)
     end
   },
   {
@@ -71,7 +87,7 @@ require("lazy").setup({
       require("mason-lspconfig").setup({
         ensure_installed = {
           "jdtls",
-          "tsserver",
+          "ts_ls",
           "jsonls",
           "html",
           "cssls",
@@ -102,11 +118,11 @@ require("lazy").setup({
         end,
       })
       local opts = { noremap = true, silent = true }
-      vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, opts)
+      vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, opts)
       vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
       vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
 
-      vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist, opts)
+      vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, opts)
 
       local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
 
@@ -136,16 +152,16 @@ require("lazy").setup({
         vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
         vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
         vim.keymap.set('n', '<C-s>', vim.lsp.buf.signature_help, bufopts)
-        vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, bufopts)
-        vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, bufopts)
-        vim.keymap.set('n', '<space>wl', function()
+        vim.keymap.set('n', '<leader>wa', vim.lsp.buf.add_workspace_folder, bufopts)
+        vim.keymap.set('n', '<leader>wr', vim.lsp.buf.remove_workspace_folder, bufopts)
+        vim.keymap.set('n', '<leader>wl', function()
           print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
         end, bufopts)
-        vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, bufopts)
-        vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, bufopts)
-        vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, bufopts)
+        vim.keymap.set('n', '<leader>D', vim.lsp.buf.type_definition, bufopts)
+        vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, bufopts)
+        vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, bufopts)
         vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
-        vim.keymap.set('n', '<space>f', function() vim.lsp.buf.format { async = true } end, bufopts)
+        vim.keymap.set('n', '<leader>f', function() vim.lsp.buf.format { async = true } end, bufopts)
       end
 
       local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -202,10 +218,21 @@ require("lazy").setup({
         root_dir = lspconfig.util.find_git_ancestor,
       })
 
+      lspconfig.lua_ls.setup({
+        capabilities = capabilities,
+        on_attach = on_attach,
+        settings = {
+          Lua = {
+            diagnostics = {
+              globals = { 'vim' },
+              disable = { "missing-parameters", "missing-fields" },
+            },
+          },
+        },
+      })
 
       local all_servers = {
-        "lua_ls",
-        "tsserver",
+        "ts_ls",
         "sqlls",
         "jdtls",
         "jsonls",
@@ -337,88 +364,22 @@ require("lazy").setup({
   {
     "rcarriga/nvim-dap-ui",
     dependencies = {
-      "leoluz/nvim-dap-go",
-      "theHamsta/nvim-dap-virtual-text",
-      "nvim-neotest/nvim-nio",
+      -- might have to do this build command manually, go to '<path to>/.local/share/nvim/lazy/vscode-js-debug`
+      -- and run the commands from the instructions in "mxsdev/nvim-dap-vscode-js"
+      {
+        "microsoft/vscode-js-debug",
+        build = "npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out"
+      },
+      "mxsdev/nvim-dap-vscode-js",
+      {
+        "theHamsta/nvim-dap-virtual-text",
+        commit = "9578276",
+      },
       "mfussenegger/nvim-dap",
+      "nvim-neotest/nvim-nio",
     },
     config = function()
-      local dap_ok, dap = pcall(require, "dap")
-      if not dap_ok then
-        print("dap not found!")
-        return
-      end
-      local widgets_ok, widgets = pcall(require, "dap.ui.widgets")
-      if not widgets_ok then
-        print("widgets not found!")
-        return
-      end
-
-      local dap_go_ok, dap_go = pcall(require, "dap-go")
-      if not dap_go_ok then
-        print("dap-go not found!")
-        return
-      end
-
-      local dap_text_ok, dap_text = pcall(require, "nvim-dap-virtual-text")
-      if not dap_text_ok then
-        print("nvim-dap-virtual-text not found!")
-        return
-      end
-
-      local dapui_ok, dapui = pcall(require, "dapui")
-      if not dapui_ok then
-        print("nvim-dap-ui not found!")
-        return
-      end
-
-      dap.adapters.delve = {
-        type = "server",
-        port = "${port}",
-        executable = {
-          command = "/Applications/iTerm.app/Contents/MacOS/Iterm2",
-          args = { "dlv", "dap", "-l", "127.0.0.1:${port}" },
-          -- args = { "dlv" },
-        },
-      }
-
-      dap.configurations.go = {
-        {
-          type = 'go',
-          name = 'Debug',
-          request = 'launch',
-          program = '${file}',
-          showLog = true,
-        },
-      }
-
-      dap_text.setup({})
-      dap_go.setup()
-      dapui.setup()
-
-
-      dap.set_log_level("DEBUG")
-
-      --- Debugging Keymaps ---
-      local keymap = vim.keymap.set
-      --- Start Debugging Session ---
-      keymap("n", "<F1>", function() dap.continue() end)
-      keymap("n", "<F2>", function() dap.step_over() end)
-      keymap("n", "<F3>", function() dap.step_into() end)
-      keymap("n", "<F4>", function() dap.step_out() end)
-      keymap("n", "<F9>", function() dap.repl.open() end)
-      keymap("n", "<F10>", function()
-        widgets.preview()
-      end)
-      keymap("n", "<space>K", function() widgets.hover() end)
-      keymap("n", "<space>b", function() dap.toggle_breakpoint() end)
-      keymap("n", "<space>C", function() dap.clear_breakpoints() end)
-      --- End Debugging Session ---
-      keymap("n", "<F5>", function()
-        dap.clear_breakpoints()
-        dap.terminate()
-        print("Debugger session ended")
-      end)
+      require("configs.dap")
     end
   },
 })

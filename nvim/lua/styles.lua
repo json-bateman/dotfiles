@@ -5,7 +5,7 @@
    |  (__)  |
    |________|
 ]]
-vim.cmd [[highlight CursorLine guibg=#2f2f2f]]
+
 
 -- require('onedark').setup {
 --   style = 'darker',
@@ -38,3 +38,7 @@ require("gruvbox").setup({
   transparent_mode = false,
 })
 vim.cmd("colorscheme gruvbox")
+
+-- vim.cmd [[highlight CursorLine guibg=#2f2f2f]]
+vim.cmd [[highlight clear SignColumn]]
+-- vim.cmd [[highlight SignColumn guibg=black]]
