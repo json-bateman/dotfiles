@@ -3,7 +3,7 @@
 " ----------------------------
 let mapleader = " "
 let g:netrw_banner=0 "turns netrw banner off
-let g:netrw_liststyle=3 "changes the way the explorer tree looks
+let g:netrw_liststyle=2 "changes the way the explorer tree looks options 0,1,2,3,4
 
 " set splitbelow "causes splits to happen below current window instead of above
 set termguicolors "enables 24-bit RGB color in the TUI
@@ -20,6 +20,10 @@ set scrolloff=10 "scroll (x) lines from top and bottom
 set ignorecase  "can sEarch case ignoring caps
 set cursorline "highlights current line
 
+" Need this to enable syntax highlighting
+syntax on 
+syntax enable
+
 set mouse=a "mouse in all modes
 set formatoptions-=cro "comments don't continue when enter is pressed
 
@@ -34,23 +38,22 @@ nnoremap <leader>E :e $MYVIMRC<CR>
 nnoremap <leader>W <CMD>w\|so%<CR>
 
 let mapleader = " "
-
+nnoremap <s-tab> V<
 " Normal Mode
-nnoremap <leader>V :Vexplore<CR>
-nnoremap <leader>v :vsplit<CR>
-nnoremap <leader>S :Sexplore<CR>
-nnoremap <leader>s :split<CR>
+nnoremap s <c-w>
+nnoremap <leader>v :Vexplore<CR>
+nnoremap <leader>s :Sexplore<CR>
 nnoremap <leader>e :Explore<CR>
 nnoremap <leader>D :bd<CR>
 nnoremap <leader>d :bp \| sp \| bn \| bd<CR> " Keep splits, delete buffer
 nnoremap <leader>bo :%bd\|e#\|bd#<CR>" Only keep current buffer
-nnoremap <tab> :bn<CR>
-nnoremap <S-tab> :bp<CR>
+nnoremap gn :bn<CR>
+nnoremap gp :bp<CR>
 
 " If you have the + register
-" vnoremap <leader>y "+y
-" nnoremap <leader>p "+p
-" vnoremap <leader>y "+p
+vnoremap <leader>y "+y
+nnoremap <leader>p "+p
+vnoremap <leader>y "+p
 
 " Visual Mode
 vnoremap <leader>Y ygv<Esc>" Yank but keep cursor at current position
