@@ -14,7 +14,6 @@ vim.api.nvim_create_autocmd("TextYankPost",
   }
 )
 
----@class GlobalSettings
 local g = vim.g
 local opt = vim.opt
 
@@ -41,13 +40,14 @@ opt.wrap = false       -- makes it so text runs off the screen instead of wrappi
 -- Line Numbers
 -----------------
 opt.signcolumn = "yes"
-opt.number = true   -- sets numbers on side column
-opt.numberwidth = 2 -- number column char width
-opt.rnu = true      -- relative line number
-opt.nu = true       -- shows current line number
-opt.ruler = false   -- show line and cursor position, redundant with lualine
-opt.scrolloff = 10  -- scroll (x) lines from top and bottom
--- opt.cursorline = true -- show a cursorline
+opt.number = true     -- sets numbers on side column
+opt.numberwidth = 2   -- number column char width
+opt.rnu = true        -- relative line number
+opt.nu = true         -- shows current line number
+opt.ruler = false     -- show line and cursor position, redundant with lualine
+opt.scrolloff = 10    -- scroll (x) lines from top and bottom
+opt.cursorline = true -- show a cursorline
+opt.cursorlineopt = "number,line"
 ---------------
 -- Searching
 ---------------

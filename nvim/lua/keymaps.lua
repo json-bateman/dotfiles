@@ -4,25 +4,18 @@
    | keymap |
    |  (__)  |
    |________|
+
+  Modes:
+    Normal       = "n"
+    Insert       = "i"
+    Visual       = "v"
+    Visual_Block = "x"
+    Terminal     = "t"
+    Command      = "c"
 ]]
 
-local opts = { noremap = true, silent = true }
-
--- Shorten keymap nvim call
 local keymap = vim.api.nvim_set_keymap
-
--- Space as leader key
-keymap("", "<Space>", "<Nop>", opts)
-vim.g.mapleader = " "
-vim.g.maplocalleader = " "
-
--- Modes:
---   Normal       = "n"
---   Insert       = "i"
---   Visual       = "v"
---   Visual_Block = "x"
---   Terminal     = "t"
---   Command      = "c"
+local opts = { noremap = true, silent = true }
 
 keymap("n", "<leader>E", "<CMD>edit $MYVIMRC<CR>", opts)
 keymap("n", "<leader>W", "<CMD>w<CR><CMD>so%<CR>", opts)

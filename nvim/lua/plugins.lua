@@ -1,36 +1,10 @@
---[[
- ________
-| |____| |
-| plugin |
-|  (__)  |
-|________|
-]]
-
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
-  vim.fn.system({
-    "git",
-    "clone",
-    "--filter=blob:none",
-    "https://github.com/folke/lazy.nvim.git",
-    "--branch=stable", -- latest stable release
-    lazypath,
-  })
-end
-
-vim.opt.rtp:prepend(lazypath)
--- Need this for colorizer
-vim.opt.termguicolors = true -- enables 24-bit RGB color for terminal
-
--- Space as leader key
-vim.g.mapleader = " "
-vim.g.maplocalleader = " "
-
-require("lazy").setup({
+return {
   "tpope/vim-commentary",          -- gc to comment out "tpope/vim-surround"
   "nanotee/luv-vimdocs",           -- puts lua docs into vim docs
   "tpope/vim-fugitive",            -- In the words of Tpope "a git wrapper so awesome it should be illegal"
   "ellisonleao/gruvbox.nvim",      -- To get groovy
+  "rebelot/kanagawa.nvim",         -- The colors of a famous painting Katsushika Hokusai
+  "EdenEast/nightfox.nvim",        -- Foxy
   "navarasu/onedark.nvim",         -- The darkest one
   "nvim-tree/nvim-web-devicons",   -- icons for files, etc.
   "nvim-telescope/telescope.nvim", -- TJ's fuzzy finder
@@ -39,6 +13,16 @@ require("lazy").setup({
   -----------------------------
   -- plugins with extra options
   -----------------------------
+  {
+    "toppair/peek.nvim",
+    event = { "VeryLazy" },
+    build = "deno task --quiet build:fast",
+    config = function()
+      require("peek").setup()
+      vim.api.nvim_create_user_command("PeekOpen", require("peek").open, {})
+      vim.api.nvim_create_user_command("PeekClose", require("peek").close, {})
+    end,
+  },
   {
     "stevearc/oil.nvim", -- File system access easier
     config = function()
@@ -88,6 +72,7 @@ require("lazy").setup({
         ensure_installed = {
           "jdtls",
           "ts_ls",
+          "denols",
           "jsonls",
           "html",
           "cssls",
@@ -166,6 +151,8 @@ require("lazy").setup({
 
       local capabilities = vim.lsp.protocol.make_client_capabilities()
 
+      vim.lsp.set_log_level("debug")
+
       local function setup_diags()
         vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
           vim.lsp.diagnostic.on_publish_diagnostics,
@@ -182,6 +169,7 @@ require("lazy").setup({
 
       capabilities.textDocument.completion.completionItem.snippetSupport = true
 
+      -- Set up some servers with custom settings --
       lspconfig.yamlls.setup {
         on_attach = on_attach,
         capabilities = capabilities,
@@ -203,6 +191,18 @@ require("lazy").setup({
         filetypes = { "solidity" },
         root_dir = lspconfig.util.root_pattern("foundry.toml"),
         single_file_support = true,
+      })
+
+      lspconfig.denols.setup({
+        on_attach = on_attach,
+        capabilities = capabilities,
+        root_dir = lspconfig.util.root_pattern("deno.json", "deno.jsonc"),
+      })
+
+      lspconfig.ts_ls.setup({
+        on_attach = on_attach,
+        capabilities = capabilities,
+        single_file_support = false,
       })
 
       lspconfig.eslint.setup({
@@ -231,8 +231,8 @@ require("lazy").setup({
         },
       })
 
+      -- Set up the rest of the servers with default settings --
       local all_servers = {
-        "ts_ls",
         "sqlls",
         "jdtls",
         "jsonls",
@@ -362,7 +362,10 @@ require("lazy").setup({
     end,
   },
   {
-    "rcarriga/nvim-dap-ui",
+    "mfussenegger/nvim-dap",
+    keys = {
+      { "<leader>b", function() require("dap").toggle_breakpoint() end, desc = "DAP" },
+    },
     dependencies = {
       -- might have to do this build command manually, go to '<path to>/.local/share/nvim/lazy/vscode-js-debug`
       -- and run the commands from the instructions in "mxsdev/nvim-dap-vscode-js"
@@ -375,11 +378,11 @@ require("lazy").setup({
         "theHamsta/nvim-dap-virtual-text",
         commit = "9578276",
       },
-      "mfussenegger/nvim-dap",
+      "rcarriga/nvim-dap-ui",
       "nvim-neotest/nvim-nio",
     },
     config = function()
       require("configs.dap")
     end
   },
-})
+}

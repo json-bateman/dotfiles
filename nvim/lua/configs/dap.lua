@@ -61,26 +61,69 @@ dap.configurations.go = {
 }
 
 require("dap-vscode-js").setup({
-  adapters = { 'pwa-node', 'pwa-chrome', 'pwa-msedge', 'node-terminal', 'pwa-extensionHost' }, -- which adapters to register in nvim-dap
+  adapters = {
+    'pwa-node',
+    'pwa-chrome',
+    'pwa-msedge',
+    'node-terminal',
+    'pwa-extensionHost'
+  }, -- which adapters to register in nvim-dap
   debugger_path = vim.fn.resolve(vim.fn.stdpath("data") .. "/lazy/vscode-js-debug"),
 })
 
 for _, language in ipairs({ "typescript", "javascript" }) do
   require("dap").configurations[language] = {
     {
-      type = "pwa-node",
-      request = "launch",
-      name = "Launch file",
-      program = "${file}",
-      cwd = "${workspaceFolder}",
+      name = 'Launch Current File (pwa-node)',
+      type = 'pwa-node',
+      request = 'launch',
+      cwd = vim.fn.getcwd(),
+      args = { '${file}' },
+      sourceMaps = true,
+      protocol = 'inspector',
     },
     {
+      name = 'Launch Current File (pwa-node with ts-node)',
+      type = 'pwa-node',
+      request = 'launch',
+      cwd = vim.fn.getcwd(),
+      runtimeArgs = { '--loader', 'ts-node/esm' },
+      runtimeExecutable = 'node',
+      args = { '${file}' },
+      sourceMaps = true,
+      protocol = 'inspector',
+      skipFiles = { '<node_internals>/**', 'node_modules/**' },
+      resolveSourceMapLocations = {
+        "${workspaceFolder}/**",
+        "!**/node_modules/**",
+      },
+    },
+    {
+      name = "Deno launch",
+      type = "pwa-node",
+      request = "launch",
+      program = "${file}",
+      cwd = vim.fn.getcwd(),
+      runtimeExecutable = "/opt/homebrew/bin/deno",
+      runtimeArgs = { 'run', '--unstable', '--inspect-brk', '--allow-all', "${file}" },
+      attachSimplePort = 9229,
+    },
+    {
+      name = 'Deno Test Current File (pwa-node with deno)',
+      type = 'pwa-node',
+      request = 'launch',
+      cwd = vim.fn.getcwd(),
+      runtimeArgs = { 'test', '--unstable', '--inspect-brk', '--allow-all', "${file}" },
+      runtimeExecutable = 'deno',
+      attachSimplePort = 9229,
+    },
+    {
+      name = "Attach",
       type = "pwa-node",
       request = "attach",
-      name = "Attach",
       processId = require 'dap.utils'.pick_process,
       cwd = "${workspaceFolder}",
-    }
+    },
   }
 end
 
@@ -91,8 +134,8 @@ dap.set_log_level("DEBUG")
 local keymap = vim.keymap.set
 --- Start Debugging Session ---
 keymap("n", "<m-1>", function() dap.continue() end)
-keymap("n", "<m-2>", function() dap.step_over() end)
-keymap("n", "<m-3>", function() dap.step_into() end)
+keymap("n", "<m-2>", function() dap.step_into() end)
+keymap("n", "<m-3>", function() dap.step_over() end)
 keymap("n", "<m-4>", function() dap.step_out() end)
 keymap("n", "<space>b", function() dap.toggle_breakpoint() end)
 keymap("n", "<space>C", function() dap.clear_breakpoints() end)
@@ -110,9 +153,6 @@ keymap("n", "<space>C", function() dap.clear_breakpoints() end)
 --   dap.continue()
 -- end)
 --- Debugging Widgets ---
-keymap("n", "dp", function()
-  widgets.preview()
-end)
 vim.keymap.set('n', '<space>dr', function() require('dap_config').repl.open() end)
 vim.keymap.set({ 'n', 'v' }, '<space>dh', function()
   require('dap.ui.widgets').hover()
