@@ -18,15 +18,12 @@ if not vim.loop.fs_stat(lazypath) then
     lazypath,
   })
 end
-
 vim.opt.rtp:prepend(lazypath)
 
--- Need this for colorizer
 vim.opt.termguicolors = true -- enables 24-bit RGB color for terminal
--- Space as leader key
-vim.api.nvim_set_keymap("", "<Space>", "<Nop>", { noremap = true, silent = true })
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
+vim.api.nvim_set_keymap("", "<Space>", "<Nop>", { noremap = true, silent = true })
 
 require("lazy").setup({
   spec = { { import = "plugins" } },
@@ -40,6 +37,7 @@ Found in: ~/config/nvim/lua
 nvim runtime path looks in /lua folder to load other files
 ]]
 
-require("options")
+require("option")
 require("keymaps")
 require("styles")
+require("custom")

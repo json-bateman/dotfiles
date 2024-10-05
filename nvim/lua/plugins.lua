@@ -1,18 +1,38 @@
 return {
-  "tpope/vim-commentary",          -- gc to comment out "tpope/vim-surround"
-  "nanotee/luv-vimdocs",           -- puts lua docs into vim docs
-  "tpope/vim-fugitive",            -- In the words of Tpope "a git wrapper so awesome it should be illegal"
-  "ellisonleao/gruvbox.nvim",      -- To get groovy
-  "rebelot/kanagawa.nvim",         -- The colors of a famous painting Katsushika Hokusai
-  "EdenEast/nightfox.nvim",        -- Foxy
-  "navarasu/onedark.nvim",         -- The darkest one
-  "nvim-tree/nvim-web-devicons",   -- icons for files, etc.
-  "nvim-telescope/telescope.nvim", -- TJ's fuzzy finder
-  "folke/neodev.nvim",             -- Configures Lua_ls to include neovim stuff!
-  "nvim-lua/plenary.nvim",         -- Useful helper functions written by TJ
+  "tpope/vim-commentary",                        -- gc to comment out "tpope/vim-surround"
+  "nanotee/luv-vimdocs",                         -- puts lua docs into vim docs
+  "tpope/vim-fugitive",                          -- In the words of Tpope "a git wrapper so awesome it should be illegal"
+  "ellisonleao/gruvbox.nvim",                    -- To get groovy
+  "rebelot/kanagawa.nvim",                       -- The colors of a famous painting Katsushika Hokusai
+  "EdenEast/nightfox.nvim",                      -- Foxy
+  "navarasu/onedark.nvim",                       -- The darkest one
+  "nvim-tree/nvim-web-devicons",                 -- icons for files, etc.
+  "nvim-telescope/telescope.nvim",               -- TJ's fuzzy finder
+  "folke/neodev.nvim",                           -- Configures Lua_ls to include neovim stuff!
+  "nvim-lua/plenary.nvim",                       -- Useful helper functions written by TJ
+  "nvim-treesitter/nvim-treesitter-textobjects", -- Better AST selection
   -----------------------------
   -- plugins with extra options
   -----------------------------
+  {
+    "nvim-pack/nvim-spectre", -- Find and Replace
+    config = function()
+      -- https://github.com/nvim-pack/nvim-spectre/issues/118
+      -- Sed after replacing makes a backup file, an empty arg fixes the issue
+      require("spectre").setup({
+        replace_engine = {
+          ["sed"] = {
+            cmd = "sed",
+            args = {
+              "-i",
+              "",
+              "-E",
+            },
+          },
+        },
+      })
+    end
+  },
   {
     "toppair/peek.nvim",
     event = { "VeryLazy" },
@@ -135,7 +155,7 @@ return {
         vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
         vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
         vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
-        vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
+        -- vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
         vim.keymap.set('n', '<C-s>', vim.lsp.buf.signature_help, bufopts)
         vim.keymap.set('n', '<leader>wa', vim.lsp.buf.add_workspace_folder, bufopts)
         vim.keymap.set('n', '<leader>wr', vim.lsp.buf.remove_workspace_folder, bufopts)
@@ -334,7 +354,6 @@ return {
           "markdown_inline",
           "markdown",
           "rust",
-          "java",
           "lua",
           "javascript",
           "typescript",
@@ -343,7 +362,6 @@ return {
           "css",
           "json",
           "python",
-          "ruby",
           "go",
           "c",
           "vimdoc",
@@ -355,9 +373,57 @@ return {
         highlight = {
           -- `false` will disable the whole extension
           enable = true,
-          disable = {},
         },
-        modules = {},
+        incremental_selection = {
+          enable = true,
+          keymaps = {
+            init_selection = "gnn",
+            node_incremental = "grn",
+            scope_incremental = "grc",
+            node_decremental = "grm",
+          },
+        },
+        textobjects = {
+          select = {
+            enable = true,
+
+            -- Automatically jump forward to textobj, similar to targets.vim
+            lookahead = true,
+
+            keymaps = {
+              -- You can use the capture groups defined in textobjects.scm
+              ["af"] = "@function.outer",
+              ["if"] = "@function.inner",
+              ["ac"] = "@conditional.outer",
+              ["ic"] = "@conditional.inner",
+              ["bi"] = "@block.inner",
+              -- You can also use captures from other query groups like `locals.scm`
+              ["as"] = { query = "@scope", query_group = "locals", desc = "Select language scope" },
+            },
+            -- You can choose the select mode (default is charwise 'v')
+            --
+            -- Can also be a function which gets passed a table with the keys
+            -- * query_string: eg '@function.inner'
+            -- * method: eg 'v' or 'o'
+            -- and should return the mode ('v', 'V', or '<c-v>') or a table
+            -- mapping query_strings to modes.
+            selection_modes = {
+              ['@parameter.outer'] = 'v', -- charwise
+              ['@function.outer'] = 'V',  -- linewise
+              ['@class.outer'] = '<c-v>', -- blockwise
+            },
+            -- If you set this to `true` (default is `false`) then any textobject is
+            -- extended to include preceding or succeeding whitespace. Succeeding
+            -- whitespace has priority in order to act similarly to eg the built-in
+            -- `ap`.
+            --
+            -- Can also be a function which gets passed a table with the keys
+            -- * query_string: eg '@function.inner'
+            -- * selection_mode: eg 'v'
+            -- and should return true or false
+            include_surrounding_whitespace = true,
+          },
+        },
       })
     end,
   },

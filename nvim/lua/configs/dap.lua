@@ -117,12 +117,18 @@ for _, language in ipairs({ "typescript", "javascript" }) do
       runtimeExecutable = 'deno',
       attachSimplePort = 9229,
     },
+    -- NODE_OPTIONS='--inspect-brk' npm run [dev or whatever]
+    -- run this before running your program to start a js debugger
     {
       name = "Attach",
       type = "pwa-node",
       request = "attach",
-      processId = require 'dap.utils'.pick_process,
       cwd = "${workspaceFolder}",
+      continueOnAttach = true,
+      skipFiles = {
+        "<node_internals>/**",
+        "**/cls-hooked/**",
+      },
     },
   }
 end

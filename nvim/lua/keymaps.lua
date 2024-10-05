@@ -69,19 +69,5 @@ vim.keymap.set("n", "<leader>4", function() harpoon:list():select(4) end)
 vim.keymap.set("n", "<C-S-P>", function() harpoon:list():prev() end)
 vim.keymap.set("n", "<C-S-N>", function() harpoon:list():next() end)
 
-
--- Wrapper to look at tables (objects) with vim.inspect
-function P(table)
-  print(vim.inspect(table))
-  return table
-end
-
--- Move through the quickfix list
-vim.api.nvim_create_autocmd('FileType', {
-  pattern = 'qf',
-  callback = function(event)
-    local opts = { buffer = event.buf, silent = true }
-    vim.keymap.set('n', '<C-n>', '<cmd>cn<CR>zz<cmd>wincmd p<CR>', opts)
-    vim.keymap.set('n', '<C-p>', '<cmd>cN<CR>zz<cmd>wincmd p<CR>', opts)
-  end,
-})
+-- Spectre
+vim.keymap.set("n", "<leader>S", '<cmd>lua require("spectre").toggle()<CR>', { desc = "Toggle Spectre" })
