@@ -1,3 +1,12 @@
+--[[
+ ________
+| |____| |
+| plugin |
+|  (__)  |
+|________|
+
+]]
+
 return {
   "tpope/vim-commentary",                        -- gc to comment out "tpope/vim-surround"
   "nanotee/luv-vimdocs",                         -- puts lua docs into vim docs
@@ -14,6 +23,13 @@ return {
   -----------------------------
   -- plugins with extra options
   -----------------------------
+  {
+    "leath-dub/snipe.nvim",
+    keys = {
+      { "gb", function() require("snipe").open_buffer_menu() end, desc = "Open snipe buffer menu" }
+    },
+    opts = {},
+  },
   {
     "nvim-pack/nvim-spectre", -- Find and Replace
     config = function()
@@ -86,7 +102,8 @@ return {
     end,
   },
   {
-    "williamboman/mason-lspconfig.nvim", -- Bridges mason and lspconfig
+    "williamboman/mason-lspconfig.nvim",          -- Bridges mason and lspconfig
+    dependencies = { "williamboman/mason.nvim" }, -- mason-lspconfig must load after mason
     config = function()
       require("mason-lspconfig").setup({
         ensure_installed = {
@@ -171,7 +188,9 @@ return {
 
       local capabilities = vim.lsp.protocol.make_client_capabilities()
 
-      vim.lsp.set_log_level("debug")
+      -- Change to log level "debug" to see all lsp info
+      -- Note: If you keep debug on it creates a massive file
+      vim.lsp.set_log_level("off")
 
       local function setup_diags()
         vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(

@@ -4,7 +4,9 @@
 | option |
 |  (__)  |
 |________|
+
 ]]
+
 -- Highlights yanked text
 vim.api.nvim_create_autocmd("TextYankPost",
   {

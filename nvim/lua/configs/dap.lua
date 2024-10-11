@@ -43,21 +43,27 @@ dap.configurations.go = {
     request = "launch",
     program = "${file}"
   },
-  {
-    type = "delve",
-    name = "Debug test", -- configuration for debugging test files
-    request = "launch",
-    mode = "test",
-    program = "${file}"
-  },
+  -- {
+  --   type = "delve",
+  --   name = "Debug test", -- configuration for debugging test files
+  --   request = "launch",
+  --   mode = "test",
+  --   program = "${file}"
+  -- },
   -- works with go.mod packages and sub packages
+  -- {
+  --   type = "delve",
+  --   name = "Debug test (go.mod)",
+  --   request = "launch",
+  --   mode = "test",
+  --   program = "./${relativeFileDirname}"
+  -- },
   {
     type = "delve",
-    name = "Debug test (go.mod)",
+    name = "Debug Project",
     request = "launch",
-    mode = "test",
-    program = "./${relativeFileDirname}"
-  }
+    program = "${workspaceFolder}"
+  },
 }
 
 require("dap-vscode-js").setup({
@@ -178,3 +184,19 @@ keymap("n", "<m-5>", function()
   dap.terminate()
   print("Debugger session ended")
 end)
+
+
+-- Open DapUI --
+
+dap.listeners.before.attach.dapui_config = function()
+  dapui.open()
+end
+dap.listeners.before.launch.dapui_config = function()
+  dapui.open()
+end
+dap.listeners.before.event_terminated.dapui_config = function()
+  dapui.close()
+end
+dap.listeners.before.event_exited.dapui_config = function()
+  dapui.close()
+end

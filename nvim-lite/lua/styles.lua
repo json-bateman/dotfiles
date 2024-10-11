@@ -5,5 +5,7 @@
    |  (__)  |
    |________|
 ]]
-vim.cmd [[colorscheme gruvbox]]
+
+require("tokyodark").setup()
+vim.cmd [[colorscheme tokyodark]]
 vim.cmd [[highlight CursorLine guibg=#383838]]

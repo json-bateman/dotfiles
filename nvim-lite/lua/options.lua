@@ -5,14 +5,6 @@
 |  (__)  |
 |________|
 ]]
--- Highlights yanked text
-vim.api.nvim_create_autocmd("TextYankPost",
-   {
-      callback = function()
-         vim.highlight.on_yank { higroup = 'Question', timeout = 300 }
-      end
-   }
-)
 
 local g = vim.g
 local opt = vim.opt
@@ -33,12 +25,15 @@ opt.softtabstop = 2    -- editing operations (like <BS>) are deleting 2 spaces
 opt.shiftwidth = 2     -- number of spaces to use for each autoindent
 opt.smartindent = true -- start autoindenting when starting a new line
 opt.wrap = false       -- makes it so text runs off the screen instead of wrapping
+opt.mouse = "a"
 -----------------
 -- Line Numbers
 -----------------
 opt.number = true      -- sets numbers on side column
 opt.numberwidth = 2    -- number column char width
-opt.ruler = false      -- show line and cursor position, redundant with lualine
+opt.rnu = true         -- relative line number
+opt.nu = true          -- shows current line number
+opt.ruler = true       -- show line and cursor position
 opt.scrolloff = 10     -- scroll (x) lines from top and bottom
 opt.cursorline = true  -- show a cursorline
 ---------------

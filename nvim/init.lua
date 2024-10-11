@@ -1,11 +1,3 @@
---[[
- ________
-| |____| |
-| plugin |
-|  (__)  |
-|________|
-]]
-
 -- Bootstrap Lazy, the plugin manager
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
@@ -41,3 +33,6 @@ require("option")
 require("keymaps")
 require("styles")
 require("custom")
+
+-- Trying to make a custom plugin
+require("d")
