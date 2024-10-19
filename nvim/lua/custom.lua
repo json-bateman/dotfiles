@@ -32,3 +32,16 @@ vim.api.nvim_create_autocmd("TextYankPost",
     end
   }
 )
+
+-- Write and quit typos
+
+local typos = { 'W', 'Wq', 'WQ', 'Wqa', 'WQa', 'WQA', 'WqA', 'Q', 'Qa', 'QA' }
+for _, cmd in ipairs(typos) do
+  vim.api.nvim_create_user_command(cmd, function(opts)
+    vim.api.nvim_cmd({
+      cmd = cmd:lower(),
+      bang = opts.bang,
+      mods = { noautocmd = true },
+    }, {})
+  end, { bang = true })
+end

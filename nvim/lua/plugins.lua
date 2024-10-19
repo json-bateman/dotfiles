@@ -270,18 +270,28 @@ return {
         },
       })
 
+      lspconfig.cssls.setup({
+        settings = {
+          css = {
+            lint = {
+              unknownAtRules = 'ignore',
+            },
+          },
+        },
+      })
+
       -- Set up the rest of the servers with default settings --
       local all_servers = {
         "sqlls",
         "jdtls",
         "jsonls",
         "html",
-        "cssls",
         "rust_analyzer",
         "tailwindcss",
         "clangd",
         "pyright",
         "gopls",
+        "templ",
       }
 
       for _, server in ipairs(all_servers) do

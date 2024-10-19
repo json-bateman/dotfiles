@@ -66,7 +66,7 @@ M.Open_window = function()
   vim.keymap.set("n", "q", close_window)
 
   -- set options on the window
-  vim.bo[buffer_id].modifiable = false
+  vim.bo[buffer_id].modifiable = true
   vim.wo[win_id].foldenable = false
   vim.wo[win_id].wrap = false
   vim.wo[win_id].cursorline = true
