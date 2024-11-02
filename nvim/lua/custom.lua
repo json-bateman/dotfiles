@@ -24,6 +24,13 @@ vim.api.nvim_create_autocmd("BufEnter",
   }
 )
 
+-- -- Write file when moving between splits
+-- vim.api.nvim_create_autocmd("BufLeave",
+--   {
+--     command = 'wall'
+--   }
+-- )
+
 -- Highlights yanked text
 vim.api.nvim_create_autocmd("TextYankPost",
   {
@@ -34,7 +41,6 @@ vim.api.nvim_create_autocmd("TextYankPost",
 )
 
 -- Write and quit typos
-
 local typos = { 'W', 'Wq', 'WQ', 'Wqa', 'WQa', 'WQA', 'WqA', 'Q', 'Qa', 'QA' }
 for _, cmd in ipairs(typos) do
   vim.api.nvim_create_user_command(cmd, function(opts)

@@ -8,21 +8,52 @@
 ]]
 
 return {
-  "tpope/vim-commentary",                        -- gc to comment out "tpope/vim-surround"
-  "nanotee/luv-vimdocs",                         -- puts lua docs into vim docs
-  "tpope/vim-fugitive",                          -- In the words of Tpope "a git wrapper so awesome it should be illegal"
-  "ellisonleao/gruvbox.nvim",                    -- To get groovy
-  "rebelot/kanagawa.nvim",                       -- The colors of a famous painting Katsushika Hokusai
-  "EdenEast/nightfox.nvim",                      -- Foxy
-  "navarasu/onedark.nvim",                       -- The darkest one
-  "nvim-tree/nvim-web-devicons",                 -- icons for files, etc.
-  "nvim-telescope/telescope.nvim",               -- TJ's fuzzy finder
-  "folke/neodev.nvim",                           -- Configures Lua_ls to include neovim stuff!
-  "nvim-lua/plenary.nvim",                       -- Useful helper functions written by TJ
-  "nvim-treesitter/nvim-treesitter-textobjects", -- Better AST selection
+  -- "EdenEast/nightfox.nvim",                      -- Foxy
+  -- "navarasu/onedark.nvim",                       -- The darkest one
+  "ellisonleao/gruvbox.nvim",      -- To get groovy
+  "rebelot/kanagawa.nvim",         -- The colors of a famous painting Katsushika Hokusai
+  "nanotee/luv-vimdocs",           -- puts lua docs into vim docs
+  "nvim-tree/nvim-web-devicons",   -- icons for files, etc.
+  "nvim-telescope/telescope.nvim", -- TJ's fuzzy finder
+  "folke/neodev.nvim",             -- Configures Lua_ls to include neovim stuff!
+  "nvim-lua/plenary.nvim",         -- Useful helper functions written by TJ
   -----------------------------
   -- plugins with extra options
   -----------------------------
+  {
+    "NeogitOrg/neogit",         -- Git wrapper to stay in vim
+    dependencies = {
+      "nvim-lua/plenary.nvim",  -- required
+      "sindrets/diffview.nvim", -- optional - Diff integration
+    },
+    keys = {
+      { "<leader>ng", "<CMD>:Neogit<CR>", desc = "Neogit" },
+    },
+    config = true
+  },
+
+  {
+    "chrisgrieser/nvim-early-retirement",
+    config = true,
+    event = "VeryLazy",
+  },
+  {
+    "alexghergh/nvim-tmux-navigation", -- Move in Neovim and Tmux
+    config = function()
+      local nvim_tmux_nav = require('nvim-tmux-navigation')
+
+      nvim_tmux_nav.setup {
+        disable_when_zoomed = true -- defaults to false
+      }
+
+      vim.keymap.set('n', "<C-h>", nvim_tmux_nav.NvimTmuxNavigateLeft)
+      vim.keymap.set('n', "<C-j>", nvim_tmux_nav.NvimTmuxNavigateDown)
+      vim.keymap.set('n', "<C-k>", nvim_tmux_nav.NvimTmuxNavigateUp)
+      vim.keymap.set('n', "<C-l>", nvim_tmux_nav.NvimTmuxNavigateRight)
+      vim.keymap.set('n', "<C-\\>", nvim_tmux_nav.NvimTmuxNavigateLastActive)
+      vim.keymap.set('n', "<C-Space>", nvim_tmux_nav.NvimTmuxNavigateNext)
+    end
+  },
   {
     "leath-dub/snipe.nvim",
     keys = {
@@ -32,6 +63,7 @@ return {
   },
   {
     "nvim-pack/nvim-spectre", -- Find and Replace
+    event = "VeryLazy",
     config = function()
       -- https://github.com/nvim-pack/nvim-spectre/issues/118
       -- Sed after replacing makes a backup file, an empty arg fixes the issue
@@ -61,6 +93,7 @@ return {
   },
   {
     "stevearc/oil.nvim", -- File system access easier
+    event = "VeryLazy",
     config = function()
       require("oil").setup {
         cleanup_delay_ms = 100,
@@ -68,31 +101,15 @@ return {
         view_options = {
           show_hidden = true
         },
+        keymaps = {
+          ["<C-h>"] = false, -- Off to move between splits
+          ["<C-l>"] = false, -- Off to move between splits
+        },
       }
       -- Open parent directory in current window
       vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
       -- Open parent directory in floating window
       vim.keymap.set("n", "<leader>-", require("oil").toggle_float)
-    end
-  },
-  {
-    "ThePrimeagen/harpoon", -- Poke the files you want
-    branch = "harpoon2",
-    config = function()
-      local harpoon = require("harpoon")
-      harpoon:setup()
-      -- Harpoon Keymaps
-      vim.keymap.set("n", "<leader>a", function() harpoon:list():add() end)
-      vim.keymap.set("n", "<C-e>", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end)
-
-      vim.keymap.set("n", "<leader>1", function() harpoon:list():select(1) end)
-      vim.keymap.set("n", "<leader>2", function() harpoon:list():select(2) end)
-      vim.keymap.set("n", "<leader>3", function() harpoon:list():select(3) end)
-      vim.keymap.set("n", "<leader>4", function() harpoon:list():select(4) end)
-
-      -- Toggle previous & next buffers stored within Harpoon list
-      vim.keymap.set("n", "<C-S-P>", function() harpoon:list():prev() end)
-      vim.keymap.set("n", "<C-S-N>", function() harpoon:list():next() end)
     end
   },
   {
@@ -121,6 +138,7 @@ return {
           "clangd",
           "pyright",
           "gopls",
+          "dockerls",
         }
       })
     end,
@@ -190,9 +208,11 @@ return {
 
       -- Change to log level "debug" to see all lsp info
       -- Note: If you keep debug on it creates a massive file
-      vim.lsp.set_log_level("off")
+      vim.lsp.set_log_level("off");
 
-      local function setup_diags()
+      --IIFE to setup diagnostics... Need semicolon on the line above to deliminate IIFE's in lua, without it trys to curry the function above
+      --https://stackoverflow.com/questions/53656742/defining-and-calling-function-at-the-same-time-in-lua
+      (function()
         vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
           vim.lsp.diagnostic.on_publish_diagnostics,
           {
@@ -202,9 +222,7 @@ return {
             underline = true,
           }
         )
-      end
-
-      setup_diags()
+      end)();
 
       capabilities.textDocument.completion.completionItem.snippetSupport = true
 
@@ -292,6 +310,7 @@ return {
         "pyright",
         "gopls",
         "templ",
+        "dockerls",
       }
 
       for _, server in ipairs(all_servers) do
@@ -325,6 +344,7 @@ return {
       "hrsh7th/cmp-cmdline",
       "L3MON4D3/LuaSnip",
     },
+    event = "VeryLazy",
     config = function()
       local cmp = require("cmp")
       cmp.setup({
@@ -373,9 +393,17 @@ return {
   },
   {
     "nvim-treesitter/nvim-treesitter",
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter-textobjects", -- Better AST selection
+      "nvim-treesitter/nvim-treesitter-context",     -- See the context of the function you're in
+    },
     config = function()
       local ok, treesitter = pcall(require, "nvim-treesitter.configs")
       if (not ok) then return end
+
+      vim.keymap.set("n", "[c", function()
+        require("treesitter-context").go_to_context(vim.v.count1)
+      end, { silent = true })
 
       treesitter.setup({
         ensure_installed = {
@@ -395,6 +423,7 @@ return {
           "c",
           "vimdoc",
           "luadoc",
+
         },
         sync_install = true,
         auto_install = true,
@@ -423,8 +452,12 @@ return {
               -- You can use the capture groups defined in textobjects.scm
               ["af"] = "@function.outer",
               ["if"] = "@function.inner",
-              ["ac"] = "@conditional.outer",
-              ["ic"] = "@conditional.inner",
+              ["ai"] = "@conditional.outer",
+              ["ii"] = "@conditional.inner",
+              ["al"] = "@loop.outer",
+              ["il"] = "@loop.inner",
+              ["ac"] = "@class.outer",
+              ["ic"] = "@class.inner",
               ["bi"] = "@block.inner",
               -- You can also use captures from other query groups like `locals.scm`
               ["as"] = { query = "@scope", query_group = "locals", desc = "Select language scope" },
@@ -439,7 +472,8 @@ return {
             selection_modes = {
               ['@parameter.outer'] = 'v', -- charwise
               ['@function.outer'] = 'V',  -- linewise
-              ['@class.outer'] = '<c-v>', -- blockwise
+              -- ['@class.outer'] = '<c-v>', -- blockwise
+              ['@class.outer'] = 'v',     -- blockwise
             },
             -- If you set this to `true` (default is `false`) then any textobject is
             -- extended to include preceding or succeeding whitespace. Succeeding
