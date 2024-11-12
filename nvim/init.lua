@@ -51,6 +51,3 @@ require("option")
 require("keymaps")
 require("styles")
 require("custom")
-
--- Trying to make a custom plugin
-require("d")

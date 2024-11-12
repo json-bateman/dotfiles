@@ -58,6 +58,22 @@ dap.configurations.go = {
       return tonumber(pid)
     end
   },
+  {
+    name = "gogoGas debug",
+    type = "delve",
+    request = "launch",
+    program = "${workspaceFolder}/main.go",
+    args = { "transfer", "50" },
+  },
+  {
+    name = "Debug test",
+    type = "delve",
+    request = "launch",
+    mode = "test",
+    program = "${workspaceFolder}",
+    buildFlags = {},
+  },
+
 }
 
 require("dap-vscode-js").setup({
