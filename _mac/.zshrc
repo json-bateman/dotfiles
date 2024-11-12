@@ -32,6 +32,7 @@ export PATH=$PATH:$GOBIN
 export PATH="/Users/jack/Coding/gogo/GoGoTools/bin:$PATH"
 export PATH="/opt/homebrew/opt/sqlite/bin:$PATH"
 export PATH="/Applications/Emacs.app/Contents/MacOS:$PATH"
+export Path="$HOME/Coding/gogo/GoGoTools/bin:$PATH"
 
 #------------------------------------
 # Keybinds
@@ -83,11 +84,39 @@ source "/Users/jack/.deno/env"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 source "/opt/homebrew/opt/fzf/shell/key-bindings.zsh"
 
-#------------------------------------
-# Commands on Startup
-#------------------------------------
-set -o vi
-
 
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 eval "$(/usr/local/bin/mise activate zsh)"
+
+# ---------------
+# Vim mode config
+# ---------------
+
+# Activate vim mode.
+bindkey -v
+
+# Remove mode switching delay.
+KEYTIMEOUT=5
+
+# Cursor shape change when entering iterm or changing modes
+function zle-keymap-select zle-line-init
+{
+    # change cursor shape in iTerm2
+    case $KEYMAP in
+        vicmd)      print -n -- "\E]50;CursorShape=0\C-G";;  # block cursor
+        viins|main) print -n -- "\E]50;CursorShape=1\C-G";;  # line cursor
+    esac
+
+    zle reset-prompt
+    zle -R
+}
+
+function zle-line-finish
+{
+    print -n -- "\E]50;CursorShape=0\C-G"  # block cursor
+}
+
+zle -N zle-line-init
+zle -N zle-line-finish
+zle -N zle-keymap-select
+
