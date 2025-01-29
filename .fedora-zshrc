@@ -17,9 +17,7 @@ source $ZSH/oh-my-zsh.sh
 #------------------------------------
 
 alias vim="nvim"
-alias open="xdg-open"
 alias task="go-task"
-alias gasx3='git push -f'
 alias g='git'
 alias tks='tmux kill-session'
 alias tkS='tmux kill-server'

@@ -12,7 +12,7 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-vim.opt.termguicolors = true -- enables 24-bit RGB color for terminal
+vim.opt.termguicolors = false -- enables 24-bit RGB color for terminal
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 vim.api.nvim_set_keymap("", "<Space>", "<Nop>", { noremap = true, silent = true })
@@ -29,7 +29,7 @@ Found in: ~/config/nvim/lua
 nvim runtime path looks in /lua folder to load other files
 ]]
 
+require("custom")
 require("configs.options")
 require("configs.keymaps")
 require("configs.styles")
-require("custom")

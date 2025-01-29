@@ -22,7 +22,7 @@ opt.hlsearch = false -- turns off highlighting on search
 ---------------
 opt.expandtab = true   -- insert mode puts in spaces when tabbing
 opt.tabstop = 4        -- number of spaces a tab counts for
-opt.softtabstop = 4    -- editing operations (like <BS>) are deleting 2 spaces
+opt.softtabstop = 4    -- editing operations (like <BS>) are deleting 4 spaces
 opt.shiftwidth = 4     -- number of spaces to use for each autoindent
 opt.smartindent = true -- start autoindenting when starting a new line
 opt.wrap = false       -- makes it so text runs off the screen instead of wrapping

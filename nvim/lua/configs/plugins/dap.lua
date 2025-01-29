@@ -6,10 +6,10 @@ return {
     dependencies = {
         -- might have to do this build command manually, go to '<path to>/.local/share/nvim/lazy/vscode-js-debug`
         -- and run the commands from the instructions in "mxsdev/nvim-dap-vscode-js"
-        {
-            "microsoft/vscode-js-debug",
-            build = "npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out"
-        },
+        -- {
+        --     "microsoft/vscode-js-debug",
+        --     build = "npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out"
+        -- },
         "mxsdev/nvim-dap-vscode-js",
         {
             "theHamsta/nvim-dap-virtual-text",

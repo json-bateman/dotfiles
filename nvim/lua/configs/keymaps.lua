@@ -42,5 +42,20 @@ keymap("n", "<leader>to", "<CMD>tabonly<CR>", opts)
 keymap("v", "<leader>y", '"+y', opts)
 keymap("n", "<leader>p", '"+p', opts)
 
+-- Temporary manual fold creation with zF, need this when foldmethod is not manual
+vim.keymap.set('v', 'zF', function()
+    local old_foldmethod = vim.wo.foldmethod
+    vim.wo.foldmethod = 'manual'
+    vim.cmd('normal! zF')
+    vim.wo.foldmethod = old_foldmethod -- Revert to the previous method
+end, { silent = true, desc = "Temporary manual fold creation" })
+
+vim.keymap.set('v', 'zf', function()
+    local old_foldmethod = vim.wo.foldmethod
+    vim.wo.foldmethod = 'manual'
+    vim.cmd('normal! zF')
+    vim.wo.foldmethod = old_foldmethod -- Revert to the previous method
+end, { silent = true, desc = "Temporary manual fold creation" })
+
 keymap("n", "gs", ":%s~~", opts)
 keymap("v", "gs", ":s~~", opts)
