@@ -10,7 +10,7 @@ return {
         "L3MON4D3/LuaSnip",
     },
     event = "VeryLazy",
-    config = function()
+    opts = function()
         local cmp = require("cmp")
         cmp.setup({
             window = {

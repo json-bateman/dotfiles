@@ -7,11 +7,37 @@
 
 ]]
 
+require("cyberdream").setup({
+    theme = {
+        variant = "auto",
+    },
+})
+
+-- Default options:
+require("gruvbox").setup({
+    terminal_colors = true, -- add neovim terminal colors
+    undercurl = true,
+    underline = true,
+    bold = true,
+    italic = {
+        strings = true,
+        emphasis = true,
+        comments = true,
+        operators = false,
+        folds = true,
+    },
+    inverse = false,   -- invert background for search, diffs, statuslines and errors
+    contrast = "hard", -- can be "hard", "soft" or empty string
+    palette_overrides = {},
+    overrides = {},
+    dim_inactive = false,
+    transparent_mode = false,
+})
 require("catppuccin").setup({
     flavour = "auto", -- latte, frappe, macchiato, mocha
     background = {    -- :h background
-        light = "frappe",
-        dark = "mocha",
+        light = "latte",
+        dark = "macchiato",
     },
     transparent_background = false, -- disables setting the background color.
     show_end_of_buffer = false,     -- shows the '~' characters after the end of buffers
@@ -27,21 +53,9 @@ require("catppuccin").setup({
     styles = {                      -- Handles the styles of general hi groups (see `:h highlight-args`):
         comments = { "italic" },    -- Change the style of comments
         conditionals = { "italic" },
-        loops = {},
-        functions = {},
-        keywords = {},
-        strings = {},
-        variables = {},
-        numbers = {},
-        booleans = {},
-        properties = {},
-        types = {},
-        operators = {},
+        -- ... check docs for all options
         -- miscs = {}, -- Uncomment to turn off hard-coded styles
     },
-    color_overrides = {},
-    custom_highlights = {},
-    default_integrations = true,
     integrations = {
         cmp = true,
         gitsigns = true,
@@ -52,9 +66,11 @@ require("catppuccin").setup({
             enabled = true,
             indentscope_color = "",
         },
-        -- For more plugins integrations please scroll down (https://github.com/catppuccin/nvim#integrations)
+        -- https://github.com/catppuccin/nvim#integrations
     },
 })
+
+local cache_path = vim.fn.stdpath("cache") .. "/nvim_theme"
 
 -- Check system preferences
 ---@type table
@@ -63,7 +79,7 @@ local query_command
 local system
 ---@type "Dark" | "Light"
 local fallback
----@type boolean
+---@type boolean | nil
 local is_dark_mode
 
 local function parse_res(res)
@@ -157,27 +173,58 @@ local function fetch_vars()
 end
 
 fetch_vars()
+-- Function to read cached theme
+local function read_cached_theme()
+    local file = io.open(cache_path, "r")
+    if file then
+        local content = file:read("*all")
+        file:close()
+        return content == "dark"
+    end
+    return nil
+end
+
+-- Function to write theme cache
+local function write_cached_theme(mode)
+    local file = io.open(cache_path, "w")
+    if file then
+        file:write(mode)
+        file:close()
+    end
+end
+
+-- Read the cached theme preference
+local cached_dark_mode = read_cached_theme()
+
+if cached_dark_mode ~= nil then
+    vim.o.background = cached_dark_mode and "dark" or "light"
+    vim.cmd.colorscheme("gruvbox")
+else
+    vim.o.background = "light" -- Default to light mode if no cache exists
+end
+
+-- Fetch system preference asynchronously and update if different
 vim.fn.jobstart(query_command, {
     stdout_buffered = true,
     on_stdout = function(_, data, _)
         is_dark_mode = parse_res(data)
-        if is_dark_mode then
-            vim.o.background = "dark"
-        else
-            vim.o.background = "light"
+        local new_theme = is_dark_mode and "dark" or "light"
+
+        -- Only update the cache and theme if it has changed
+        if cached_dark_mode == nil or (is_dark_mode ~= cached_dark_mode) then
+            write_cached_theme(new_theme)
+            vim.o.background = new_theme
+            vim.cmd.colorscheme("gruvbox")
         end
-        vim.cmd.colorscheme("catppuccin")
     end
 })
 
--- Fallback before vim.fn.jobstart completes async to determine light or dark mode
-vim.cmd.colorscheme("catppuccin")
-
 -- built in highlight groups
 vim.cmd [[
-  highlight CursorLineNR guifg=orange gui=NONE
-  highlight LineNr guifg=#1e3f2a guibg=NONE
-  highlight clear SignColumn
+    highlight CursorLineNR guifg=orange gui=NONE
+    "highlight CursorLine guifg=orange gui=NONE guibg=orange
+    highlight LineNr guifg=#1e3f2a guibg=NONE
+    highlight clear SignColumn
 ]]
 
 -- Define highlight groups for custom elements

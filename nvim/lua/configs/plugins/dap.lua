@@ -18,7 +18,7 @@ return {
         "rcarriga/nvim-dap-ui",
         "nvim-neotest/nvim-nio",
     },
-    config = function()
+    opts = function()
         local dap_ok, dap = pcall(require, "dap")
         if not dap_ok then
             print("dap not found!")

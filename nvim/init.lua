@@ -29,7 +29,7 @@ Found in: ~/config/nvim/lua
 nvim runtime path looks in /lua folder to load other files
 ]]
 
-require("custom")
+require("configs.custom")
 require("configs.options")
 require("configs.keymaps")
 require("configs.styles")
