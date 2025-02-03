@@ -18,7 +18,7 @@ vim.g.maplocalleader = " "
 vim.api.nvim_set_keymap("", "<Space>", "<Nop>", { noremap = true, silent = true })
 
 require("lazy").setup({
-    spec = { { import = "configs.plugins" } },
+    spec = { { import = "plugins" } },
     install = { colorscheme = { "habamax" } },
     checker = { enabled = false }, -- Checks if plugins are available for updating.
 })
@@ -29,7 +29,7 @@ Found in: ~/config/nvim/lua
 nvim runtime path looks in /lua folder to load other files
 ]]
 
-require("configs.custom")
-require("configs.options")
-require("configs.keymaps")
-require("configs.styles")
+require("custom")
+require("options")
+require("keymaps")
+require("styles")
