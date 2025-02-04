@@ -12,5 +12,5 @@ return {
     "nvim-tree/nvim-web-devicons", -- icons for files, etc.
     "nvim-lua/plenary.nvim",       -- Useful helper functions written by TJ
     -- Trying to make a custom plugin
-    { dir = "/Users/jack/Coding/plugins/dockerino" },
+    { dir = "/Users/jack/Coding/nvim-plugins/dockerino" },
 }

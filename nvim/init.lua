@@ -1,6 +1,6 @@
 -- Bootstrap Lazy, the plugin manager
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
+if not vim.uv.fs_stat(lazypath) then
     vim.fn.system({
         "git",
         "clone",
@@ -10,6 +10,7 @@ if not vim.loop.fs_stat(lazypath) then
         lazypath,
     })
 end
+
 vim.opt.rtp:prepend(lazypath)
 
 vim.opt.termguicolors = false -- enables 24-bit RGB color for terminal
@@ -25,7 +26,7 @@ require("lazy").setup({
 
 --[[
 Other configurations
-Found in: ~/config/nvim/lua
+Found in: ~/.config/nvim/lua
 nvim runtime path looks in /lua folder to load other files
 ]]
 
