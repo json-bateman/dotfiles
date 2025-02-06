@@ -47,7 +47,7 @@ opt.incsearch = true  -- jumps to what you're searching
 ---------------
 -- Misc
 ---------------
-vim.opt.cedit = '<C-a>'                       -- Use in command line to edit queries in a normal mode window
-vim.o.foldmethod = 'expr'                     -- When foldmethod is expr, foldexpr is run
-vim.o.foldexpr = 'nvim_treesitter#foldexpr()' -- this function is executed for every line in the buffer
-vim.o.foldlevelstart = 99                     -- No folds closed to start
+vim.opt.cedit = '<C-a>'                     -- Use in command line to edit queries in a normal mode window
+vim.o.foldmethod = 'expr'                   -- When foldmethod is expr, foldexpr is run
+vim.o.foldexpr = 'v:lua.vim.lsp.foldexpr()' -- this function is executed for every line in the buffer
+vim.o.foldlevelstart = 99                   -- No folds closed to start
