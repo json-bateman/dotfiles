@@ -12,7 +12,6 @@ return {
 			require("mason-lspconfig").setup({
 				ensure_installed = {
 					"jdtls",
-					"ts_ls",
 					"denols",
 					"jsonls",
 					"html",
@@ -59,6 +58,7 @@ return {
 							rust = { "rustfmt", lsp_format = "fallback" },
 							-- Conform will run the first available formatter
 							javascript = { "prettierd", "prettier", stop_after_first = true },
+							typescript = { "prettierd", "prettier", stop_after_first = true },
 						},
 					})
 				end,
@@ -117,6 +117,17 @@ return {
 				end,
 			})
 
+			vim.api.nvim_create_autocmd("BufWritePre", {
+				group = vim.api.nvim_create_augroup("TS_add_missing_imports", { clear = true }),
+				desc = "TS_add_missing_imports",
+				pattern = { "*.ts", "*.tsx", "*.js", "*.jsx" },
+				callback = function()
+					vim.cmd([[TSToolsAddMissingImports]])
+					vim.cmd([[TSToolsOrganizeImports]])
+					vim.cmd("write")
+				end,
+			})
+
 			local capabilities = vim.lsp.protocol.make_client_capabilities()
 			capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
 
@@ -166,12 +177,6 @@ return {
 				root_dir = lspconfig.util.root_pattern("deno.json", "deno.jsonc"),
 			})
 
-			lspconfig.ts_ls.setup({
-				on_attach = on_attach,
-				capabilities = capabilities,
-				single_file_support = false,
-			})
-
 			lspconfig.eslint.setup({
 				on_attach = function(_, bufnr)
 					vim.api.nvim_create_autocmd("BufWritePre", {
@@ -211,6 +216,7 @@ return {
 			-- Set up the rest of the servers with default settings --
 			local all_servers = {
 				"sqlls",
+				-- Typescript Tools provides the language server for ts and js
 				"jdtls",
 				"jsonls",
 				"html",

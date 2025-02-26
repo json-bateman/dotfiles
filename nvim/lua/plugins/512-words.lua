@@ -1,3 +1,3 @@
 return {
-    dir = ("/Users/jack/Coding/nvim-plugins/512-words")
+	"Blovio/512-words",
 }
