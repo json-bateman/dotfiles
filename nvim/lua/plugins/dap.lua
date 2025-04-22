@@ -72,6 +72,16 @@ return {
 		for _, language in ipairs({ "typescript", "javascript" }) do
 			require("dap").configurations[language] = {
 				{
+					request = "launch",
+					name = "Deno launch",
+					type = "pwa-node",
+					program = "${file}",
+					cwd = "${workspaceFolder}",
+					runtimeExecutable = vim.fn.getenv("HOME") .. "/.deno/bin/deno",
+					runtimeArgs = { "run", "--unstable-node-globals", "--inspect-wait", "--allow-all", "./server.ts" },
+					attachSimplePort = 9229,
+				},
+				{
 					type = "pwa-node",
 					request = "launch",
 					name = "Launch file",
@@ -105,25 +115,13 @@ return {
 		require("dap-go").setup({
 			dap_configurations = {
 				{
-					type = "delve",
-					name = "Debug",
+					type = "go",
+					name = "launch project",
 					request = "launch",
-					program = "${file}",
-				},
-				{
-					type = "delve",
-					name = "Debug Project",
-					request = "launch",
+
 					program = "${workspaceFolder}",
-				},
-				{
-					type = "delve",
-					name = "Attach to Process",
-					request = "attach",
-					processId = function()
-						local pid = vim.fn.input("Enter PID of process: ")
-						return tonumber(pid)
-					end,
+					cwd = "${workspaceFolder}",
+					-- args = {"-gcflags", "all=-N -l"},
 				},
 			},
 		})

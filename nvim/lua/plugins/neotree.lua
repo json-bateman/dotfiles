@@ -3,6 +3,7 @@ return {
 	branch = "v3.x",
 	keys = {
 		{ "<leader>/", "<CMD>Neotree toggle<CR>", desc = "Neotree Toggle" },
+		{ "<leader>.", "<CMD>Neotree reveal_force_cwd<CR>", desc = "Neotree Toggle" },
 	},
 	dependencies = {
 		"nvim-lua/plenary.nvim",
