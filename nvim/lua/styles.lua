@@ -234,4 +234,4 @@ vim.cmd([[
 ]])
 
 -- Link JSX tags to the highlight group
-vim.api.nvim_set_hl(0, "@tag", { link = "MyJSXElement" })
+-- vim.api.nvim_set_hl(0, "@tag", { link = "MyJSXElement" })
