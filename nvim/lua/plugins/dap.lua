@@ -73,14 +73,42 @@ return {
 			require("dap").configurations[language] = {
 				{
 					request = "launch",
-					name = "Deno launch",
+					name = "Deno launch main.ts",
 					type = "pwa-node",
-					program = "${file}",
+					-- Might need to adjust this depending on what you name your app's entrypoint
+					program = "${workspaceFolder}/main.ts",
 					cwd = "${workspaceFolder}",
 					runtimeExecutable = vim.fn.getenv("HOME") .. "/.deno/bin/deno",
-					runtimeArgs = { "run", "--unstable-node-globals", "--inspect-wait", "--allow-all", "./server.ts" },
+					runtimeArgs = { "run", "--inspect-wait", "--allow-all" },
 					attachSimplePort = 9229,
 				},
+				{
+					request = "launch",
+					name = "Deno launch server.ts",
+					type = "pwa-node",
+					-- Might need to adjust this depending on what you name your app's entrypoint
+					program = "${workspaceFolder}/server.ts",
+					cwd = "${workspaceFolder}",
+					runtimeExecutable = vim.fn.getenv("HOME") .. "/.deno/bin/deno",
+					runtimeArgs = { "run", "--inspect-wait", "--allow-all" },
+					attachSimplePort = 9229,
+				},
+
+				{
+					type = "pwa-node",
+					request = "attach",
+					name = "Attach to Deno",
+					cwd = "${workspaceFolder}",
+					-- use the same adapter you already set up:
+					port = 9229,
+					address = "127.0.0.1",
+					localRoot = "${workspaceFolder}",
+					remoteRoot = "${workspaceFolder}",
+					sourceMaps = true,
+					-- skip stepping through internal libs if you like:
+					skipFiles = { "<node_internals>/**/*.js" },
+				},
+
 				{
 					type = "pwa-node",
 					request = "launch",
@@ -131,19 +159,19 @@ return {
 		--- Debugging Keymaps ---
 		local keymap = vim.keymap.set
 		--- Start Debugging Session ---
-		keymap("n", "<m-1>", function()
+		keymap("n", "<F1>", function()
 			dap.continue()
 		end)
-		keymap("n", "<m-2>", function()
+		keymap("n", "<F2>", function()
 			dap.step_into()
 		end)
-		keymap("n", "<m-3>", function()
+		keymap("n", "<F3>", function()
 			dap.step_over()
 		end)
-		keymap("n", "<m-4>", function()
+		keymap("n", "<F4>", function()
 			dap.step_out()
 		end)
-		keymap("n", "<m-5>", function()
+		keymap("n", "<F5>", function()
 			dap.terminate()
 		end)
 		keymap("n", "<space>b", function()

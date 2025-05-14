@@ -201,7 +201,8 @@ return {
 				settings = {
 					workingDirectory = { mode = "location" },
 				},
-				root_dir = vim.fs.dirname(vim.fs.find(".git", { path = startpath, upward = true })[1]),
+				root_dir = vim.fs.root(0, { ".git", ".eslintrc.json", "package.json" }),
+				-- root_dir = vim.fs.dirname(vim.fs.find(".git", { path = startpath, upward = true })[1]),
 			})
 
 			lspconfig.lua_ls.setup({
