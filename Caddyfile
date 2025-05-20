@@ -1,0 +1,114 @@
+# The Caddyfile is an easy way to configure your Caddy web server.
+#
+# Unless the file starts with a global options block, the first
+# uncommented line is always the address of your site.
+#
+# To use your own domain name (with automatic HTTPS), first make
+# sure your domain's A/AAAA DNS records are properly pointed to
+# this machine's public IP, then replace ":80" below with your
+# domain name.
+
+jsonbateman.com {
+	# Redirect /design (without slash) to /design/ (with slash)
+	@missingSlash {
+		path /design
+	}
+	redir @missingSlash /design/ permanent
+
+	handle_path /design* {
+		root * /var/www/html/design-system
+		# try_files {path} /index.html
+		file_server
+	}
+
+	# Default route
+	reverse_proxy localhost:3000
+}
+
+# jsonbateman.com {
+# 	root * /var/www/html/validator-panopticon/dist
+#
+# 	file_server
+#
+# 	# Rewrite any request that doesn't match a file to /index.html
+# 	try_files {path} /index.html
+# }
+
+# Refer to the Caddy docs for more information:
+# https://caddyserver.com/docs/caddyfile
+
+alug.us {
+	root * /var/www/html/alug.us
+
+	file_server
+}
+
+gargul.gay {
+	root * /var/www/html/lootlog-viewer/dist
+
+	# Rewrite all paths except existing files to index.html
+	# This is a vite project with react router, so index.html needs
+	# to be pointed at for (almost) every request
+	# 
+	# notStatic first checks if a file exists at location, if not rewrite 
+	# to index.html
+	@notStatic {
+		not file
+	}
+	rewrite @notStatic /index.html
+
+	file_server
+}
+
+garguldeez.com {
+	root * /var/www/html/lootlog-viewer/dist
+
+	# Rewrite all paths except existing files to index.html
+	# This is a vite project with react router, so index.html needs
+	# to be pointed at for (almost) every request
+	# 
+	# notStatic first checks if a file exists at location, if not rewrite 
+	# to index.html
+	@notStatic {
+		not file
+	}
+	rewrite @notStatic /index.html
+
+	file_server
+}
+
+tsukinominori.com {
+	root * /var/www/html/tsukinominori.com
+
+	file_server
+}
+
+pokermon.club {
+	root * /var/www/html/poker_stats/portal/dist
+
+	file_server
+}
+
+puzzlegreg.quest {
+	reverse_proxy /socket.io/* localhost:51234 {
+		header_up Host {host}
+		header_up X-Forwarded-For {remote}
+		header_up X-Forwarded-Proto {scheme}
+	}
+
+	# Static file serving for the website
+	root * /var/www/html/puzzlegreg.quest
+	file_server
+}
+
+crabspy.com {
+	reverse_proxy /socket.io/* localhost:55577 {
+		header_up Host {host}
+		header_up X-Forwarded-For {remote}
+		header_up X-Forwarded-Proto {scheme}
+	}
+
+	# Static file serving for the website
+	root * /var/www/html/crabspy.com
+	file_server
+}
