@@ -1,3 +1,4 @@
+# change become_user based on the username of the computer
 - hosts: localhost
   become: true
   tasks:
@@ -14,36 +15,28 @@
       - "~/Coding/"
     tags:
       - dotfiles
-  - name: Install dotfiles
-    become_user: jack
-    git:
-      repo: https://github.com/jacktrusler/dotfiles
-      dest: ~/dotfiles
-    tags:
-      - dotfiles
   - name: copy all dotfiles
-    become_user: jack
+    become_user: jacktrusler
     shell: | 
       cp ~/dotfiles/.vimrc ~/dotfiles/.gitconfig ~/dotfiles/.tmux.conf ~/.
-      cp ~/dotfiles/_mac/.zshrc ~/.
     tags: 
       - move 
   - name: Oh-my-zsh
     shell: 
       cmd: curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
-    become_user: jack
+    become_user: jacktrusler
     tags: 
       - soy
   - name: Soy install
     command: "brew install node nvim tree wget autojump tmux ripgrep fzf"
-    become_user: jack
+    become_user: jacktrusler
     tags: 
       - soy
   - name: Nvim configure 
-    become_user: jack
+    become_user: jacktrusler
     command: "mkdir -p ~/.config && mv ~/dotfiles/nvim ~/.config"
     tags: 
       - nvim
   - name: Applications
-    become_user: jack
+    become_user: jacktrusler
     command: "brew install spotify google-chrome telegram docker"
