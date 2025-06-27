@@ -239,5 +239,6 @@ vim.cmd([[
   highlight MyReactComponent guifg=#f5d784
 ]])
 
+vim.api.nvim_set_hl(0, "SnacksPicker", { bg = "NONE" })
 -- Link JSX tags to the highlight group
 -- vim.api.nvim_set_hl(0, "@tag", { link = "MyJSXElement" })
