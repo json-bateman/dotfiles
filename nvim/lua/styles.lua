@@ -7,12 +7,6 @@
 
 ]]
 
-require("cyberdream").setup({
-    opt = {
-        variant = "auto",
-    },
-})
-
 -- Default options:
 require("gruvbox").setup({
     terminal_colors = true, -- add neovim terminal colors
@@ -221,7 +215,7 @@ require("catppuccin").setup({
 --     end,
 -- })
 
--- Comment this if you have the toggle code uncommented
+-- Comment this if you have the toggle theme code uncommented
 vim.cmd.colorscheme("gruvbox")
 vim.o.background = "dark"
 
@@ -239,6 +233,5 @@ vim.cmd([[
   highlight MyReactComponent guifg=#f5d784
 ]])
 
-vim.api.nvim_set_hl(0, "SnacksPicker", { bg = "NONE" })
 -- Link JSX tags to the highlight group
 -- vim.api.nvim_set_hl(0, "@tag", { link = "MyJSXElement" })
