@@ -1,312 +1,188 @@
 return {
-    {
-        "williamboman/mason.nvim", -- UI for fetching/downloading LSPs
-        config = function()
-            require("mason").setup()
-        end,
-    },
-    {
-        "williamboman/mason-lspconfig.nvim",          -- Bridges mason and lspconfig
-        dependencies = { "williamboman/mason.nvim" }, -- mason-lspconfig must load after mason
-        config = function()
-            require("mason-lspconfig").setup({
-                ensure_installed = {
-                    "denols",
-                    "jsonls",
-                    "html",
-                    "cssls",
-                    "yamlls",
-                    "lua_ls",
-                    "ts_ls",
-                    "rust_analyzer",
-                    -- "eslint",
-                    "tailwindcss",
-                    "clangd",
-                    "pyright",
-                    "gopls",
-                    "dockerls",
-                    "solidity_ls_nomicfoundation",
-                },
-            })
-        end,
-    },
-    {
-        "neovim/nvim-lspconfig", -- neovims configuation for the built in client
-        dependencies = {
-            {
-                "folke/lazydev.nvim",
-                ft = "lua", -- only load on lua files
-                opts = {
-                    library = {
-                        -- See the configuration section for more details
-                        -- Load luvit types when the `vim.uv` word is found
-                        { path = "${3rd}/luv/library", words = { "vim%.uv" } },
-                    },
-                },
-            },
-            {
-                "stevearc/conform.nvim",
-                config = function()
-                    require("conform").setup({
-                        log_level = vim.log.levels.DEBUG,
-                        format_on_save = {
-                            -- Fallback to LSP autoformatting if conform formatting doesn't have the appropriate formatter
-                            lsp_format = "fallback",
-                        },
-                        formatters_by_ft = {
-                            lua = { "stylua" },
-                            -- You can customize some of the format options for the filetype (:help conform.format)
-                            rust = { "rustfmt", lsp_format = "fallback" },
-                            -- Conform will run the first available formatter
-                            typescript = {
-                                "deno_fmt",
-                                "prettierd",
-                                "prettier",
-                                lsp_format = "fallback",
-                                stop_after_first = true,
-                            },
-                            typescriptreact = {
-                                "deno_fmt",
-                                "prettierd",
-                                "prettier",
-                                lsp_format = "fallback",
-                                stop_after_first = true,
-                            },
-                        },
-                    })
-                end,
-            },
-        },
-        config = function()
-            local ok, lspconfig = pcall(require, "lspconfig")
-            if not ok then
-                print("require lspconfig failed")
-                return
-            end
+	-- The language server for typescript that gives more capabilities (like automatic import)
+	{
+		"pmizio/typescript-tools.nvim",
+		dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
+		opts = {},
+		cond = function()
+			return not (vim.fn.filereadable("deno.json") == 1 or vim.fn.filereadable("deno.jsonc") == 1)
+		end,
+	},
 
-            local opts = { noremap = true, silent = true }
-            vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, opts)
-            vim.keymap.set("n", "[d", function()
-                vim.diagnostic.jump({ count = -1, float = true })
-            end, opts)
-            vim.keymap.set("n", "]d", function()
-                vim.diagnostic.jump({ count = 1, float = true })
-            end, opts)
-            vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, opts)
+	{
+		-- ----------------------
+		-- Main LSP Configuration
+		-- ----------------------
+		"neovim/nvim-lspconfig",
+		dependencies = {
+			-- Automatically install LSPs and related tools to stdpath for Neovim
+			-- Mason must be loaded before its dependents so we need to set it up here.
+			-- NOTE: `opts = {}` is the same as calling `require('mason').setup({})`
+			{ "mason-org/mason.nvim", opts = {} },
+			"mason-org/mason-lspconfig.nvim",
+			"WhoIsSethDaniel/mason-tool-installer.nvim",
+		},
 
-            -- Use an on_attach function to only map the following keys
-            -- after the language server attaches to the current buffer
-            local on_attach = function(client, bufnr)
-                -- Enable completion triggered by <c-x><c-o>
-                client.server_capabilities.semanticTokensProvider = nil
+		config = function()
+			vim.api.nvim_create_autocmd("LspAttach", {
+				group = vim.api.nvim_create_augroup("kickstart-lsp-attach", { clear = true }),
+				callback = function(event)
+					local opts = { noremap = true, silent = true }
+					vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, opts)
+					vim.keymap.set("n", "[d", function()
+						vim.diagnostic.jump({ count = -1, float = true })
+					end, opts)
+					vim.keymap.set("n", "]d", function()
+						vim.diagnostic.jump({ count = 1, float = true })
+					end, opts)
+					vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, opts)
 
-                -- Mappings.
-                -- See `:help vim.lsp.*` for documentation on any of the below functions
-                local bufopts = { noremap = true, silent = true, buffer = bufnr }
-                vim.keymap.set("n", "gD", vim.lsp.buf.declaration, bufopts)
-                vim.keymap.set("n", "gd", vim.lsp.buf.definition, bufopts)
-                vim.keymap.set("n", "K", vim.lsp.buf.hover, bufopts)
-                -- vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
-                vim.keymap.set("n", "<C-s>", vim.lsp.buf.signature_help, bufopts)
-                vim.keymap.set("n", "<leader>wa", vim.lsp.buf.add_workspace_folder, bufopts)
-                vim.keymap.set("n", "<leader>wr", vim.lsp.buf.remove_workspace_folder, bufopts)
-                vim.keymap.set("n", "<leader>wl", function()
-                    print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-                end, bufopts)
-                vim.keymap.set("n", "<leader>D", vim.lsp.buf.type_definition, bufopts)
-                vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, bufopts)
-                vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, bufopts)
-                vim.keymap.set("n", "gr", vim.lsp.buf.references, bufopts)
-                vim.keymap.set("n", "<leader>f", function()
-                    vim.lsp.buf.format({ async = true })
-                end, bufopts)
-            end
-            -- Autoformatting
-            -- vim.api.nvim_create_autocmd("BufWritePre", {
-            -- 	pattern = "*",
-            -- 	callback = function(args)
-            -- 		require("conform").format({ bufnr = args.buf })
-            -- 	end,
-            -- })
+					-- For LSP related items. It sets the mode, buffer and description for us each time.
+					local map = function(keys, func, desc, mode)
+						mode = mode or "n"
+						vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
+					end
 
-            if vim.fn.filereadable("deno.json") == 1 or vim.fn.filereadable("deno.jsonc") == 1 then
-            else
-                vim.api.nvim_create_autocmd("BufWritePre", {
-                    group = vim.api.nvim_create_augroup("TS_add_missing_imports", { clear = true }),
-                    desc = "TS_add_missing_imports",
-                    pattern = { "*.ts", "*.tsx", "*.js", "*.jsx" },
-                    callback = function()
-                        vim.cmd([[TSToolsAddMissingImports]])
-                        -- vim.cmd([[TSToolsOrganizeImports]])
-                        -- vim.cmd("write")
-                    end,
-                })
-            end
+					map("grn", vim.lsp.buf.rename, "[R]e[n]ame")
 
-            local capabilities = vim.lsp.protocol.make_client_capabilities()
-            capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
-            -- Change to log level "debug" to see all lsp info
-            -- Note: If you keep debug on it creates a massive file
-            vim.lsp.set_log_level("INFO");
+					-- Execute a code action, usually your cursor needs to be on top of an error
+					-- or a suggestion from your LSP for this to activate.
+					map("gra", vim.lsp.buf.code_action, "[G]oto Code [A]ction", { "n", "x" })
 
-            --IIFE to setup diagnostics... Need semicolon on the line above to deliminate IIFE's in lua, without it trys to curry the function above
-            --https://stackoverflow.com/questions/53656742/defining-and-calling-function-at-the-same-time-in-lua
-            (function()
-                vim.lsp.handlers["textDocument/publishDiagnostics"] =
-                    vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
-                        virtual_text = false,
-                        signs = true,
-                        update_in_insert = false,
-                        underline = true,
-                    })
-            end)()
+					map("grr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
 
-            -- Set up some servers with custom settings --
-            lspconfig.yamlls.setup({
-                on_attach = on_attach,
-                capabilities = capabilities,
+					-- Jump to the implementation of the word under your cursor.
+					--  Useful when your language has ways of declaring types without an actual implementation.
+					map("gri", require("telescope.builtin").lsp_implementations, "[G]oto [I]mplementation")
 
-                settings = {
-                    yaml = {
-                        schemaStore = {
-                            url = "https://www.schemastore.org/api/json/catalog.json",
-                            enable = true,
-                        },
-                    },
-                },
-            })
+					-- Jump to the definition of the word under your cursor.
+					map("grd", require("telescope.builtin").lsp_definitions, "[G]oto [D]efinition")
 
-            lspconfig["solidity"].setup({
-                capabilities = capabilities,
-                on_attach = on_attach,
-                cmd = { "nomicfoundation-solidity-language-server", "--stdio" },
-                filetypes = { "solidity" },
-                root_dir = lspconfig.util.root_pattern("foundry.toml"),
-                single_file_support = true,
-            })
+					-- WARN: This is not Goto Definition, this is Goto Declaration.
+					--  For example, in C this would take you to the header.
+					map("grD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
 
-            lspconfig.denols.setup({
-                on_attach = on_attach,
-                capabilities = capabilities,
-                root_dir = lspconfig.util.root_pattern("deno.json", "deno.jsonc"),
-            })
+					-- Fuzzy find all the symbols in your current document.
+					--  Symbols are things like variables, functions, types, etc.
+					map("gO", require("telescope.builtin").lsp_document_symbols, "Open Document Symbols")
 
-            -- lspconfig.eslint.setup({
-            --     on_attach = function(_, bufnr)
-            --         vim.api.nvim_create_autocmd("BufWritePre", {
-            --             buffer = bufnr,
-            --             command = "EslintFixAll",
-            --         })
-            --     end,
-            --     settings = {
-            --         workingDirectory = { mode = "location" },
-            --     },
-            --     root_dir = vim.fs.root(0,
-            --         {
-            --             ".eslintrc.js",
-            --             ".eslintrc.json",
-            --             "eslint.config.js",
-            --             "eslint.config.mjs",
-            --             -- For my monorepo,
-            --             "libs/config/eslint.config.mjs"
-            --         }),
-            --     -- root_dir = vim.fs.dirname(vim.fs.find(".git", { path = startpath, upward = true })[1]),
-            -- })
+					-- Fuzzy find all the symbols in your current workspace.
+					--  Similar to document symbols, except searches over your entire project.
+					map("gW", require("telescope.builtin").lsp_dynamic_workspace_symbols, "Open Workspace Symbols")
 
-            lspconfig.lua_ls.setup({
-                capabilities = capabilities,
-                on_attach = on_attach,
-                settings = {
-                    Lua = {
-                        diagnostics = {
-                            disable = { "missing-parameters", "missing-fields", "undefined-global" },
-                        },
-                    },
-                },
-            })
+					-- Jump to the type of the word under your cursor.
+					--  Useful when you're not sure what type a variable is and you want to see
+					--  the definition of its *type*, not where it was *defined*.
+					map("grt", require("telescope.builtin").lsp_type_definitions, "[G]oto [T]ype Definition")
 
-            lspconfig.cssls.setup({
-                on_attach = on_attach,
-                capabilities = capabilities,
-                settings = {
-                    css = {
-                        lint = {
-                            unknownAtRules = "ignore",
-                        },
-                    },
-                },
-            })
+					-- This function resolves a difference between neovim nightly (version 0.11) and stable (version 0.10)
+					---@return boolean
+					local function client_supports_method(client, method, bufnr)
+						if vim.fn.has("nvim-0.11") == 1 then
+							return client:supports_method(method, bufnr)
+						else
+							return client.supports_method(method, { bufnr = bufnr })
+						end
+					end
 
-            local nvim_lsp = require("lspconfig")
+					-- The following code creates a keymap to toggle inlay hints in your
+					-- code, if the language server you are using supports them
+					--
+					-- This may be unwanted, since they displace some of your code
+					-- if client and client_supports_method(client, vim.lsp.protocol.Methods.textDocument_inlayHint, event.buf) then
+					--     map('<leader>th', function()
+					--         vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
+					--     end, '[T]oggle Inlay [H]ints')
+					-- end
+				end,
+			})
 
-            nvim_lsp.denols.setup({
-                on_attach = on_attach,
-                root_dir = nvim_lsp.util.root_pattern("deno.json", "deno.jsonc"),
-            })
+			-- Diagnostic Config
+			-- See :help vim.diagnostic.Opts
+			vim.diagnostic.config({
+				severity_sort = true,
+				float = { border = "rounded", source = "if_many" },
+				-- underline = { severity = vim.diagnostic.severity.INFO },
+				signs = vim.g.have_nerd_font and {
+					text = {
+						[vim.diagnostic.severity.ERROR] = "󰅚 ",
+						[vim.diagnostic.severity.WARN] = "󰀪 ",
+						[vim.diagnostic.severity.INFO] = "󰋽 ",
+						[vim.diagnostic.severity.HINT] = "󰌶 ",
+					},
+				} or {},
+				virtual_text = false,
+				-- virtual_text = {
+				-- 	source = "if_many",
+				-- 	spacing = 2,
+				-- 	format = function(diagnostic)
+				-- 		local diagnostic_message = {
+				-- 			[vim.diagnostic.severity.ERROR] = diagnostic.message,
+				-- 			[vim.diagnostic.severity.WARN] = diagnostic.message,
+				-- 			[vim.diagnostic.severity.INFO] = diagnostic.message,
+				-- 			[vim.diagnostic.severity.HINT] = diagnostic.message,
+				-- 		}
+				-- 		return diagnostic_message[diagnostic.severity]
+				-- 	end,
+				-- },
+			})
 
-            nvim_lsp.tailwindcss.setup({
-                on_attach = on_attach,
-            })
+			-- LSP servers and clients are able to communicate to each other what features they support.
+			--  By default, Neovim doesn't support everything that is in the LSP specification.
+			--  When you add blink.cmp, luasnip, etc. Neovim now has *more* capabilities.
+			--  So, we create new capabilities with blink.cmp, and then broadcast that to the servers.
+			local capabilities = require("blink.cmp").get_lsp_capabilities()
 
-            -- Set up the rest of the servers with default settings --
-            local all_servers = {
-                "sqlls",
-                "jsonls",
-                "html",
-                -- Replaced by typescript-tools
-                -- "ts_ls",
-                "rust_analyzer",
-                "clangd",
-                "tailwindcss",
-                "pyright",
-                "gopls",
-                "templ",
-                "dockerls",
-            }
+			--  Add any additional override configuration in the following tables. Available keys are:
+			--  - cmd (table): Override the default command used to start the server
+			--  - filetypes (table): Override the default list of associated filetypes for the server
+			--  - capabilities (table): Override fields in capabilities. Can be used to disable certain LSP features.
+			--  - settings (table): Override the default settings passed when initializing the server.
+			--        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
+			local servers = {
+				-- clangd = {},
+				-- pyright = {},
+				-- rust_analyzer = {},
+				-- ts_ls = {},
 
-            for _, server in ipairs(all_servers) do
-                lspconfig[server].setup({
-                    on_attach = on_attach,
-                    capabilities = capabilities,
-                })
-            end
+				gopls = {},
+				lua_ls = {
+					-- cmd = { ... },
+					-- filetypes = { ... },
+					-- capabilities = {},
+					settings = {
+						Lua = {
+							diagnostics = {
+								disable = { "missing-parameters", "missing-fields", "undefined-global" },
+							},
+						},
+					},
+				},
+			}
 
-            local function virtual_text_document(params)
-                local bufnr = params.buf
-                local actual_path = params.match:sub(1)
+			-- Ensure the servers and tools above are installed
 
-                local clients = vim.lsp.get_clients({ name = "denols" })
-                if #clients == 0 then
-                    return
-                end
+			-- You can add other tools here that you want Mason to install
+			-- for you, so that they are available from within Neovim.
+			local ensure_installed = vim.tbl_keys(servers or {})
+			vim.list_extend(ensure_installed, {
+				"stylua",
+			})
+			require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
-                local client = clients[1]
-                local method = "deno/virtualTextDocument"
-                local req_params = { textDocument = { uri = actual_path } }
-                local response = client:request_sync(method, req_params, 2000, 0)
-                if not response or type(response.result) ~= "string" then
-                    return
-                end
+			require("mason-lspconfig").setup({
+				automatic_enable = vim.tbl_keys(servers or {}),
+			})
 
-                local lines = vim.split(response.result, "\n")
-                vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, lines)
-                vim.api.nvim_set_option_value("readonly", true, { buf = bufnr })
-                vim.api.nvim_set_option_value("modified", false, { buf = bufnr })
-                vim.api.nvim_set_option_value("modifiable", false, { buf = bufnr })
-                vim.api.nvim_buf_set_name(bufnr, actual_path)
-                vim.lsp.buf_attach_client(bufnr, client.id)
+			-- Installed LSPs are configured and enabled automatically with mason-lspconfig
+			-- The loop below is for overriding the default configuration of LSPs with the ones in the servers table
+			for server_name, config in pairs(servers) do
+				config.capabilities = vim.tbl_deep_extend("force", {}, capabilities, config.capabilities or {})
+				vim.lsp.config(server_name, config)
+			end
 
-                local filetype = "typescript"
-                if actual_path:sub(-3) == ".md" then
-                    filetype = "markdown"
-                end
-                vim.api.nvim_set_option_value("filetype", filetype, { buf = bufnr })
-            end
-
-            vim.api.nvim_create_autocmd({ "BufReadCmd" }, {
-                pattern = { "deno:/*" },
-                callback = virtual_text_document,
-            })
-        end,
-    },
+			-- NOTE: Some servers may require an old setup until they are updated. For the full list refer here: https://github.com/neovim/nvim-lspconfig/issues/3705
+			-- These servers will have to be manually set up with require("lspconfig").server_name.setup{}
+		end,
+	},
 }
