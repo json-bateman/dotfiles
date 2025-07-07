@@ -9,10 +9,23 @@ return {
 		end,
 	},
 
+	-- Lazily updates workspace libraries
 	{
-		-- ----------------------
-		-- Main LSP Configuration
-		-- ----------------------
+		"folke/lazydev.nvim",
+		ft = "lua", -- only load on lua files
+		opts = {
+			library = {
+				-- See the configuration section for more details
+				-- Load luvit types when the `vim.uv` word is found
+				{ path = "${3rd}/luv/library", words = { "vim%.uv" } },
+			},
+		},
+	},
+
+	-- ----------------------
+	-- Main LSP Configuration
+	-- ----------------------
+	{
 		"neovim/nvim-lspconfig",
 		dependencies = {
 			-- Automatically install LSPs and related tools to stdpath for Neovim
@@ -76,14 +89,14 @@ return {
 					map("grt", require("telescope.builtin").lsp_type_definitions, "[G]oto [T]ype Definition")
 
 					-- This function resolves a difference between neovim nightly (version 0.11) and stable (version 0.10)
-					---@return boolean
-					local function client_supports_method(client, method, bufnr)
-						if vim.fn.has("nvim-0.11") == 1 then
-							return client:supports_method(method, bufnr)
-						else
-							return client.supports_method(method, { bufnr = bufnr })
-						end
-					end
+					-- ---@return boolean
+					-- local function client_supports_method(client, method, bufnr)
+					-- 	if vim.fn.has("nvim-0.11") == 1 then
+					-- 		return client:supports_method(method, bufnr)
+					-- 	else
+					-- 		return client.supports_method(method, { bufnr = bufnr })
+					-- 	end
+					-- end
 
 					-- The following code creates a keymap to toggle inlay hints in your
 					-- code, if the language server you are using supports them
@@ -97,7 +110,6 @@ return {
 				end,
 			})
 
-			-- Diagnostic Config
 			-- See :help vim.diagnostic.Opts
 			vim.diagnostic.config({
 				severity_sort = true,
@@ -168,14 +180,21 @@ return {
 
 				templ = {},
 				gopls = {},
+
 				lua_ls = {
 					-- cmd = { ... },
 					-- filetypes = { ... },
 					-- capabilities = {},
 					settings = {
 						Lua = {
-							diagnostics = {
-								disable = { "missing-parameters", "missing-fields", "undefined-global" },
+							-- diagnostics = {
+							-- 	disable = { "missing-parameters", "missing-fields", "undefined-global" },
+							-- },
+							workspace = {
+								library = {
+									vim.env.VIMRUNTIME,
+									-- "/Users/jacktrusler/coding/vscode-wow-api/Annotations/Core",
+								},
 							},
 						},
 					},
