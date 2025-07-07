@@ -145,6 +145,28 @@ return {
 				-- rust_analyzer = {},
 				-- ts_ls = {},
 
+				html = {},
+				cssls = {},
+				tailwindcss = {
+					filetypes = {
+						"templ",
+						"html",
+						"css",
+						"javascript",
+						"typescript",
+						"javascriptreact",
+						"typescriptreact",
+					},
+					settings = {
+						tailwindCSS = {
+							includeLanguages = {
+								templ = "html",
+							},
+						},
+					},
+				},
+
+				templ = {},
 				gopls = {},
 				lua_ls = {
 					-- cmd = { ... },
@@ -177,8 +199,10 @@ return {
 			-- Installed LSPs are configured and enabled automatically with mason-lspconfig
 			-- The loop below is for overriding the default configuration of LSPs with the ones in the servers table
 			for server_name, config in pairs(servers) do
+				-- This is to auto-implement capabilities from blink.cmp, and merge them with any custom capabilities we've defined
 				config.capabilities = vim.tbl_deep_extend("force", {}, capabilities, config.capabilities or {})
 				vim.lsp.config(server_name, config)
+				vim.lsp.enable(server_name)
 			end
 
 			-- NOTE: Some servers may require an old setup until they are updated. For the full list refer here: https://github.com/neovim/nvim-lspconfig/issues/3705
