@@ -1,7 +1,7 @@
 # plugins
 plugins=(autojump virtualenv zsh-autosuggestions zsh-syntax-highlighting)
 export ZSH="/Users/jack/.oh-my-zsh"
-ZSH_THEME="af-magic"
+ZSH_THEME="robbyrussell"
 source $ZSH/oh-my-zsh.sh
 
 #---------
