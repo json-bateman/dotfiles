@@ -7,10 +7,15 @@ return {
 				lsp_format = "fallback",
 				timeout_ms = 500,
 			},
-			-- Templ and Html-lsp fight when saving a file. This disables html-lsp inside a templ file.
+			formatters = {
+				sql_formatter = {
+					prepend_args = { "--language", "tsql" }, -- or "mysql", "sqlite", etc.
+				},
+			},
 			formatters_by_ft = {
 				lua = { "stylua" },
 				rust = { "rustfmt" },
+				sql = { "sql_formatter" },
 				-- Conform will run the first available formatter
 				typescript = {
 					"deno_fmt",
