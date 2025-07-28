@@ -32,6 +32,7 @@ keymap("n", "<C-d>", "<C-d>zz", opts)
 keymap("n", "<C-u>", "<C-u>zz", opts)
 keymap("n", "<leader>cj", "<CMD>clearjumps<CR>", opts)
 keymap("c", "%%", "<C-R>=expand('%:h')<CR>", opts)
+keymap("n", "<leader><leader>b", "<CMD>w | %bd | e# | bd# <CR>", opts)
 
 -- Terminal Stuff
 -- keymap("t", "qq", "<C-\\><C-N>:q!<CR>", opts)
@@ -45,7 +46,7 @@ keymap("v", "<leader>y", '"+y', opts)
 keymap("n", "<leader>p", '"+p', opts)
 keymap("v", "<leader>p", '"+p', opts)
 -- Follow the change history of the current file
-keymap("n", "<leader>gh", "<CMD>Git log -p %<CR>", opts)
+keymap("n", "<leader>gh", "<CMD>G log -p %<CR>", opts)
 
 -- Temporary manual fold creation with zF, need this when foldmethod is not manual
 -- vim.keymap.set("v", "zF", function()
