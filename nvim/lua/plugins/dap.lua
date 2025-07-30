@@ -181,22 +181,6 @@ return {
 			dap.clear_breakpoints()
 		end)
 
-		--- Debugging Widgets ---
-		vim.keymap.set("n", "<space>dr", function()
-			require("dap_config").repl.open()
-		end)
-		vim.keymap.set({ "n", "v" }, "<space>dh", function()
-			require("dap.ui.widgets").hover()
-		end)
-		vim.keymap.set({ "n", "v" }, "<space>dp", function()
-			require("dap.ui.widgets").preview()
-		end)
-		vim.keymap.set("n", "<space>df", function()
-			widgets.centered_float(widgets.frames)
-		end)
-		vim.keymap.set("n", "<space>ds", function()
-			widgets.centered_float(widgets.scopes)
-		end)
 		--- End Debugging Session ---
 		keymap("n", "<m-0>", function()
 			dap.clear_breakpoints()

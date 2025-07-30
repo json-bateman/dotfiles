@@ -17,7 +17,7 @@
     Command      = "c"
 ]]
 
-local keymap = vim.api.nvim_set_keymap
+local keymap = vim.keymap.set
 local opts = { noremap = true, silent = true }
 
 keymap("n", "<leader>E", "<CMD>edit $MYVIMRC<CR>", opts)
@@ -31,8 +31,22 @@ keymap("n", "<leader>cj", "<CMD>clearjumps<CR>", opts)
 keymap("n", "<C-d>", "<C-d>zz", opts)
 keymap("n", "<C-u>", "<C-u>zz", opts)
 keymap("n", "<leader>cj", "<CMD>clearjumps<CR>", opts)
-keymap("c", "%%", "<C-R>=expand('%:h')<CR>", opts)
 keymap("n", "<leader><leader>b", "<CMD>w | %bd | e# | bd# <CR>", opts)
+
+keymap("c", "%%", "<C-R>=expand('%:h')<CR>", opts)
+
+keymap("n", "<leader>yo", function()
+	vim.ui.input({ prompt = "Command to yank output: " }, function(cmd)
+		if cmd and #cmd > 0 then
+			vim.cmd("redir @+")
+			vim.cmd("silent " .. cmd)
+			vim.cmd("redir END")
+			vim.notify("Output of :" .. cmd .. " copied to clipboard!", vim.log.levels.INFO)
+		else
+			vim.notify("No command entered.", vim.log.levels.WARN)
+		end
+	end)
+end, { desc = "Yank output of any Ex command to clipboard" })
 
 -- Terminal Stuff
 -- keymap("t", "qq", "<C-\\><C-N>:q!<CR>", opts)
