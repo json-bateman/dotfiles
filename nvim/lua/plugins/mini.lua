@@ -16,11 +16,7 @@ return {
 				return filename
 			end
 		end
-
-		-- Now call setup with any module-level options (or just {})
-		ms.setup({
-			-- any options, like use_icons = true
-		})
+		ms.setup({})
 	end,
 	version = false,
 }
