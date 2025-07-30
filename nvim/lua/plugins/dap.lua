@@ -145,9 +145,9 @@ return {
 				{
 					type = "go",
 					name = "launch project",
-					request = "launch",
+					request = "launch cmd",
 
-					program = "${workspaceFolder}",
+					program = "${workspaceFolder}/cmd",
 					cwd = "${workspaceFolder}",
 					-- args = {"-gcflags", "all=-N -l"},
 				},
