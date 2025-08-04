@@ -144,10 +144,10 @@ return {
 			dap_configurations = {
 				{
 					type = "go",
-					name = "launch project",
-					request = "launch cmd",
+					name = "Launch from cmd/main.go",
+					request = "launch",
 
-					program = "${workspaceFolder}/cmd",
+					program = "${workspaceFolder}/cmd/main.go",
 					cwd = "${workspaceFolder}",
 					-- args = {"-gcflags", "all=-N -l"},
 				},
