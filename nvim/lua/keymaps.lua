@@ -49,11 +49,12 @@ keymap("n", "<leader>yo", function()
 end, { desc = "Yank output of any Ex command to clipboard" })
 
 -- Terminal Stuff
--- keymap("t", "qq", "<C-\\><C-N>:q!<CR>", opts)
--- keymap("t", "<leader><Esc>", "<C-\\><C-N>", opts)
+keymap("n", "tt", "<CMD>:terminal<CR>a", opts)
+keymap("t", "qq", "<C-\\><C-N>:q!<CR>", opts)
+keymap("t", "<Esc>", "<C-\\><C-N>", opts)
 
 -- Tab Stuff
-keymap("n", "<leader>tt", "<CMD>tabnew<CR>", opts)
+keymap("n", "<leader>tn", "<CMD>tabnew<CR>", opts)
 keymap("n", "<leader>tc", "<CMD>tabclose<CR>", opts)
 keymap("n", "<leader>to", "<CMD>tabonly<CR>", opts)
 keymap("v", "<leader>y", '"+y', opts)
