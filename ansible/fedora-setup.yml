@@ -1,6 +1,7 @@
 - hosts: localhost
   connection: local
-  gather_facts: false
+  gather_facts: false # Don't need any system facts (OS info, IP addresses etc.)
+  become: false
 
   vars:
     user: "{{lookup('env', 'USER') }}"
@@ -9,10 +10,10 @@
   tasks:
 
     - name: Install common packages
+      become: true # becomes sudo user for admin tasks (i.e. installing)
       package:
         name:
           - golang
-          - git
           - nodejs
           - neovim
           - tree
@@ -26,12 +27,30 @@
           - ripgrep
           - fzf
           - vim
+          - zsh-syntax-highlighting
+          - zsh-autosuggestions
         state: present
       tags: [soy]
 
+    - name: Install oh-my-zsh (user mode, non-interactive)
+      shell: | # Install oh-my-zsh but don't change shell
+        export RUNZSH=no
+        export CHSH=no
+        if [ ! -d "$HOME/.oh-my-zsh" ]; then
+          sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+        fi
+      args:
+        executable: /bin/bash
+      tags: [zsh]
+
+    - name: Install mise-en-place # Dev environment setup tool for multiple languages
+      shell: |
+        curl https://mise.run | sh
+      tags: [devtools, mise]
+
     - name: Create folders
       file:
-        path: "{{ item | expanduser }}"
+        path: "{{ item | expanduser }}" # expanduser turns ~ into /home/jack
         state: directory
         mode: '0755'
       loop:
@@ -51,7 +70,7 @@
         - { src: ".vimrc", dest: ".vimrc" }
         - { src: ".gitconfig", dest: ".gitconfig" }
         - { src: ".tmux.conf", dest: ".tmux.conf" }
-        - { src: "_fedora/.zshrc", dest: ".zshrc" }
+        - { src: "zsh/linux-zshrc", dest: ".zshrc" }
       tags: [dotfiles]
 
     - name: Symlink Neovim config
@@ -62,23 +81,12 @@
         force: true
       tags: [nvim, dotfiles]
 
-    - name: Install oh-my-zsh (user mode, non-interactive)
-      shell: |
-        export RUNZSH=no
-        export CHSH=no
-        if [ ! -d "$HOME/.oh-my-zsh" ]; then
-          sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-        fi
-      args:
-        executable: /bin/bash
-      tags: [zsh]
-
     - name: Update locate database
+      become: true
       command: updatedb
       tags: [locate]
-      when: locate_database_needed | default(false)
 
-    - name: Change default shell to zsh for user Jack
+    - name: Change default shell to zsh for user - {{ user }}
       become: true
       user:
         name: "{{ user }}"
@@ -92,14 +100,19 @@
         executable: npm
       tags: [node, yarn]
 
-    - name: Add wezterm COPR repository
-      command: dnf copr enable -y wezfurlong/wezterm
-      args:
-        creates: /etc/yum.repos.d/_copr:copr.fedorainfracloud.org:wezfurlong:wezterm.repo
-      tags: [wezterm]
+    - name: Add lazygit and wezterm COPR repository
+      become: true
+      command: dnf copr enable -y {{ item }}
+      loop:
+        - dejan/lazygit
+        - wezfurlong/wezterm-nightly
+      tags: [copr]
 
-    - name: Install wezterm
+    - name: Install copr packages 
+      become: true
       package:
-        name: wezterm
+        name: 
+          - lazygit 
+          - wezterm 
         state: present
       tags: [wezterm]
