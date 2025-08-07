@@ -16,7 +16,7 @@
     - name: make a file
       command: touch ansibleMadeThis
       become: yes
-- name: Local stuff
+- name: Local tasks
   hosts: localhost
   connection: local
   tasks:
@@ -24,12 +24,6 @@
       shell: ls -lrt
       register: output
     - debug: var=output.stdout_lines
-  tags:
-  - mac
-- name: testing more local stuff
-  hosts: localhost
-  connection: local
-  tasks:
     - name: make a file
       shell: touch afile
   tags:
