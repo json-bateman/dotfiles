@@ -8,14 +8,14 @@ return {
 				timeout_ms = 500,
 			},
 			formatters = {
-				sql_formatter = {
-					prepend_args = { "--language", "tsql" }, -- or "mysql", "sqlite", etc.
+				sqlfluff = {
+					args = { "format", "--dialect=tsql", "-" }, -- or "mysql", "sqlite", etc.
 				},
 			},
 			formatters_by_ft = {
 				lua = { "stylua" },
 				rust = { "rustfmt" },
-				sql = { "sql_formatter" },
+				sql = { "sqlfluff" },
 				-- Conform will run the first available formatter
 				typescript = {
 					"deno_fmt",
