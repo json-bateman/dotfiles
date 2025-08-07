@@ -1,42 +1,127 @@
-# change become_user based on the username of the computer
 - hosts: localhost
-  become: true
+  gather_facts: false
+  become: false
+
+  vars:
+    user: "{{ lookup('env', 'USER') }}"
+    home: "/Users/{{ user }}"
+    dotfiles_dir: "{{ home }}/dotfiles"
+
   tasks:
-  - name: Start Locate Database
-    command: "launchctl load -w /System/Library/LaunchDaemons/com.apple.locate.plist"
-    tags: 
-      - locate
-  - name: Create Folders
-    file:
-      path: "{{item}}"
-      state: directory
-    loop:
-      - "~/.cache/"
-      - "~/Coding/"
-    tags:
-      - dotfiles
-  - name: copy all dotfiles
-    become_user: jacktrusler
-    shell: | 
-      cp ~/dotfiles/.vimrc ~/dotfiles/.gitconfig ~/dotfiles/.tmux.conf ~/.
-    tags: 
-      - move 
-  - name: Oh-my-zsh
-    shell: 
-      cmd: curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
-    become_user: jacktrusler
-    tags: 
-      - soy
-  - name: Soy install
-    command: "brew install node nvim tree wget autojump tmux ripgrep fzf"
-    become_user: jacktrusler
-    tags: 
-      - soy
-  - name: Nvim configure 
-    become_user: jacktrusler
-    command: "mkdir -p ~/.config && mv ~/dotfiles/nvim ~/.config"
-    tags: 
-      - nvim
-  - name: Applications
-    become_user: jacktrusler
-    command: "brew install spotify google-chrome telegram docker"
+
+    - name: Check if Homebrew is installed
+      stat:
+        path: /opt/homebrew/bin/brew
+      register: homebrew_check
+
+    - name: Install Homebrew if not present (Apple Silicon)
+      shell: |
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+      args:
+        executable: /bin/bash
+      when: not homebrew_check.stat.exists
+      tags: [homebrew]
+
+    - name: Install core CLI packages with Homebrew
+      community.general.homebrew:
+        name:
+          - git
+          - node
+          - go
+          - neovim
+          - tree
+          - wget
+          - autojump
+          - tmux
+          - zsh
+          - gcc
+          - clang
+          - g++
+          - ripgrep
+          - fzf
+          - vim
+          - zsh-syntax-highlighting
+          - zsh-autosuggestions
+          - lazygit
+        state: present
+      tags: [soy, homebrew]
+
+    - name: Install yarn globally
+      npm:
+        name: yarn
+        global: yes
+        executable: npm
+      tags: [node, yarn]
+
+    - name: Install oh-my-zsh (user mode, non-interactive)
+      shell: |
+        export RUNZSH=no
+        export CHSH=no
+        if [ ! -d "$HOME/.oh-my-zsh" ]; then
+          sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+        fi
+      args:
+        executable: /bin/bash
+      tags: [zsh]
+
+    - name: Install mise-en-place
+      shell: |
+        curl https://mise.run | sh
+      tags: [devtools, mise]
+
+    - name: Create folders
+      file:
+        path: "{{ item | expanduser }}"
+        state: directory
+        mode: '0755'
+        owner: "{{ user }}"
+        group: "{{ user }}"
+      loop:
+        - ~/.cache
+        - ~/coding
+        - ~/.config
+      tags: [dotfiles]
+
+    - name: Symlink top-level dotfiles
+      file:
+        src: "{{ dotfiles_dir }}/{{ item.src }}"
+        dest: "{{ home }}/{{ item.dest }}"
+        state: link
+        force: true
+        owner: "{{ user }}"
+        group: "{{ user }}"
+      loop:
+        - { src: ".wezterm.lua", dest: ".wezterm.lua" }
+        - { src: ".vimrc", dest: ".vimrc" }
+        - { src: ".gitconfig", dest: ".gitconfig" }
+        - { src: ".tmux.conf", dest: ".tmux.conf" }
+        - { src: "zsh/linux-zshrc", dest: ".zshrc" }
+      tags: [dotfiles]
+
+    - name: Symlink Neovim config
+      file:
+        src: "{{ dotfiles_dir }}/nvim"
+        dest: "{{ home }}/.config/nvim"
+        state: link
+        force: true
+        owner: "{{ user }}"
+        group: "{{ user }}"
+      tags: [nvim, dotfiles]
+
+    - name: Change default shell to zsh for user - {{ user }}
+      user:
+        name: "{{ user }}"
+        shell: /bin/zsh
+      tags: [zsh]
+
+    - name: Install Homebrew Cask apps
+      community.general.homebrew_cask:
+        name:
+          - wezterm
+          - spotify
+          - google-chrome
+          - telegram
+          - docker
+        state: present
+      tags: [cask, apps]
+
