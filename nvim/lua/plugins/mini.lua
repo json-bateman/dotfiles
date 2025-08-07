@@ -9,7 +9,7 @@ return {
 		-- Override section_filename *before* setup!
 		ms.section_filename = function()
 			local filename = vim.fn.pathshorten(vim.fn.expand("%:~:."))
-			local maxlen = 20
+			local maxlen = 50
 			if #filename > maxlen then
 				return "…" .. filename:sub(-maxlen + 1)
 			else
