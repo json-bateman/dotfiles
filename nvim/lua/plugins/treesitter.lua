@@ -41,7 +41,7 @@ return {
 				"vim",
 				"vimdoc",
 				"luadoc",
-				"golang",
+				"go",
 				"javascript",
 				"typescript",
 			},
