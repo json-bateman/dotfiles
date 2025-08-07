@@ -47,6 +47,7 @@
         state: link
         force: true
       loop:
+        - { src: ".wezterm.lua", dest: ".wezterm.lua" }
         - { src: ".vimrc", dest: ".vimrc" }
         - { src: ".gitconfig", dest: ".gitconfig" }
         - { src: ".tmux.conf", dest: ".tmux.conf" }
@@ -72,7 +73,6 @@
         executable: /bin/bash
       tags: [zsh]
 
-    # Optional: If you still want to use `updatedb`, include this task.
     - name: Update locate database
       command: updatedb
       tags: [locate]
@@ -84,3 +84,22 @@
         name: "{{ user }}"
         shell: /bin/zsh
       tags: [zsh]
+
+    - name: Install yarn
+      npm:
+        name: yarn
+        global: yes
+        executable: npm
+      tags: [node, yarn]
+
+    - name: Add wezterm COPR repository
+      command: dnf copr enable -y wezfurlong/wezterm
+      args:
+        creates: /etc/yum.repos.d/_copr:copr.fedorainfracloud.org:wezfurlong:wezterm.repo
+      tags: [wezterm]
+
+    - name: Install wezterm
+      package:
+        name: wezterm
+        state: present
+      tags: [wezterm]
