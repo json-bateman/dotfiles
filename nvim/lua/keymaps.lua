@@ -22,19 +22,35 @@ local opts = { noremap = true, silent = true }
 
 keymap("n", "<leader>E", "<CMD>edit $MYVIMRC<CR>", opts)
 keymap("n", "<leader>W", "<CMD>w<CR><CMD>so%<CR>", opts)
--- Netrw is disabled when Oil.nvim plugin is intalled
--- keymap("n", "<leader>/", "<CMD>Ex<CR>", opts)
+
 keymap("n", "s", "<c-w>", opts)
 keymap("n", "<leader>cc", "<CMD>cclose<CR>", opts)
 keymap("n", "<leader>co", "<CMD>copen<CR>", opts)
-keymap("n", "<leader>cj", "<CMD>clearjumps<CR>", opts)
 keymap("n", "<C-d>", "<C-d>zz", opts)
 keymap("n", "<C-u>", "<C-u>zz", opts)
 keymap("n", "<leader>cj", "<CMD>clearjumps<CR>", opts)
-keymap("n", "<leader><leader>b", "<CMD>w | %bd | e# | bd# <CR>", opts)
 
 keymap("c", "%%", "<C-R>=expand('%:h')<CR>", opts)
 
+-- Terminal Stuff
+keymap("n", "tt", "<CMD>:terminal<CR>a", opts)
+keymap("t", "qq", "<C-\\><C-N>:q!<CR>", opts)
+keymap("t", "<Esc>", "<C-\\><C-N>", opts)
+
+-- Tab Stuff
+keymap("n", "<leader>tn", "<CMD>tabnew<CR>", opts)
+keymap("n", "<leader>tc", "<CMD>tabclose<CR>", opts)
+keymap("n", "<leader>to", "<CMD>tabonly<CR>", opts)
+
+-- Copy / Paste outside nvim
+keymap("v", "<leader>y", '"+y', opts)
+keymap("n", "<leader>p", '"+p', opts)
+keymap("v", "<leader>p", '"+p', opts)
+
+keymap("n", "gs", ":%s~~", opts)
+keymap("v", "gs", ":s~~", opts)
+
+-- Custom Functions
 keymap("n", "<leader>yo", function()
 	vim.ui.input({ prompt = "Command to yank output: " }, function(cmd)
 		if cmd and #cmd > 0 then
@@ -48,28 +64,22 @@ keymap("n", "<leader>yo", function()
 	end)
 end, { desc = "Yank output of any Ex command to clipboard" })
 
--- Terminal Stuff
-keymap("n", "tt", "<CMD>:terminal<CR>a", opts)
-keymap("t", "qq", "<C-\\><C-N>:q!<CR>", opts)
-keymap("t", "<Esc>", "<C-\\><C-N>", opts)
+keymap("n", "<leader>bo", function()
+	local target = vim.api.nvim_get_current_buf()
+	local last = vim.fn.bufnr("$")
+	local delete_count = 0
 
--- Tab Stuff
-keymap("n", "<leader>tn", "<CMD>tabnew<CR>", opts)
-keymap("n", "<leader>tc", "<CMD>tabclose<CR>", opts)
-keymap("n", "<leader>to", "<CMD>tabonly<CR>", opts)
-keymap("v", "<leader>y", '"+y', opts)
-keymap("n", "<leader>p", '"+p', opts)
-keymap("v", "<leader>p", '"+p', opts)
--- Follow the change history of the current file
-keymap("n", "<leader>gh", "<CMD>G log -p %<CR>", opts)
+	for n = 1, last do
+		if n ~= target and vim.fn.buflisted(n) == 1 then
+			vim.api.nvim_echo({
+				{ "No write since last change for buffer " .. n .. " write all and try again", "ErrorMsg" },
+			}, false, {})
+		end
+	end
 
--- Temporary manual fold creation with zF, need this when foldmethod is not manual
--- vim.keymap.set("v", "zF", function()
--- 	local old_foldmethod = vim.wo.foldmethod
--- 	vim.wo.foldmethod = "manual"
--- 	vim.cmd("normal! zF")
--- 	vim.wo.foldmethod = old_foldmethod -- Revert to the previous method
--- end, { silent = true, desc = "Temporary manual fold creation" })
-
-keymap("n", "gs", ":%s~~", opts)
-keymap("v", "gs", ":s~~", opts)
+	if delete_count == 1 then
+		vim.notify("1 buffer deleted")
+	elseif delete_count > 1 then
+		vim.notify(delete_count .. " buffers deleted")
+	end
+end, { desc = "Buffer: Keep current buffer only." })
