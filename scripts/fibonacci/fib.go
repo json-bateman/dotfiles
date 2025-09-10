@@ -33,13 +33,13 @@ func fibonacciArray(n int) ([]int, error) {
 		return nil, errors.New(p.Sprintf("must be a number less than %d", MAX))
 	}
 
-	seq := make([]int, n+1)
+	seq := make([]int, n)
 	seq[0] = 0
 	seq[1] = 1
 	if n == 1 {
 		return seq, nil
 	}
-	for i := 2; i <= n; i++ {
+	for i := 2; i <= n-1; i++ {
 		seq[i] = seq[i-1] + seq[i-2]
 	}
 	return seq, nil
