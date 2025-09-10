@@ -154,7 +154,7 @@ return {
 			},
 		})
 
-		dap.set_log_level("DEBUG")
+		dap.set_log_level("TRACE")
 
 		--- Debugging Keymaps ---
 		local keymap = vim.keymap.set
