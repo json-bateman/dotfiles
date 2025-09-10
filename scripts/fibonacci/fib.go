@@ -33,21 +33,14 @@ func fibonacciArray(n int) ([]int, error) {
 		return nil, errors.New(p.Sprintf("must be a number less than %d", MAX))
 	}
 
-	seq := make([]int, n)
-	if n == 1 {
-		seq[0] = 0
-		return seq, nil
-	}
-	if n == 2 {
-		seq[0] = 0
-		seq[1] = 1
-		return seq, nil
-	}
-
+	seq := make([]int, n+1)
 	seq[0] = 0
 	seq[1] = 1
-	for i := 2; i < n; i++ {
+	if n == 1 {
+		return seq, nil
+	}
+	for i := 2; i <= n; i++ {
 		seq[i] = seq[i-1] + seq[i-2]
 	}
-	return seq[:n], nil
+	return seq, nil
 }
