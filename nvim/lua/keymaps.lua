@@ -65,15 +65,17 @@ keymap("n", "<leader>yo", function()
 end, { desc = "Yank output of any Ex command to clipboard" })
 
 keymap("n", "<leader>bo", function()
-	local target = vim.api.nvim_get_current_buf()
+	local current_buf = vim.api.nvim_get_current_buf()
 	local last = vim.fn.bufnr("$")
 	local delete_count = 0
 
+	-- Delete every buffer but the current one
 	for n = 1, last do
-		if n ~= target and vim.fn.buflisted(n) == 1 then
-			vim.api.nvim_echo({
-				{ "No write since last change for buffer " .. n .. " write all and try again", "ErrorMsg" },
-			}, false, {})
+		if n ~= current_buf and vim.fn.buflisted(n) == 1 then
+			local ok = pcall(vim.api.nvim_buf_delete, n, { force = true })
+			if ok and vim.fn.buflisted(n) == 0 then
+				delete_count = delete_count + 1
+			end
 		end
 	end
 
