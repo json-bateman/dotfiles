@@ -1,0 +1,208 @@
+# Before running this file install the community.general collection:
+# ansible-galaxy collection install community.general
+
+- hosts: localhost
+  connection: local
+  gather_facts: true
+  become: false
+
+  vars:
+    user: "{{ lookup('env', 'USER') }}"
+    home: "/home/{{ user }}"
+    dotfiles_dir: "{{ home }}/dotfiles"
+    nvim_src_dir: /usr/local/src/neovim     # <— moved back to /usr/local
+    nvim_branch: master
+    copr_repos:
+      - dejan/lazygit
+
+  tasks:
+
+    - name: Ensure EPEL repository is enabled (noop on Fedora)
+      become: true
+      package:
+        name: epel-release
+        state: present
+      when: ansible_facts['distribution'] in ['CentOS Stream', 'RedHat', 'Rocky', 'AlmaLinux']
+      tags: [setup]
+
+    - name: Install DNF plugins for COPR support
+      become: true
+      package:
+        name: dnf-plugins-core
+        state: present
+      tags: [setup]
+
+    - name: Install common packages
+      become: true
+      package:
+        name:
+          - golang
+          - tree
+          - wget
+          - nodejs
+          - tmux
+          - zsh
+          - gcc
+          - clang
+          - gcc-c++
+          - ripgrep
+          - fzf
+          - vim
+        state: present
+      tags: [soy]
+
+    - name: Install oh-my-zsh (user mode, non-interactive)
+      shell: |
+        export RUNZSH=no CHSH=no
+        if [ ! -d "$HOME/.oh-my-zsh" ]; then
+          sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+        fi
+      args: { executable: /bin/bash }
+      tags: [zsh]
+
+    - name: Install mise-en-place
+      shell: curl https://mise.run | sh
+      tags: [devtools, mise]
+
+    - name: Create folders
+      file:
+        path: "{{ item | expanduser }}"
+        state: directory
+        mode: '0755'
+      loop:
+        - ~/.cache
+        - ~/coding
+        - ~/.config
+      tags: [dotfiles]
+
+    - name: Symlink top-level dotfiles
+      file:
+        src: "{{ dotfiles_dir }}/{{ item.src }}"
+        dest: "{{ home }}/{{ item.dest }}"
+        state: link
+        force: true
+      loop:
+        - { src: ".wezterm.lua", dest: ".wezterm.lua" }
+        - { src: ".vimrc", dest: ".vimrc" }
+        - { src: ".gitconfig", dest: ".gitconfig" }
+        - { src: ".tmux.conf", dest: ".tmux.conf" }
+        - { src: "zsh/linux-zshrc", dest: ".zshrc" }
+      tags: [dotfiles]
+
+    - name: Symlink Neovim config
+      file:
+        src: "{{ dotfiles_dir }}/nvim"
+        dest: "{{ home }}/.config/nvim"
+        state: link
+        force: true
+      tags: [nvim, dotfiles]
+
+    - name: Update locate database
+      become: true
+      command: updatedb
+      tags: [locate]
+
+    - name: Change default shell to zsh for user - {{ user }}
+      become: true
+      user:
+        name: "{{ user }}"
+        shell: /bin/zsh
+      tags: [zsh]
+
+    - name: Install yarn (via npm)
+      become: true
+      community.general.npm:
+        name: yarn
+        global: yes
+        executable: npm
+      tags: [node, yarn]
+
+    - name: Enable COPR repos
+      become: true
+      ansible.builtin.command: dnf copr enable -y {{ item }}
+      loop: "{{ copr_repos }}"
+      tags: [copr, nvim]
+
+    - name: Install COPR packages
+      become: true
+      package:
+        name:
+          - lazygit
+        state: present
+      tags: [copr]
+
+    - name: Swap Caps Lock and Escape (GNOME via gsettings, persistent in dconf)
+      shell: gsettings set org.gnome.desktop.input-sources xkb-options "['caps:swapescape']"
+      args: { executable: /bin/bash }
+      tags: [desktop, caps]
+
+    # --- Build Neovim from source (nightly/master) ---
+
+    - name: Remove distro neovim to avoid path conflicts
+      become: true
+      ansible.builtin.dnf:
+        name: neovim
+        state: absent
+      tags: [nvim]
+
+    - name: Install build dependencies for Neovim (CentOS Stream & Fedora)
+      become: true
+      ansible.builtin.dnf:
+        name:
+          - git
+          - cmake
+          # - ninja          # <-- required generator, couldn't be found on centOS-10, built fine anyway?
+          - gcc
+          - gcc-c++
+          - make
+          - libtool
+          - autoconf
+          - automake
+          - gettext
+          - patch
+          - unzip
+          - curl
+          - pkgconfig
+        state: present
+      tags: [nvim, build]
+
+    - name: Ensure /usr/local/src exists
+      become: true
+      file:
+        path: /usr/local/src
+        state: directory
+        mode: "0755"
+      tags: [nvim, build]
+
+    - name: Clone Neovim source into /usr/local/src
+      become: true
+      ansible.builtin.git:
+        repo: https://github.com/neovim/neovim.git
+        dest: "{{ nvim_src_dir }}"
+        version: "{{ nvim_branch }}"
+        depth: 1
+        update: yes
+      tags: [nvim, build]
+
+    - name: Build Neovim dependencies (.deps)
+      become: true
+      ansible.builtin.command: make CMAKE_BUILD_TYPE=Release deps -j"{{ ansible_processor_nproc | default(2) }}"
+      args:
+        chdir: "{{ nvim_src_dir }}"
+        creates: "{{ nvim_src_dir }}/.deps/usr"
+      tags: [nvim, build]
+
+    - name: Build Neovim
+      become: true
+      ansible.builtin.command: make CMAKE_BUILD_TYPE=Release -j"{{ ansible_processor_nproc | default(2) }}"
+      args:
+        chdir: "{{ nvim_src_dir }}"
+        creates: "{{ nvim_src_dir }}/build/bin/nvim"
+      tags: [nvim, build]
+
+    - name: Install Neovim to /usr/local
+      become: true
+      ansible.builtin.command: make install
+      args:
+        chdir: "{{ nvim_src_dir }}"
+      tags: [nvim, build]
