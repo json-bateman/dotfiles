@@ -1,7 +1,8 @@
 # Before running this file install the community.general collection:
 # ansible-galaxy collection install community.general
-
-- hosts: localhost
+---
+- name: Setup Fedora / CentOS / Redhat on first install
+  hosts: localhost
   connection: local
   gather_facts: true
   become: false
