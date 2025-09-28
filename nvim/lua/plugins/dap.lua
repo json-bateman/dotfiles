@@ -149,7 +149,14 @@ return {
 
 					program = "${workspaceFolder}/cmd/main.go",
 					cwd = "${workspaceFolder}",
-					-- args = {"-gcflags", "all=-N -l"},
+				},
+				{
+					type = "go",
+					name = "launch from Workspace Folder ./main.go",
+					request = "launch",
+
+					program = "${workspaceFolder}/main.go",
+					cwd = "${workspaceFolder}",
 				},
 			},
 		})
