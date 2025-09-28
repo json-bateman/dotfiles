@@ -52,14 +52,7 @@ return {
 		)
 		vim.keymap.set("n", "<leader>sr", ivyPicker("resume"), { desc = "[S]earch [R]esume" })
 		vim.keymap.set("n", "<leader>s.", ivyPicker("oldfiles"), { desc = '[S]earch Recent Files ("." for repeat)' })
-		vim.keymap.set("n", "<leader><leader>", ivyPicker("buffers"), { desc = "[ ] Find existing buffers" })
-
-		vim.keymap.set("n", "<leader>s/", function()
-			builtin.live_grep({
-				grep_open_files = true,
-				prompt_title = "Live Grep in Open Files",
-			})
-		end, { desc = "[S]earch [/] in Open Files" })
+		vim.keymap.set("n", "<leader>sb", ivyPicker("buffers"), { desc = "[ ] Find existing buffers" })
 
 		vim.keymap.set(
 			"n",
