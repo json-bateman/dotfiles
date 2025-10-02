@@ -1,9 +1,0 @@
-[allservers]
-root@jacktrusler.com
-root@jsonbateman.com
-
-[centOS9]
-root@jsonbateman.com
-
-[freebsd]
-root@jacktrusler.com
