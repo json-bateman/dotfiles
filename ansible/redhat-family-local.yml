@@ -11,7 +11,7 @@
     user: "{{ lookup('env', 'USER') }}"
     home: "/home/{{ user }}"
     dotfiles_dir: "{{ home }}/dotfiles"
-    nvim_src_dir: /usr/local/src/neovim     # <— moved back to /usr/local
+    nvim_src_dir: /usr/local/src/neovim
     nvim_branch: master
     copr_repos:
       - dejan/lazygit
