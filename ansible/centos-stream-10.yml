@@ -1,0 +1,62 @@
+---
+- name: Minimal CentOS Stream 10 bootstrap
+  hosts: docker
+  gather_facts: true
+  become: true
+
+  vars:
+    enable_copr_extras: true
+    copr_repos:
+      - dejan/lazygit
+    base_packages:
+      - git
+      - curl
+      - tmux
+      - ripgrep
+      - fzf
+      - nodejs
+      - unzip
+      - wget
+      - gcc
+      - jq
+      - gcc-c++
+      - make
+      - pkgconfig
+      - neovim
+
+  pre_tasks:
+    - name: Ensure dnf-plugins-core is present
+      ansible.builtin.dnf:
+        name: dnf-plugins-core
+        state: present
+
+    - name: Enable CRB (CodeReady Plugins, needed for some EPEL Packages)
+      community.general.dnf_config_manager:
+        name: crb
+        state: enabled
+
+    - name: Install EPEL (Extra Packages for Enterprise Linux)
+      ansible.builtin.dnf:
+        name:
+          - epel-release
+        state: present
+
+  tasks:
+    - name: Install base packages
+      ansible.builtin.dnf:
+        name: "{{ base_packages }}"
+        state: present
+
+    - name: (Optional) Enable COPR repos
+      community.general.copr:
+        name: "{{ item }}"
+        state: enabled
+      loop: "{{ copr_repos }}"
+      when: enable_copr_extras | bool
+
+    - name: (Optional) Install COPR packages
+      ansible.builtin.dnf:
+        name:
+          - lazygit
+        state: present
+      when: enable_copr_extras | bool
