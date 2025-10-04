@@ -1,7 +1,7 @@
 ---
 
 - name: Install Docker on CentOS Stream 10
-  hosts: localhost
+  hosts: kbitson 
   become: true # Run tasks with sudo, use ansible-playbook <play> -K
 
   vars:

@@ -11,7 +11,6 @@ source $ZSH/oh-my-zsh.sh
 alias tkS='tmux kill-server'
 alias tks='tmux kill-session'
 alias tms='tmux-sessionizer'
-alias emacs='emacs -nw' # Opens emacs in current terminal instead of standalone program
 alias f='cd $(fd --type directory | fzf)' # Jump into directory selected using fzf
 alias yd='vercel env pull && yarn dev'
 alias lg='lazygit'
@@ -62,9 +61,6 @@ if [[ ! "$PATH" == */opt/homebrew/opt/fzf/bin* ]]; then
 fi
 
 export PATH="/opt/homebrew/opt/lua@5.3/bin:$PATH"
-
-# [ -s ~/.luaver/luaver ] && . ~/.luaver/luaver 
-# [ -s ~/.luaver/completions/luaver.bash ] && . ~/.luaver/completions/luaver.bash
 
 # --------------------------
 # Options
