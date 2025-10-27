@@ -9,7 +9,7 @@ return {
 			},
 			formatters = {
 				sqlfluff = {
-					args = { "format", "--dialect=tsql", "-" }, -- or "mysql", "sqlite", etc.
+					args = { "format", "--dialect=sqlite", "-" }, -- or "mysql", "sqlite", etc.
 				},
 			},
 			formatters_by_ft = {

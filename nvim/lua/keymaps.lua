@@ -33,12 +33,12 @@ keymap("n", "<leader>cj", "<CMD>clearjumps<CR>", opts)
 keymap("c", "%%", "<C-R>=expand('%:h')<CR>", opts)
 
 -- Terminal Stuff
-keymap("n", "tt", "<CMD>:terminal<CR>a", opts)
+keymap("n", "term", "<CMD>:terminal<CR>a", opts)
 keymap("t", "qq", "<C-\\><C-N>:q!<CR>", opts)
 keymap("t", "<Esc>", "<C-\\><C-N>", opts)
 
 -- Tab Stuff
-keymap("n", "<leader>tn", "<CMD>tabnew<CR>", opts)
+keymap("n", "<leader>tt", "<CMD>tabnew<CR>", opts)
 keymap("n", "<leader>tc", "<CMD>tabclose<CR>", opts)
 keymap("n", "<leader>to", "<CMD>tabonly<CR>", opts)
 
