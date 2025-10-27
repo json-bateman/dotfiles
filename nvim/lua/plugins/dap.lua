@@ -152,6 +152,22 @@ return {
 				},
 				{
 					type = "go",
+					name = "Launch from cmd/web/main.go",
+					request = "launch",
+
+					program = "${workspaceFolder}/cmd/web/main.go",
+					cwd = "${workspaceFolder}",
+				},
+				{
+					type = "go",
+					name = "Launch from cmd/web/build/main.go",
+					request = "launch",
+
+					program = "${workspaceFolder}/cmd/web/build/main.go",
+					cwd = "${workspaceFolder}",
+				},
+				{
+					type = "go",
 					name = "launch from Workspace Folder ./main.go",
 					request = "launch",
 
