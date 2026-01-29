@@ -169,6 +169,7 @@ return {
 				-- rust_analyzer = {},
 				-- ts_ls = {},
 
+				svelte = {},
 				pyright = {},
 				html = {},
 				cssls = {},
@@ -194,7 +195,7 @@ return {
 					},
 				},
 				jsonls = {},
-				sqls = {},
+				-- sqls = {},
 				tailwindcss = {
 					filetypes = {
 						"templ",

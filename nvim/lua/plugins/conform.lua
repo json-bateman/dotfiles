@@ -5,13 +5,13 @@ return {
 			log_level = vim.log.levels.DEBUG,
 			format_on_save = {
 				lsp_format = "fallback",
-				timeout_ms = 500,
+				timeout_ms = 4000,
 			},
-			formatters = {
-				sqlfluff = {
-					args = { "format", "--dialect=sqlite", "-" }, -- or "mysql", "sqlite", etc.
-				},
-			},
+			-- formatters = {
+			-- 	sqlfluff = {
+			-- 		args = { "format", "--dialect=sqlite", "-" }, -- or "mysql", "sqlite", etc.
+			-- 	},
+			-- },
 			formatters_by_ft = {
 				lua = { "stylua" },
 				rust = { "rustfmt" },
