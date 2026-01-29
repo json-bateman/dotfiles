@@ -33,6 +33,7 @@ return { -- Autocompletion
 	},
 
 	opts = {
+
 		keymap = {
 			-- 'default' (recommended) for mappings similar to built-in completions
 			--   <c-y> to accept ([y]es) the completion.
@@ -75,9 +76,13 @@ return { -- Autocompletion
 		},
 
 		sources = {
-			default = { "lsp", "path", "snippets", "lazydev" },
+			default = { "lsp", "path", "snippets", "lazydev", "buffer" },
+			per_filetype = {
+				sql = { "snippets", "dadbod", "buffer" }, -- Add 'dadbod' source for SQL filetypes
+			},
 			providers = {
 				lazydev = { module = "lazydev.integrations.blink", score_offset = 100 },
+				dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" }, -- Define the Dadbod provider
 			},
 		},
 

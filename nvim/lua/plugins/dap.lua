@@ -41,7 +41,6 @@ return {
 	},
 	config = function()
 		local dap = require("dap")
-		local widgets = require("dap.ui.widgets")
 
 		local ok, dapui = pcall(require, "dapui")
 		if not ok then
