@@ -235,3 +235,9 @@ vim.cmd([[
 
 -- Link JSX tags to the highlight group
 -- vim.api.nvim_set_hl(0, "@tag", { link = "MyJSXElement" })
+
+--Neotree stuff
+-- vim.api.nvim_set_hl(0, "NeoTreeGitAdded", { fg = "#b8bb26" }) -- gruvbox dark green
+vim.api.nvim_set_hl(0, "NeoTreeGitModified", { fg = "#fe8019" }) -- gruvbox dark orange
+vim.api.nvim_set_hl(0, "NeoTreeGitDeleted", { fg = "#fb4934" }) -- gruvbox dark red
+vim.api.nvim_set_hl(0, "NeoTreeGitUntracked", { fg = "#fabd2f" }) -- gruvbox dark yellow
