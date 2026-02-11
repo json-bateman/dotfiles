@@ -70,44 +70,8 @@ return {
 
 		for _, language in ipairs({ "typescript", "javascript" }) do
 			require("dap").configurations[language] = {
-				{
-					request = "launch",
-					name = "Deno launch main.ts",
-					type = "pwa-node",
-					-- Might need to adjust this depending on what you name your app's entrypoint
-					program = "${workspaceFolder}/main.ts",
-					cwd = "${workspaceFolder}",
-					runtimeExecutable = vim.fn.getenv("HOME") .. "/.deno/bin/deno",
-					runtimeArgs = { "run", "--inspect-wait", "--allow-all" },
-					attachSimplePort = 9229,
-				},
-				{
-					request = "launch",
-					name = "Deno launch server.ts",
-					type = "pwa-node",
-					-- Might need to adjust this depending on what you name your app's entrypoint
-					program = "${workspaceFolder}/server.ts",
-					cwd = "${workspaceFolder}",
-					runtimeExecutable = vim.fn.getenv("HOME") .. "/.deno/bin/deno",
-					runtimeArgs = { "run", "--inspect-wait", "--allow-all" },
-					attachSimplePort = 9229,
-				},
-
-				{
-					type = "pwa-node",
-					request = "attach",
-					name = "Attach to Deno",
-					cwd = "${workspaceFolder}",
-					-- use the same adapter you already set up:
-					port = 9229,
-					address = "127.0.0.1",
-					localRoot = "${workspaceFolder}",
-					remoteRoot = "${workspaceFolder}",
-					sourceMaps = true,
-					-- skip stepping through internal libs if you like:
-					skipFiles = { "<node_internals>/**/*.js" },
-				},
-
+				-- For Deno, just open the chrome://inspect devtools and configure remote target
+				-- Make sure to run `deno run -A --inspect=0.0.0.0:9229 --watch <main.ts>` to start a listening debugger
 				{
 					type = "pwa-node",
 					request = "launch",
