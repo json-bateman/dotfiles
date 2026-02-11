@@ -61,8 +61,8 @@ alias lg='lazygit'
 # history setup
 # ~~~~~~~~~~~~~
 HISTFILE=$HOME/.zhistory
-SAVEHIST=1000
-HISTSIZE=999
+SAVEHIST=10000
+HISTSIZE=9999
 HIST_STAMPS="yyyy/mm/dd"
 setopt share_history  # Updates history in multiple zsh windos
 setopt hist_expire_dups_first # Removes duplicates
@@ -74,3 +74,4 @@ setopt hist_verify # doesn't execute !! right away, shows the command first
 # ~~~~~~~
 eval "$(~/.local/bin/mise activate zsh)"
 
+export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
