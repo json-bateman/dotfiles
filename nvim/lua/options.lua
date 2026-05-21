@@ -25,7 +25,7 @@ opt.tabstop = 4 -- number of spaces a tab counts for
 opt.softtabstop = 4 -- editing operations (like <BS>) are deleting 4 spaces
 opt.shiftwidth = 4 -- number of spaces to use for each autoindent
 opt.smartindent = true -- start autoindenting when starting a new line
-opt.wrap = true -- line wrapping at end of screen
+opt.wrap = false -- line wrapping at end of screen
 -- opt.mouse = ""         -- nice when SSHing, turns mouse off and allows copying directly from vim to clipboard
 -----------------
 -- Line Numbers

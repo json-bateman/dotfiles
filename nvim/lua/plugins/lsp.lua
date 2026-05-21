@@ -120,24 +120,25 @@ return {
 
 				jsonls = {},
 				-- sqls = {},
-				tailwindcss = {
-					filetypes = {
-						"templ",
-						"html",
-						"css",
-						"javascript",
-						"typescript",
-						"javascriptreact",
-						"typescriptreact",
-					},
-					settings = {
-						tailwindCSS = {
-							includeLanguages = {
-								templ = "html",
-							},
-						},
-					},
-				},
+
+				-- tailwindcss = {
+				-- 	filetypes = {
+				-- 		"templ",
+				-- 		"html",
+				-- 		"css",
+				-- 		"javascript",
+				-- 		"typescript",
+				-- 		"javascriptreact",
+				-- 		"typescriptreact",
+				-- 	},
+				-- 	settings = {
+				-- 		tailwindCSS = {
+				-- 			includeLanguages = {
+				-- 				templ = "html",
+				-- 			},
+				-- 		},
+				-- 	},
+				-- },
 
 				templ = {},
 				gopls = {},

@@ -64,3 +64,65 @@ for _, cmd in ipairs(typos) do
 		}, {})
 	end, { bang = true })
 end
+
+-- Matching function to jump from beginning tag to end like html (i.e. <div></div>)
+-- .html has a builtin plugin for this in vim, so this is just for .templ files
+local function jumpTagStartTagEnd()
+	local node = vim.treesitter.get_node()
+	if not node then
+		vim.cmd("normal! %")
+		return
+	end
+
+	-- Walk up to find tag_start or tag_end
+	local tag_node = node
+	while tag_node do
+		local type = tag_node:type()
+		if type == "tag_start" or type == "tag_end" then
+			break
+		end
+		tag_node = tag_node:parent()
+	end
+
+	-- No tag found, fall back to default %
+	if not tag_node then
+		vim.cmd("normal! %")
+		return
+	end
+
+	local parent = tag_node:parent()
+	if not parent or parent:type() ~= "element" then
+		vim.cmd("normal! %")
+		return
+	end
+
+	local target
+	if tag_node:type() == "tag_start" then
+		for child in parent:iter_children() do
+			if child:type() == "tag_end" then
+				target = child
+			end
+		end
+	else
+		for child in parent:iter_children() do
+			if child:type() == "tag_start" then
+				target = child
+				break
+			end
+		end
+	end
+
+	if target then
+		local row, col = target:start()
+		vim.api.nvim_win_set_cursor(0, { row + 1, col })
+	else
+		vim.cmd("normal! %")
+	end
+end
+
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "templ",
+	callback = function()
+		vim.keymap.set("n", "%", jumpTagStartTagEnd, { buffer = true })
+	end,
+})
