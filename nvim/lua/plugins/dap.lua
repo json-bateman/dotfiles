@@ -103,42 +103,31 @@ return {
 		end
 
 		--- Golang ---
-		require("dap-go").setup({
-			dap_configurations = {
-				{
-					type = "go",
-					name = "Launch from cmd/main.go",
-					request = "launch",
-
-					program = "${workspaceFolder}/cmd/main.go",
-					cwd = "${workspaceFolder}",
-				},
-				{
-					type = "go",
-					name = "Launch from cmd/web/main.go",
-					request = "launch",
-
-					program = "${workspaceFolder}/cmd/web/main.go",
-					cwd = "${workspaceFolder}",
-				},
-				{
-					type = "go",
-					name = "Launch from cmd/web/build/main.go",
-					request = "launch",
-
-					program = "${workspaceFolder}/cmd/web/build/main.go",
-					cwd = "${workspaceFolder}",
-				},
-				{
-					type = "go",
-					name = "launch from Workspace Folder ./main.go",
-					request = "launch",
-
-					program = "${workspaceFolder}/main.go",
-					cwd = "${workspaceFolder}",
-				},
+		require("dap-go").setup({})
+		dap.configurations.go = {
+			{
+				type = "go",
+				name = "Debug test",
+				request = "launch",
+				mode = "test",
+				program = "${fileDirname}",
 			},
-		})
+			{
+				type = "go",
+				name = "Launch current package",
+				request = "launch",
+				program = "${fileDirname}",
+				cwd = "${workspaceFolder}",
+			},
+			{
+				type = "go",
+				name = "launch from Workspace Folder ./main.go",
+				request = "launch",
+
+				program = "${workspaceFolder}/main.go",
+				cwd = "${workspaceFolder}",
+			},
+		}
 
 		dap.set_log_level("TRACE")
 

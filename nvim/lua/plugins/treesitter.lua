@@ -62,6 +62,16 @@ return {
 				},
 			},
 			textobjects = {
+				move = {
+					enable = true,
+					set_jumps = true,
+					goto_previous_start = {
+						["[f"] = "@function.outer",
+					},
+					goto_next_end = {
+						["]f"] = "@function.outer",
+					},
+				},
 				select = {
 					enable = true,
 
