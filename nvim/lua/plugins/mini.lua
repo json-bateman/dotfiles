@@ -4,6 +4,7 @@ return {
 		-- I only have this for the branch name on my statusline
 		-- But it does have some other cool functionality
 		require("mini.git").setup()
+		require("mini.tabline").setup()
 
 		local ms = require("mini.statusline")
 		-- Override section_filename *before* setup!
