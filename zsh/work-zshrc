@@ -33,6 +33,7 @@ export LANG=en_US.UTF-8
 export EDITOR=nvim
 export TERM=tmux-256color
 export PATH="/Users/jacktrusler/dotfiles/scripts/:$PATH"
+export PATH="$HOME/.deno/bin:$PATH"
 export PATH=$PATH:$(go env GOPATH)/bin
 
 eval "$(direnv hook zsh)"

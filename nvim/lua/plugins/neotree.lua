@@ -23,7 +23,7 @@ return {
 			},
 		},
 		window = {
-			width = 25,
+			width = 40,
 		},
 	},
 	dependencies = {

@@ -1,5 +1,5 @@
 #! /usr/bin/env bash
-session=$(find ~/AirTera ~/AirTera/main_site ~/AirTera/main_site/ReactUI/packages -mindepth 1 -maxdepth 1 -type d | fzf)
+session=$(find ~ ~/AirTera ~/Airtera/departurecheck/ ~/AirTera/main_site ~/AirTera/main_site/ReactUI/packages -mindepth 1 -maxdepth 1 -type d | fzf)
 session_name=$(basename "$session" | tr . _)
 
 if [ -z "${TMUX}" ]; then

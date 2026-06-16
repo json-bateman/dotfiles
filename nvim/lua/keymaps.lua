@@ -29,6 +29,7 @@ keymap("n", "<leader>co", "<CMD>copen<CR>", opts)
 keymap("n", "<C-d>", "<C-d>zz", opts)
 keymap("n", "<C-u>", "<C-u>zz", opts)
 keymap("n", "<leader>cj", "<CMD>clearjumps<CR>", opts)
+keymap("n", "<leader>q", "<CMD>:bd<CR>", opts)
 
 keymap("c", "%%", "<C-R>=expand('%:h')<CR>", opts)
 
