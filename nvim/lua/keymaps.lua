@@ -65,6 +65,8 @@ keymap("n", "<leader>yo", function()
 	end)
 end, { desc = "Yank output of any Ex command to clipboard" })
 
+keymap("n", "<leader>]", "<Esc>:bn<CR>", opts)
+keymap("n", "<leader>[", "<Esc>:bp<CR>", opts)
 keymap("n", "<leader>x", "<Esc>:bprevious<bar>bdelete #<CR>", opts)
 keymap("n", "<leader>X", function()
 	local current_buf = vim.api.nvim_get_current_buf()
