@@ -1,122 +1,184 @@
+-- nvim-treesitter migrated to the `main` branch (required for Neovim 0.12+).
+-- The `master` branch is frozen and unsupported on 0.12 — it crashed the
+-- highlighter during injection parsing, which is why highlighting kept
+-- turning off. See :h nvim-treesitter for the new API.
+--
+-- Prereqs (already installed on this machine): tree-sitter CLI >= 0.26.1
+-- (`brew install tree-sitter-cli`), a C compiler, and curl. The main branch
+-- compiles parsers locally on :TSInstall / :TSUpdate.
+
+local ensure_installed = {
+	-- config + docs
+	"lua",
+	"vim",
+	"vimdoc",
+	"luadoc",
+	"markdown",
+	"markdown_inline",
+	-- backend
+	"go",
+	"gomod",
+	"gosum",
+	"gowork",
+	"sql",
+	-- web
+	"javascript",
+	"typescript",
+	"tsx",
+	"html",
+	"css",
+	-- data/tooling
+	"json",
+	"yaml",
+	"toml",
+	"bash",
+	"dockerfile",
+	"git_config",
+	"gitcommit",
+	"diff",
+}
+
 return {
-	"nvim-treesitter/nvim-treesitter",
-	dependencies = {
-		"nvim-treesitter/nvim-treesitter-textobjects", -- Better AST selection
-		"nvim-treesitter/nvim-treesitter-context", -- See the context of the function you're in
+	-----------------------------------------------------------------------
+	-- Core parser management + highlighting
+	-----------------------------------------------------------------------
+	{
+		"nvim-treesitter/nvim-treesitter",
+		branch = "main",
+		lazy = false, -- main branch does not support lazy-loading
+		build = ":TSUpdate",
+		config = function()
+			local nts = require("nvim-treesitter")
+
+			-- Install the common set up front so they're ready immediately.
+			nts.install(ensure_installed)
+
+			-- Replacement for the old `auto_install = true`: when you open a
+			-- filetype whose parser isn't installed yet, install it in the
+			-- background and turn highlighting on for the buffer once it's ready.
+			local installing = {} -- langs currently being fetched (dedupe)
+
+			vim.api.nvim_create_autocmd("FileType", {
+				group = vim.api.nvim_create_augroup("ts_highlight", { clear = true }),
+				callback = function(ev)
+					local lang = vim.treesitter.language.get_lang(vim.bo[ev.buf].filetype)
+					if not lang then
+						return -- filetype has no treesitter language
+					end
+
+					-- Already installed → just start highlighting.
+					if vim.tbl_contains(require("nvim-treesitter.config").get_installed("parsers"), lang) then
+						pcall(vim.treesitter.start, ev.buf, lang)
+						return
+					end
+
+					-- Not installed: only try if a parser actually exists for it,
+					-- and only once per lang per session.
+					if installing[lang] or not vim.tbl_contains(nts.get_available(), lang) then
+						return
+					end
+					installing[lang] = true
+
+					nts.install(lang):await(function(err)
+						installing[lang] = nil
+						if err then
+							return
+						end
+						vim.schedule(function()
+							if vim.api.nvim_buf_is_valid(ev.buf) then
+								pcall(vim.treesitter.start, ev.buf, lang)
+							end
+						end)
+					end)
+				end,
+			})
+		end,
 	},
-	config = function()
-		local ok, treesitter = pcall(require, "nvim-treesitter.configs")
-		if not ok then
-			return
-		end
 
-		local ok2, tsContext = pcall(require, "treesitter-context")
-		if not ok2 then
-			return
-		end
-
-		vim.keymap.set("n", "[c", function()
-			require("treesitter-context").go_to_context(vim.v.count1)
-		end, { silent = true })
-
-		tsContext.setup({
-			multiwindow = false, -- Enable multiwindow support.
-			max_lines = 2, -- How many lines the window should span. Values <= 0 mean no limit.
-			min_window_height = 0, -- Minimum editor window height to enable context. Values <= 0 mean no limit.
-			line_numbers = true,
-			multiline_threshold = 20, -- Maximum number of lines to show for a single context
-			trim_scope = "inner", -- Which context lines to discard if `max_lines` is exceeded. Choices: 'inner', 'outer'
-			mode = "cursor", -- Line used to calculate context. Choices: 'cursor', 'topline'
-			-- Separator between context and content. Should be a single character string, like '-'.
-			-- When separator is set, the context will only show up when there are at least 2 lines above cursorline.
-			separator = nil,
-			zindex = 20, -- The Z-index of the context window
-			on_attach = nil, -- (fun(buf: integer): boolean) return false to disable attaching
-		})
-
-		treesitter.setup({
-			modules = {},
-			ensure_installed = {
-				"lua",
-				"vim",
-				"vimdoc",
-				"luadoc",
-				"go",
-				"javascript",
-				"typescript",
-			},
-			sync_install = false,
-			auto_install = true,
-			ignore_install = { "help" },
-			highlight = {
-				-- `false` will disable the whole extension
-				enable = true,
-			},
-			incremental_selection = {
-				enable = true,
-				keymaps = {
-					init_selection = "gnn",
-					node_incremental = "grn",
-					scope_incremental = "grc",
-					node_decremental = "grm",
-				},
-			},
-			textobjects = {
-				move = {
-					enable = true,
-					set_jumps = true,
-					goto_previous_start = {
-						["[f"] = "@function.outer",
-					},
-					goto_next_end = {
-						["]f"] = "@function.outer",
-					},
-				},
+	-----------------------------------------------------------------------
+	-- Text objects (select / move) — also rewritten for the main branch
+	-----------------------------------------------------------------------
+	{
+		"nvim-treesitter/nvim-treesitter-textobjects",
+		branch = "main",
+		dependencies = { "nvim-treesitter/nvim-treesitter" },
+		config = function()
+			require("nvim-treesitter-textobjects").setup({
 				select = {
-					enable = true,
-
-					-- Automatically jump forward to textobj, similar to targets.vim
 					lookahead = true,
-
-					keymaps = {
-						-- You can use the capture groups defined in textobjects.scm
-						["af"] = "@function.outer",
-						["if"] = "@function.inner",
-						["ai"] = "@conditional.outer",
-						["ii"] = "@conditional.inner",
-						["al"] = "@loop.outer",
-						["il"] = "@loop.inner",
-						["ac"] = "@class.outer",
-						["ic"] = "@class.inner",
-						["bi"] = "@block.inner",
-						-- You can also use captures from other query groups like `locals.scm`
-						["as"] = { query = "@scope", query_group = "locals", desc = "Select language scope" },
-					},
-					-- You can choose the select mode (default is charwise 'v')
-					--
-					-- Can also be a function which gets passed a table with the keys
-					-- * query_string: eg '@function.inner'
-					-- * method: eg 'v' or 'o'
-					-- and should return the mode ('v', 'V', or '<c-v>') or a table
-					-- mapping query_strings to modes.
 					selection_modes = {
 						["@parameter.outer"] = "v", -- charwise
 						["@function.outer"] = "V", -- linewise
-						-- ['@class.outer'] = '<c-v>', -- blockwise
-						["@class.outer"] = "v", -- blockwise
+						["@class.outer"] = "v",
 					},
-					-- If you set this to `true` (default is `false`) then any textobject is
-					-- extended to include preceding or succeeding whitespace. Succeeding
-					-- whitespace has priority in order to act similarly to eg the built-in
-					-- `ap`.
-					--
-					-- Can also be a function which gets passed a table with the keys
-					-- * query_string: eg '@function.inner'
-					-- * selection_mode: eg 'v'
-					-- and should return true or false
 					include_surrounding_whitespace = true,
 				},
-			},
-		})
-	end,
+				move = {
+					set_jumps = true,
+				},
+			})
+
+			local select = require("nvim-treesitter-textobjects.select")
+			local move = require("nvim-treesitter-textobjects.move")
+
+			-- select mappings (previously the `textobjects.select.keymaps` table)
+			local selects = {
+				["af"] = { "@function.outer", "textobjects" },
+				["if"] = { "@function.inner", "textobjects" },
+				["ai"] = { "@conditional.outer", "textobjects" },
+				["ii"] = { "@conditional.inner", "textobjects" },
+				["al"] = { "@loop.outer", "textobjects" },
+				["il"] = { "@loop.inner", "textobjects" },
+				["ac"] = { "@class.outer", "textobjects" },
+				["ic"] = { "@class.inner", "textobjects" },
+				["bi"] = { "@block.inner", "textobjects" },
+				-- `@scope` from the master branch is `@local.scope` on main
+				["as"] = { "@local.scope", "locals" },
+			}
+			for lhs, spec in pairs(selects) do
+				vim.keymap.set({ "x", "o" }, lhs, function()
+					select.select_textobject(spec[1], spec[2])
+				end, { desc = "Select " .. spec[1] })
+			end
+
+			-- move mappings (previously `textobjects.move.goto_*`)
+			vim.keymap.set({ "n", "x", "o" }, "[f", function()
+				move.goto_previous_start("@function.outer", "textobjects")
+			end, { desc = "Prev function start" })
+			vim.keymap.set({ "n", "x", "o" }, "]f", function()
+				move.goto_next_end("@function.outer", "textobjects")
+			end, { desc = "Next function end" })
+		end,
+	},
+
+	-----------------------------------------------------------------------
+	-- Context (sticky scope). No `main` branch exists; it rides on core
+	-- treesitter APIs, so it stays on master and works fine on 0.12.
+	-----------------------------------------------------------------------
+	{
+		"nvim-treesitter/nvim-treesitter-context",
+		config = function()
+			local ok, tsContext = pcall(require, "treesitter-context")
+			if not ok then
+				return
+			end
+
+			vim.keymap.set("n", "[c", function()
+				require("treesitter-context").go_to_context(vim.v.count1)
+			end, { silent = true, desc = "Go to context" })
+
+			tsContext.setup({
+				multiwindow = false,
+				max_lines = 2,
+				min_window_height = 0,
+				line_numbers = true,
+				multiline_threshold = 20,
+				trim_scope = "inner",
+				mode = "cursor",
+				separator = nil,
+				zindex = 20,
+				on_attach = nil,
+			})
+		end,
+	},
 }

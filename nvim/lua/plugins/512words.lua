@@ -4,6 +4,8 @@ return {
 		window = {
 			spell = false,
 		},
+		words = 0x64,
+		characters = true,
 	},
 	cmd = "Words",
 }
