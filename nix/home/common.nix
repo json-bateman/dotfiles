@@ -14,6 +14,7 @@
     jq
     bat
     mise
+    wezterm
   ];
 
   home.file = {
