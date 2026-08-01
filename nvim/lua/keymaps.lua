@@ -51,20 +51,6 @@ keymap("v", "<leader>p", '"+p', opts)
 keymap("n", "gs", ":%s~~", opts)
 keymap("v", "gs", ":s~~", opts)
 
--- Custom Functions
-keymap("n", "<leader>yo", function()
-	vim.ui.input({ prompt = "Command to yank output: " }, function(cmd)
-		if cmd and #cmd > 0 then
-			vim.cmd("redir @+")
-			vim.cmd("silent " .. cmd)
-			vim.cmd("redir END")
-			vim.notify("Output of :" .. cmd .. " copied to clipboard!", vim.log.levels.INFO)
-		else
-			vim.notify("No command entered.", vim.log.levels.WARN)
-		end
-	end)
-end, { desc = "Yank output of any Ex command to clipboard" })
-
 keymap("n", "<leader>]", "<Esc>:bn<CR>", opts)
 keymap("n", "<leader>[", "<Esc>:bp<CR>", opts)
 keymap("n", "<leader>x", "<Esc>:bprevious<bar>bdelete #<CR>", opts)
