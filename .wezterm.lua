@@ -8,7 +8,7 @@ return {
 		"Noto Color Emoji",
 	}),
 	color_scheme = "gruvbox_material_dark_hard",
-	font_size = 12.5,
+	font_size = 11,
 	enable_tab_bar = false,
 	window_background_opacity = 0.95,
 	window_padding = {

@@ -8,13 +8,17 @@
     lazygit
     tree
     wget
+    neovim
     vim
     nodejs
     fd
     jq
     bat
     mise
-    wezterm
+    nerd-fonts.fira-code
+    tree-sitter
+    unzip
+    deno
   ];
 
   home.file = {
