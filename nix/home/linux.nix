@@ -9,7 +9,7 @@
   ];
 
   programs.zsh = {
-    oh-my-zsh.theme = "eastwood";
+    oh-my-zsh.theme = "murilasso";
     initExtra = ''
       export PATH="$HOME/dotfiles/scripts:$PATH"
       export PATH="/usr/local/bin:$PATH"
