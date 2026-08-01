@@ -8,71 +8,16 @@
 # this machine's public IP, then replace ":80" below with your
 # domain name.
 
-jsonbateman.com {
-	# Redirect /design (without slash) to /design/ (with slash)
-	@missingSlash {
-		path /design
-	}
-	redir @missingSlash /design/ permanent
 
-	handle_path /design* {
-		root * /var/www/html/design-system
-		# try_files {path} /index.html
-		file_server
-	}
+### Raw HTML/CSS/JS ###
+design.jsonbateman.com {
+	root * /var/www/html/design-system
 
-	# Default route
-	reverse_proxy localhost:3000
+	file_server
 }
-
-# jsonbateman.com {
-# 	root * /var/www/html/validator-panopticon/dist
-#
-# 	file_server
-#
-# 	# Rewrite any request that doesn't match a file to /index.html
-# 	try_files {path} /index.html
-# }
-
-# Refer to the Caddy docs for more information:
-# https://caddyserver.com/docs/caddyfile
 
 alug.us {
 	root * /var/www/html/alug.us
-
-	file_server
-}
-
-gargul.gay {
-	root * /var/www/html/lootlog-viewer/dist
-
-	# Rewrite all paths except existing files to index.html
-	# This is a vite project with react router, so index.html needs
-	# to be pointed at for (almost) every request
-	# 
-	# notStatic first checks if a file exists at location, if not rewrite 
-	# to index.html
-	@notStatic {
-		not file
-	}
-	rewrite @notStatic /index.html
-
-	file_server
-}
-
-garguldeez.com {
-	root * /var/www/html/lootlog-viewer/dist
-
-	# Rewrite all paths except existing files to index.html
-	# This is a vite project with react router, so index.html needs
-	# to be pointed at for (almost) every request
-	# 
-	# notStatic first checks if a file exists at location, if not rewrite 
-	# to index.html
-	@notStatic {
-		not file
-	}
-	rewrite @notStatic /index.html
 
 	file_server
 }
@@ -89,26 +34,19 @@ pokermon.club {
 	file_server
 }
 
-puzzlegreg.quest {
-	reverse_proxy /socket.io/* localhost:51234 {
-		header_up Host {host}
-		header_up X-Forwarded-For {remote}
-		header_up X-Forwarded-Proto {scheme}
-	}
+### Running Services ###
+jsonbateman.com {
+	reverse_proxy localhost:3000
+}
 
-	# Static file serving for the website
-	root * /var/www/html/puzzlegreg.quest
-	file_server
+api.pokermon.club {
+	reverse_proxy localhost:7777
 }
 
 crabspy.com {
-	reverse_proxy /socket.io/* localhost:55577 {
-		header_up Host {host}
-		header_up X-Forwarded-For {remote}
-		header_up X-Forwarded-Proto {scheme}
-	}
+	reverse_proxy localhost:3012
+}
 
-	# Static file serving for the website
-	root * /var/www/html/crabspy.com
-	file_server
+basicauth.jsonbateman.com {
+	reverse_proxy localhost:3033
 }
