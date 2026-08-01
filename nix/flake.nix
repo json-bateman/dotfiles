@@ -16,6 +16,13 @@
   };
 
   outputs = { self, nixpkgs, nixos-lima, home-manager, ... }:
+  let
+    mkHome = system: module:
+      home-manager.lib.homeManagerConfiguration {
+        pkgs = import nixpkgs { inherit system; };
+        modules = [ module ];
+      };
+  in
   {
     nixosConfigurations.basicnix =
       nixpkgs.lib.nixosSystem {
@@ -27,15 +34,11 @@
         ];
       };
 
-    homeConfigurations.lima =
-      home-manager.lib.homeManagerConfiguration {
-        pkgs = import nixpkgs {
-          system = "aarch64-linux";
-        };
-
-        modules = [
-          ./home/lima/home.nix
-        ];
-      };
+    homeConfigurations = {
+      lima   = mkHome "aarch64-linux"  ./home/lima/home.nix;
+      nixos  = mkHome "x86_64-linux"   ./home/nixos/home.nix;
+      centos = mkHome "x86_64-linux"   ./home/centos/home.nix;
+      mac    = mkHome "aarch64-darwin" ./home/mac/home.nix;
+    };
   };
 }

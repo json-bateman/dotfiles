@@ -3,7 +3,7 @@
 {
   imports = [ ../linux.nix ];
 
-  home.username = "lima";
-  home.homeDirectory = "/home/lima.guest";
+  home.username = "jack";
+  home.homeDirectory = "/home/jack";
   home.stateVersion = "25.11";
 }
