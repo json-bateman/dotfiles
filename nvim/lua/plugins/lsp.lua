@@ -18,9 +18,6 @@ return {
 	{
 		"neovim/nvim-lspconfig",
 		dependencies = {
-			-- Automatically install LSPs and related tools to stdpath for Neovim
-			-- Mason must be loaded before its dependents so we need to set it up here.
-			-- NOTE: `opts = {}` is the same as calling `require('mason').setup({})`
 			{ "mason-org/mason.nvim", opts = {} },
 			"mason-org/mason-lspconfig.nvim",
 			"WhoIsSethDaniel/mason-tool-installer.nvim",
@@ -102,22 +99,6 @@ return {
 					},
 				},
 
-				denols = {
-					root_dir = function(bufnr, on_dir)
-						local fname = vim.api.nvim_buf_get_name(bufnr)
-						local root = util.root_pattern("deno.json", "deno.jsonc")(fname)
-						if root then
-							on_dir(root)
-						end
-					end,
-					single_file_support = false,
-					before_init = function(_, config)
-						config.init_options = config.init_options or {}
-						config.init_options.enable = true
-						config.init_options.config = config.root_dir .. "/deno.json"
-					end,
-				},
-
 				jsonls = {},
 				-- sqls = {},
 
@@ -156,15 +137,9 @@ return {
 				},
 			}
 
-			local ensure_installed = vim.tbl_keys(servers or {})
-			vim.list_extend(ensure_installed, {
-				"stylua",
-			})
-			require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
-
-			require("mason-lspconfig").setup({
-				automatic_enable = vim.tbl_keys(servers or {}),
-			})
+			-- css-variables-language-server not in nixos-25.11, managed by Mason via npm
+			require("mason-tool-installer").setup({ ensure_installed = { "css-variables-language-server" } })
+			require("mason-lspconfig").setup({ automatic_enable = false })
 
 			for server_name, config in pairs(servers) do
 				config.capabilities = vim.tbl_deep_extend("force", {}, capabilities, config.capabilities or {})

@@ -29,7 +29,7 @@ alias f='cd $(fd --type directory | fzf)'
 alias lg='lazygit'
 
 # --- mise ---
-eval "$("$HOME/.local/bin/mise" activate zsh)"
+eval "$(mise activate zsh)"
 
 # --- extras (guarded sourcing) ---
 try-source() { for p in "$@"; do [[ -r "$p" ]] && source "$p" && return 0; done; }

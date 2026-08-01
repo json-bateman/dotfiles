@@ -49,12 +49,12 @@ nix develop .#<shell>             # enter a named dev shell
 
 ```sh
 home-manager switch               # apply home.nix config
-home-manager switch --flake .#    # apply from flake
+home-manager switch --flake .#    # apply from flake (in /nix directory)
 home-manager generations          # list generations
 home-manager expire-generations '-30 days'  # clean old generations
 ```
 
-## NixOS (if applicable)
+## When on NixOS
 
 ```sh
 sudo nixos-rebuild switch         # apply system config

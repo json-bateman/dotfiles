@@ -8,6 +8,11 @@
     gcc
   ];
 
-  home.file.".zshrc".source =
-    config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/zsh/linux-zshrc";
+  programs.zsh = {
+    oh-my-zsh.theme = "eastwood";
+    initExtra = ''
+      export PATH="$HOME/dotfiles/scripts:$PATH"
+      export PATH="/usr/local/bin:$PATH"
+    '';
+  };
 }
