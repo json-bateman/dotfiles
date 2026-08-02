@@ -1,12 +1,12 @@
 # Server Setup Checklist
 
-## CentOS 10 / Fedora Server
+## Redhat
 *Do all this on the server*
 
 Update + essentials
 
 - `sudo dnf -y update`
-- `sudo dnf -y install vim curl git tmux openssh-server policycoreutils-python-utils`
+- `sudo dnf -y install vim curl git tmux openssh-server`
 
 #### Enable SSH server (if not already)
 `sudo systemctl enable --now sshd`
@@ -20,25 +20,8 @@ Update + essentials
 sudo hostnamectl set-hostname <hostname>
 
 ---
----
-
-*You can do the rest on your local machine*
-## Use Ansible
-
-#### Remote into box, to commit pubkey as known host
-`ssh-copy-id user@hostip`
-
-#### Add your ansible server to install stuff on
-
-[servers]
-bitson ansible_host=192.168.1.116 ansible_user=kbitson ansible_python_interpreter=/usr/bin/python3
-
-then run the playbook: `ansible-playbook centOS-setup.yml -K` the -K is to have root priviledge when
-needed
-
 
 #### SSH hardening (security so no one can ssh in with password, only keypair)
-
 
 make a backup first
 
@@ -102,6 +85,23 @@ dns-sd -L bitson _ssh _tcp local
 ssh kbitson@bitson.local
 ```
 
+## Then do the Nix Stuff
+1. Install Nix:
+   ```bash
+   curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
+   ```
 
-Note: Maybe in the future this whole process cna be done through ansible?? Automate the entire
-process perhaps. 
+2. Clone this repo:
+   ```bash
+   git clone https://github.com/your-username/dotfiles ~/dotfiles
+   ```
+
+3. Apply home-manager config:
+   ```bash
+   nix run home-manager/release-25.11 -- switch --flake ~/dotfiles/nix#redhat
+   ```
+
+   On subsequent runs:
+   ```bash
+   home-manager switch --flake ~/dotfiles/nix#redhat
+   ```
