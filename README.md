@@ -30,7 +30,7 @@ Nix is the OS — no installation needed.
 
 1. Clone this repo:
    ```bash
-   git clone https://github.com/your-username/dotfiles ~/dotfiles
+   git clone https://github.com/json-bateman/dotfiles ~/dotfiles
    ```
 
 2. Apply the configuration:

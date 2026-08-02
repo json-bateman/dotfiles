@@ -93,7 +93,7 @@ ssh kbitson@bitson.local
 
 2. Clone this repo:
    ```bash
-   git clone https://github.com/your-username/dotfiles ~/dotfiles
+   git clone https://github.com/json-bateman/dotfiles ~/dotfiles
    ```
 
 3. Apply home-manager config:
