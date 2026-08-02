@@ -3,7 +3,7 @@ set -euo pipefail
 
 # ── config ────────────────────────────────────────────────────────────────────
 USERNAME="jack"
-DOTFILES_REPO="https://github.com/your-username/dotfiles"
+DOTFILES_REPO="https://github.com/json-bateman/dotfiles"
 HOSTNAME=""          # optional: set to override hostname, leave empty to skip
 # ─────────────────────────────────────────────────────────────────────────────
 
