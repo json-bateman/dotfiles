@@ -1,6 +1,0 @@
-#! /usr/bin/env bash
-
-for FILE in "$@"
-  do
-    mv -f "$FILE" ~/.local/share/Trash/files
-  done

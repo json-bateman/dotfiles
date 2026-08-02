@@ -1,9 +1,0 @@
-{ config, pkgs, ... }:
-
-{
-  imports = [ ../linux.nix ];
-
-  home.username = "lima";
-  home.homeDirectory = "/home/lima.guest";
-  home.stateVersion = "25.11";
-}

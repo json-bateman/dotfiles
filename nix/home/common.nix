@@ -25,6 +25,7 @@
     vscode-langservers-extracted
     deno
     autojump
+    go
   ];
 
   home.file = {
