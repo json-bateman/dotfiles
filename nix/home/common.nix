@@ -40,6 +40,11 @@
     run ln -sfn "${config.home.homeDirectory}/dotfiles/nvim" "${config.xdg.configHome}/nvim"
   '';
 
+  programs.direnv = {
+    enable = true;
+    nix-direnv.enable = true;
+  };
+
   programs.zsh = {
     enable = true;
     oh-my-zsh = {

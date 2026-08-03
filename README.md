@@ -2,28 +2,6 @@
 
 Nix-managed configuration for macOS, NixOS, and Red Hat.
 
-## Structure
-
-```
-nix/
-  flake.nix
-  home/
-    common.nix        # shared packages, shell, editor config
-    linux.nix         # linux-specific home config
-    mac/home.nix
-    redhat/home.nix
-    nixos/home.nix
-  nixos/
-    common.nix        # shared NixOS system config
-    webserver.nix     # caddy
-  hosts/
-    webserver/
-      configuration.nix
-      hardware-configuration.nix
-```
-
----
-
 ## NixOS
 
 Nix is the OS — no installation needed.
@@ -42,17 +20,23 @@ This configures both the system and the user environment (via home-manager) in o
 
 ---
 
-## macOS
+## macOS - Initial Install
 
-```bash
-bash ~/dotfiles/bootstrap-mac.sh
-```
+1. Download Homebrew (find on homebrew website)
+2. Clone this repo
+   ```bash
+   git clone https://github.com/json-bateman/dotfiles ~/dotfiles
+   ```
+3. Run the bootstrap script
+    ```bash
+    bash ~/dotfiles/bootstrap-mac.sh
+    ```
 
 Installs Homebrew, Nix, and applies home-manager. GUI apps (WezTerm, Spotify, Chrome, Telegram, Docker) are installed via Homebrew Cask.
 
 ---
 
-## Red Hat
+## Red Hat - Initial Install
 
 ```bash
 sudo bash ~/dotfiles/bootstrap-redhat.sh
