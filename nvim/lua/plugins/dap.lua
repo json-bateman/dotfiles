@@ -12,19 +12,6 @@ return {
 		-- Golang debugging
 		"leoluz/nvim-dap-go",
 
-		-- JS/TS debugging
-		{
-			"mxsdev/nvim-dap-vscode-js",
-			opts = {
-				debugger_path = vim.fn.stdpath("data") .. "/lazy/vscode-js-debug",
-				adapters = { "pwa-node", "pwa-chrome", "pwa-msedge", "node-terminal", "pwa-extensionHost" },
-			},
-		},
-		{
-			"microsoft/vscode-js-debug",
-			build = "npm i && npm run compile vsDebugServerBundle && rm -rf out && mv -f dist out",
-		},
-
 		-- Lua Debugging
 		{
 			"jbyuki/one-small-step-for-vimkind",
@@ -56,39 +43,6 @@ return {
 		dap_text.setup({})
 
 		--- Configurations (see :h dap-configuration) ---
-		--- Javascript / TS ----
-		require("dap-vscode-js").setup({
-			adapters = {
-				"pwa-node",
-				"pwa-chrome",
-				"pwa-msedge",
-				"node-terminal",
-				"pwa-extensionHost",
-			}, -- which adapters to register in nvim-dap
-			debugger_path = vim.fn.resolve(vim.fn.stdpath("data") .. "/lazy/vscode-js-debug"),
-		})
-
-		for _, language in ipairs({ "typescript", "javascript" }) do
-			require("dap").configurations[language] = {
-				-- For Deno, just open the chrome://inspect devtools and configure remote target
-				-- Make sure to run `deno run -A --inspect=0.0.0.0:9229 --watch <main.ts>` to start a listening debugger
-				{
-					type = "pwa-node",
-					request = "launch",
-					name = "Launch file",
-					program = "${file}",
-					cwd = "${workspaceFolder}",
-				},
-				{
-					type = "pwa-node",
-					request = "attach",
-					name = "Attach",
-					processId = require("dap.utils").pick_process,
-					cwd = "${workspaceFolder}",
-				},
-			}
-		end
-
 		--- Lua ---
 		dap.configurations.lua = {
 			{
