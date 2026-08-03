@@ -22,7 +22,7 @@ fi
 
 echo "==> Home Manager"
 if ! command -v home-manager &>/dev/null; then
-  nix run home-manager/release-25.11 -- switch --flake ~/dotfiles/nix#mac
+  nix run home-manager/release-26.05 -- switch --flake ~/dotfiles/nix#mac
 else
   home-manager switch --flake ~/dotfiles/nix#mac
 fi

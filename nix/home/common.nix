@@ -36,7 +36,8 @@
   };
 
   home.activation.nvimConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    ln -sfn "${config.home.homeDirectory}/dotfiles/nvim" "${config.xdg.configHome}/nvim"
+    run mkdir -p "${config.xdg.configHome}"
+    run ln -sfn "${config.home.homeDirectory}/dotfiles/nvim" "${config.xdg.configHome}/nvim"
   '';
 
   programs.zsh = {
