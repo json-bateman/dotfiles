@@ -3,7 +3,6 @@
 {
   home.packages = with pkgs; [
     ripgrep
-    fzf
     tmux
     lazygit
     tree
@@ -14,7 +13,6 @@
     jq
     bat
     gcc
-    mise
     tree-sitter
     unzip
     stylua
@@ -24,9 +22,9 @@
     templ
     vscode-langservers-extracted
     deno
-    autojump
     go
   ];
+  # fzf / mise / autojump come from their programs.* modules below
 
   home.file = {
     ".gitconfig".source  = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/.gitconfig";
@@ -45,46 +43,72 @@
     nix-direnv.enable = true;
   };
 
+  programs.fzf = {
+    enable = true;
+    enableZshIntegration = true;      # CTRL-T / CTRL-R / ALT-C + completion
+  };
+
+  programs.mise = {
+    enable = true;
+    enableZshIntegration = true;      # replaces eval "$(mise activate zsh)"
+  };
+
+  programs.autojump.enable = true;
+
   programs.zsh = {
     enable = true;
+    defaultKeymap = "viins";          # bindkey -v
+
+    autosuggestion.enable = true;
+    syntaxHighlighting.enable = true; # loaded after autosuggestions automatically
+
     oh-my-zsh = {
       enable = true;
-      plugins = [ "git" "autojump" ];
+      theme = "murilasso";
+      plugins = [ "git" "virtualenv" ]; # autojump handled by programs.autojump
     };
-    plugins = [
-      {
-        name = "zsh-autosuggestions";
-        src = pkgs.zsh-autosuggestions;
-        file = "share/zsh-autosuggestions/zsh-autosuggestions.zsh";
-      }
-      {
-        name = "zsh-syntax-highlighting";
-        src = pkgs.zsh-syntax-highlighting;
-        file = "share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh";
-      }
-    ];
-    shellAliases = {
-      tks = "tmux kill-session";
-      tms = "tmux-sessionizer";
-      f = "cd $(fd --type directory | fzf)";
-      lg = "lazygit";
-    };
+
     history = {
-      size = 100000;
-      save = 100000;
+      path = "$HOME/.zhistory";
+      size = 20000;
+      save = 20000;
+      extended = true;
       share = true;
       expireDuplicatesFirst = true;
       ignoreDups = true;
     };
+
+    shellAliases = {
+      tkS = "tmux kill-server";
+      tks = "tmux kill-session";
+      tms = "tmux-sessionizer";
+      f   = "cd $(fd --type directory | fzf)";
+      lg  = "lazygit";
+    };
+
     initContent = ''
-      bindkey -v
+      setopt hist_verify
+      setopt glob_dots
       export KEYTIMEOUT=1
-      export LANG=en_US.UTF-8
-      export EDITOR=nvim
+
+      # tmux sets its own TERM, but preserve the explicit logic:
       if [[ -n "$TMUX" ]]; then export TERM=tmux-256color; else export TERM=xterm-256color; fi
-      eval "$(mise activate zsh)"
     '';
   };
+
+  home.sessionVariables = {
+    EDITOR = "nvim";
+    LANG = "en_US.UTF-8";
+    HIST_STAMPS = "yyyy/mm/dd";                 # oh-my-zsh timestamp format
+    ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE = "fg=245";
+  };
+
+  home.sessionPath = [
+    "$HOME/go/bin"
+    "/opt/homebrew/bin"
+    "$HOME/dotfiles/scripts"
+    "/usr/local/bin"
+  ];
 
   programs.home-manager.enable = true;
 }
