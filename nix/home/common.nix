@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   home.packages = with pkgs; [
@@ -13,8 +13,8 @@
     fd
     jq
     bat
+    gcc
     mise
-    nerd-fonts.fira-code
     tree-sitter
     unzip
     stylua
@@ -35,8 +35,9 @@
     ".wezterm.lua".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/.wezterm.lua";
   };
 
-  xdg.configFile."nvim".source =
-    config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/nvim";
+  home.activation.nvimConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    ln -sfn "${config.home.homeDirectory}/dotfiles/nvim" "${config.xdg.configHome}/nvim"
+  '';
 
   programs.zsh = {
     enable = true;
@@ -69,7 +70,7 @@
       expireDuplicatesFirst = true;
       ignoreDups = true;
     };
-    initExtra = ''
+    initContent = ''
       bindkey -v
       export KEYTIMEOUT=1
       export LANG=en_US.UTF-8
@@ -77,11 +78,6 @@
       if [[ -n "$TMUX" ]]; then export TERM=tmux-256color; else export TERM=xterm-256color; fi
       eval "$(mise activate zsh)"
     '';
-  };
-
-  programs.neovim = {
-    enable = true;
-    defaultEditor = true;
   };
 
   programs.home-manager.enable = true;

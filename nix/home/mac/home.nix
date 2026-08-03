@@ -5,11 +5,11 @@
 
   home.username = "jack";
   home.homeDirectory = "/Users/jack";
-  home.stateVersion = "25.11";
+  home.stateVersion = "26.05";
 
   programs.zsh = {
     oh-my-zsh.theme = "robbyrussell";
-    initExtra = ''
+    initContent = ''
       export PATH="$HOME/go/bin:$PATH"
       export PATH="/opt/homebrew/bin:$PATH"
       export PATH="/opt/homebrew/opt/sqlite/bin:$PATH"

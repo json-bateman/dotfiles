@@ -4,8 +4,8 @@ return {
 	term = "tmux-256color",
 	font = wezterm.font_with_fallback({
 		"JetBrains Mono",
-		"Fira Code",
 		"Noto Color Emoji",
+		"Fira Code",
 	}),
 	color_scheme = "gruvbox_material_dark_hard",
 	font_size = 11,

@@ -35,7 +35,7 @@ Nix is the OS — no installation needed.
 
 2. Apply the configuration:
    ```bash
-   sudo nixos-rebuild switch --flake ~/dotfiles/nix#webserver
+   sudo nixos-rebuild switch --flake ~/dotfiles/nix#webserver --impure
    ```
 
 This configures both the system and the user environment (via home-manager) in one command.
@@ -66,6 +66,6 @@ Sets up the system (packages, user, SSH hardening, mDNS), then prints next steps
 
 | Machine | Command |
 |---|---|
-| NixOS webserver | `sudo nixos-rebuild switch --flake ~/dotfiles/nix#webserver` |
+| NixOS webserver | `sudo nixos-rebuild switch --flake ~/dotfiles/nix#webserver --impure` |
 | macOS | `home-manager switch --flake ~/dotfiles/nix#mac` |
 | Red Hat | `home-manager switch --flake ~/dotfiles/nix#redhat` |
