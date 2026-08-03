@@ -7,6 +7,7 @@
     lazygit
     tree
     wget
+    neovim
     vim
     nodejs
     fd
