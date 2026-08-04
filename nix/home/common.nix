@@ -65,7 +65,7 @@
 
     oh-my-zsh = {
       enable = true;
-      theme = "murilasso";
+      theme = "robbyrussell";
       plugins = [ "git" "virtualenv" ]; # autojump handled by programs.autojump
     };
 
