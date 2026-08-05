@@ -1,20 +1,27 @@
-# New Webserver Setup
+# Adding a New NixOS Host
 
-## 1. Generate hardware config on the new machine
+Run these on the **already-installed, booted machine**. Each host = shared modules
++ its own `hardware-configuration.nix` (machine-specific; Nix does **not**
+auto-detect it).
+
+Shared modules to compose per host:
+- `nixos/common.nix`   — baseline (boot, locale, user, ssh, zsh, base pkgs)
+- `nixos/webserver.nix`— server role (Caddy, autoUpgrade, gc, cloudflared)
+- `nixos/desktop.nix`  — full GUI (GNOME, pipewire, printing, firefox)
+
+## Steps (example host: `basement`)
 
 ```bash
-nixos-generate-config
+# 1. get the repo (installer/base image may lack git: `nix-shell -p git`)
+git clone https://github.com/json-bateman/dotfiles ~/dotfiles
+
+# 2. use this machine's real hardware config (install already made it)
+mkdir -p ~/dotfiles/nix/hosts/basement
+cp /etc/nixos/hardware-configuration.nix \
+   ~/dotfiles/nix/hosts/basement/hardware-configuration.nix
 ```
 
-## 2. Add host to dotfiles
-
-Copy `/etc/nixos/hardware-configuration.nix` into the repo:
-
-```
-hosts/webserver2/hardware-configuration.nix
-```
-
-Create `hosts/webserver2/configuration.nix`:
+Create `nix/hosts/basement/configuration.nix`:
 
 ```nix
 { config, pkgs, ... }:
@@ -22,34 +29,30 @@ Create `hosts/webserver2/configuration.nix`:
   imports = [
     ./hardware-configuration.nix
     ../../nixos/common.nix
-    ../../nixos/webserver.nix
+    ../../nixos/webserver.nix   # server role
+    ../../nixos/desktop.nix     # optional GUI
   ];
 
-  system.stateVersion = "26.05"; # version the machine was installed on
+  networking.hostName = "basement";  # must match the flake attr (autoUpgrade uses it)
+  system.stateVersion = "26.05";     # release installed on — never bump
 }
 ```
 
-## 3. Register in flake.nix
+Register in `nix/flake.nix` under `nixosConfigurations` (add the home-manager block only if this host should get jack's dotfiles — see `laptop`):
 
 ```nix
-nixosConfigurations.webserver2 = nixpkgs.lib.nixosSystem {
+basement = nixpkgs.lib.nixosSystem {
   system = "x86_64-linux";
-  modules = [
-    ./hosts/webserver2/configuration.nix
-    home-manager.nixosModules.home-manager
-    {
-      home-manager.useGlobalPkgs   = true;
-      home-manager.useUserPackages = true;
-      home-manager.users.jack      = import ./home/nixos/home.nix;
-    }
-  ];
+  modules = [ ./hosts/basement/configuration.nix ];
 };
 ```
 
-## 4. Apply
-
-Push dotfiles, clone on the new machine, then run:
+Stage, switch, then commit (might have to add SSH key to github):
 
 ```bash
-sudo nixos-rebuild switch --flake ~/dotfiles/nix#webserver2 --impure
+git -C ~/dotfiles add -A
+sudo nixos-rebuild switch --flake ~/dotfiles/nix#basement
+git -C ~/dotfiles commit -am "add basement" && git -C ~/dotfiles push
 ```
+
+Future rebuilds: `sudo nixos-rebuild switch --flake ~/dotfiles/nix#basement`

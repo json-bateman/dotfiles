@@ -21,11 +21,11 @@
   in
   {
     nixosConfigurations = {
-      # Personal laptop: full desktop + home-manager.
-      personal = nixpkgs.lib.nixosSystem {
+      # Laptop: full desktop + home-manager.
+      laptop = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
-          ./hosts/personal/configuration.nix
+          ./hosts/laptop/configuration.nix
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs    = true;
@@ -35,11 +35,17 @@
         ];
       };
 
-      # Headless server: system config only, kept minimal (no desktop, no home-manager).
-      webserver = nixpkgs.lib.nixosSystem {
+      # Basement box: webserver role + full desktop (system config only, no home-manager).
+      basement = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
-          ./hosts/webserver/configuration.nix
+          ./hosts/laptop/configuration.nix
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs    = true;
+            home-manager.useUserPackages  = true;
+            home-manager.users.jack       = import ./home/nixos/home.nix;
+          }
         ];
       };
     };

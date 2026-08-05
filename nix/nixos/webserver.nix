@@ -38,7 +38,7 @@
 
   system.autoUpgrade = {
     enable      = true;
-    flake       = "github:json-bateman/dotfiles?dir=nix";  # builds .#webserver via hostname
+    flake       = "github:json-bateman/dotfiles?dir=nix";  # builds .#basement via hostname
     flags       = [ "--refresh" ];                          # re-fetch the flake ref each run
     dates       = "04:00";                                  # daily (systemd.time format)
     randomizedDelaySec = "45min";                           # avoid an exact-time stampede
