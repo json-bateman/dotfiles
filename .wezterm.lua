@@ -3,6 +3,7 @@ local wezterm = require("wezterm")
 return {
 	term = "tmux-256color",
 	font = wezterm.font_with_fallback({
+		"JetBrainsMono Nerd Font",
 		"JetBrains Mono",
 		"Hiragino Sans",
 		"Fira Code",
