@@ -1,4 +1,4 @@
-# PLACEHOLDER — replace this on the real webserver box with the output of:
+# PLACEHOLDER — replace this on the real basement box with the output of:
 #   sudo nixos-generate-config --show-hardware-config
 # (or copy /etc/nixos/hardware-configuration.nix from that machine).
 # The values below are just enough to let the flake evaluate; they will NOT
