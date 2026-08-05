@@ -39,7 +39,7 @@
       basement = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
-          ./hosts/laptop/configuration.nix
+          ./hosts/basement/configuration.nix
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs    = true;
