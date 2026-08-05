@@ -3,15 +3,20 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-26.05";
 
     home-manager = {
       # Track master to stay compatible with unstable nixpkgs.
       url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    home-manager-stable = {
+      url = "github:nix-community/home-manager/release-26.05";
+      inputs.nixpkgs.follows = "nixpkgs-stable";
+    };
   };
 
-  outputs = { self, nixpkgs, home-manager, ... }:
+  outputs = { self, nixpkgs, nixpkgs-stable, home-manager, home-manager-stable, ... }:
   let
     mkHome = system: module:
       home-manager.lib.homeManagerConfiguration {
@@ -35,12 +40,12 @@
         ];
       };
 
-      # Basement box: webserver role + full desktop (system config only, no home-manager).
-      basement = nixpkgs.lib.nixosSystem {
+      # Basement box: webserver role + full desktop, on the STABLE release
+      basement = nixpkgs-stable.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
           ./hosts/basement/configuration.nix
-          home-manager.nixosModules.home-manager
+          home-manager-stable.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs    = true;
             home-manager.useUserPackages  = true;
