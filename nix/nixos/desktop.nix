@@ -23,6 +23,10 @@
 
   programs.firefox.enable = true;
 
+  fonts.packages = with pkgs; [
+    nerd-fonts.jetbrains-mono   # provides "JetBrainsMono Nerd Font"
+  ];
+
   environment.systemPackages = with pkgs; [
     wl-clipboard
     wezterm

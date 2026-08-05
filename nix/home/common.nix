@@ -65,14 +65,14 @@
 
     oh-my-zsh = {
       enable = true;
-      theme = "robbyrussell";
+      theme = "strug";
       plugins = [ "git" "virtualenv" ]; # autojump handled by programs.autojump
     };
 
     history = {
       path = "$HOME/.zhistory";
-      size = 20000;
-      save = 20000;
+      size = 10000;
+      save = 10000;
       extended = true;
       share = true;
       expireDuplicatesFirst = true;
