@@ -4,7 +4,6 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = "nixos";
   networking.networkmanager.enable = true;
 
   time.timeZone = "America/New_York";
@@ -22,28 +21,7 @@
     LC_TIME           = "en_US.UTF-8";
   };
 
-  services.xserver.enable = true;
-  services.displayManager.gdm.enable = true;
-  services.desktopManager.gnome.enable = true;
-
-  services.xserver.xkb = {
-    layout  = "us";
-    variant = "";
-  };
-
-  services.printing.enable = true;
-
-  services.pulseaudio.enable = false;
-  security.rtkit.enable = true;
-  services.pipewire = {
-    enable            = true;
-    alsa.enable       = true;
-    alsa.support32Bit = true;
-    pulse.enable      = true;
-  };
-
   programs.zsh.enable = true;
-  programs.firefox.enable = true;
 
   users.users."jack" = {
     isNormalUser = true;
@@ -57,14 +35,11 @@
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   environment.systemPackages = with pkgs; [
-    claude-code
     git
     neovim
     jq
     curl
     wget
-    wl-clipboard
-    wezterm
   ];
 
   services.openssh.enable = true;

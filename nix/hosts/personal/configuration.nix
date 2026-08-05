@@ -4,10 +4,10 @@
   imports = [
     ./hardware-configuration.nix
     ../../nixos/common.nix
-    ../../nixos/webserver.nix
+    ../../nixos/desktop.nix
   ];
 
-  networking.hostName = "webserver";
+  networking.hostName = "nixos";
 
   system.stateVersion = "26.05";
 }
