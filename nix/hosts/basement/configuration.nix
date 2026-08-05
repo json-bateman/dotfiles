@@ -4,11 +4,10 @@
   imports = [
     ./hardware-configuration.nix
     ../../nixos/common.nix
-    ../../nixos/desktop.nix     # this box is beefy — give it the full GUI too
-    ../../nixos/webserver.nix
+    ../../nixos/desktop.nix
   ];
 
-  networking.hostName = "basement";
+  networking.hostName = "nixos";
 
   system.stateVersion = "26.05";
 }
