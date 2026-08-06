@@ -6,8 +6,9 @@ Nix-managed configuration for macOS, NixOS, and Red Hat.
 
 Nix is the OS — no installation needed.
 
-1. Clone this repo:
+1. Clone this repo (have to use nix-shell because nix doesn't ship with git):
    ```bash
+   nix-shell -p git
    git clone https://github.com/json-bateman/dotfiles ~/dotfiles
    ```
 
