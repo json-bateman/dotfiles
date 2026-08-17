@@ -26,12 +26,11 @@
   in
   {
     nixosConfigurations = {
-      # Laptop: full desktop + home-manager.
-      laptop = nixpkgs.lib.nixosSystem {
+      laptop = nixpkgs-stable.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
           ./hosts/laptop/configuration.nix
-          home-manager.nixosModules.home-manager
+          home-manager-stable.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs    = true;
             home-manager.useUserPackages  = true;
@@ -40,7 +39,6 @@
         ];
       };
 
-      # Basement box: webserver role + full desktop, on the STABLE release
       basement = nixpkgs-stable.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [

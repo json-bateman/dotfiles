@@ -5,9 +5,10 @@
     ./hardware-configuration.nix
     ../../nixos/common.nix
     ../../nixos/desktop.nix
+    ../../nixos/webserver.nix
   ];
 
-  networking.hostName = "nixos";
+  networking.hostName = "basement";
 
   system.stateVersion = "26.05";
 }

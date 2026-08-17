@@ -22,7 +22,6 @@
     gopls
     templ
     vscode-langservers-extracted
-    deno
     go
   ];
   # fzf / mise / autojump come from their programs.* modules below
