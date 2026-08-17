@@ -17,6 +17,10 @@
       "REPLACE-WITH-TUNNEL-UUID" = {
         # Secret — NOT committed to the repo. Place the JSON on the box out-of-band
         # (or manage it with sops-nix / agenix) and point at its absolute path.
+        #
+        # The unit runs with DynamicUser=true and reads this via systemd
+        # LoadCredential=, i.e. as root before dropping privileges. So the file
+        # must be root-owned 0600 — do NOT chown it to a service user.
         credentialsFile = "/etc/cloudflared/webserver.json";
 
         # Every site lives on this one Caddy box, so send everything to Caddy.

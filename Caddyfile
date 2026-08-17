@@ -1,12 +1,14 @@
 # The Caddyfile is an easy way to configure your Caddy web server.
 #
-# Unless the file starts with a global options block, the first
-# uncommented line is always the address of your site.
+# This box sits behind a Cloudflare Tunnel (see nix/nixos/webserver.nix).
+# Cloudflare terminates public TLS at its edge and cloudflared hands plain
+# HTTP to Caddy on localhost:80, so Caddy must NOT try to provision its own
+# certificates or redirect HTTP -> HTTPS. Hence auto_https off below.
 #
-# To use your own domain name (with automatic HTTPS), first make
-# sure your domain's A/AAAA DNS records are properly pointed to
-# this machine's public IP, then replace ":80" below with your
-# domain name.
+# Site addresses stay as bare hostnames so Caddy still vhost-routes on Host.
+{
+	auto_https off
+}
 
 
 ### Raw HTML/CSS/JS ###

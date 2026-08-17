@@ -71,7 +71,6 @@ return {
 			})
 
 			local capabilities = require("blink.cmp").get_lsp_capabilities()
-			local util = require("lspconfig.util")
 
 			local servers = {
 				pyright = {},
@@ -100,30 +99,8 @@ return {
 				},
 
 				jsonls = {},
-				-- sqls = {},
-
-				-- tailwindcss = {
-				-- 	filetypes = {
-				-- 		"templ",
-				-- 		"html",
-				-- 		"css",
-				-- 		"javascript",
-				-- 		"typescript",
-				-- 		"javascriptreact",
-				-- 		"typescriptreact",
-				-- 	},
-				-- 	settings = {
-				-- 		tailwindCSS = {
-				-- 			includeLanguages = {
-				-- 				templ = "html",
-				-- 			},
-				-- 		},
-				-- 	},
-				-- },
-
 				templ = {},
 				gopls = {},
-
 				lua_ls = {
 					settings = {
 						Lua = {

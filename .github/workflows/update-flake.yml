@@ -2,7 +2,9 @@ name: Update flake.lock
 
 on:
   schedule:
-    - cron: "0 4 * * *"   # daily to test tonight
+    # Weekly, Mondays 04:00 UTC. The basement box's system.autoUpgrade runs at
+    # 04:00 America/New_York (08:00 UTC), so it picks this up the same morning.
+    - cron: "0 4 * * 1"
   workflow_dispatch:        # allow manual "Run workflow" from the Actions tab
 
 permissions:

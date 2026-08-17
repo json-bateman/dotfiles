@@ -1,11 +1,6 @@
 -- nvim-treesitter migrated to the `main` branch (required for Neovim 0.12+).
--- The `master` branch is frozen and unsupported on 0.12 — it crashed the
--- highlighter during injection parsing, which is why highlighting kept
--- turning off. See :h nvim-treesitter for the new API.
---
+-- See :h nvim-treesitter for the new API.
 -- Prereqs (already installed on this machine): tree-sitter CLI >= 0.26.1
--- (`brew install tree-sitter-cli`), a C compiler, and curl. The main branch
--- compiles parsers locally on :TSInstall / :TSUpdate.
 
 local ensure_installed = {
 	-- config + docs
@@ -15,27 +10,27 @@ local ensure_installed = {
 	"luadoc",
 	"markdown",
 	"markdown_inline",
-	-- backend
-	"go",
-	"gomod",
-	"gosum",
-	"gowork",
-	"sql",
-	-- web
-	"javascript",
-	"typescript",
-	"tsx",
-	"html",
-	"css",
-	-- data/tooling
-	"json",
-	"yaml",
-	"toml",
-	"bash",
-	"dockerfile",
-	"git_config",
-	"gitcommit",
-	"diff",
+	-- -- backend
+	-- "go",
+	-- "gomod",
+	-- "gosum",
+	-- "gowork",
+	-- "sql",
+	-- -- web
+	-- "javascript",
+	-- "typescript",
+	-- "tsx",
+	-- "html",
+	-- "css",
+	-- -- data/tooling
+	-- "json",
+	-- "yaml",
+	-- "toml",
+	-- "bash",
+	-- "dockerfile",
+	-- "git_config",
+	-- "gitcommit",
+	-- "diff",
 }
 
 return {
