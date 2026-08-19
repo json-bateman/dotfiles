@@ -57,7 +57,6 @@
 
   programs.zsh = {
     enable = true;
-    defaultKeymap = "viins";          # bindkey -v
 
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true; # loaded after autosuggestions automatically
@@ -87,6 +86,9 @@
     };
 
     initContent = ''
+      # Assert vi mode here, since initContent runs after oh-my-zsh.
+      bindkey -v
+
       setopt hist_verify
       setopt glob_dots
       export KEYTIMEOUT=1
