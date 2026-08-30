@@ -9,7 +9,30 @@
 
   home.packages = with pkgs; [
     spotify
+    fuzzel
+    networkmanagerapplet
+    pavucontrol
+    blueman
   ];
+
+  home.file.".local/bin/hypr-keybinds" = {
+    executable = true;
+    text = ''
+      #!/usr/bin/env bash
+      cat <<'EOF' | fuzzel --dmenu --prompt "Keybinds  "
+      SUPER + Return         Terminal (wezterm)
+      SUPER + Space          App launcher (fuzzel)
+      SUPER + Shift + S      Audio mixer (pavucontrol)
+      SUPER + Q              Close window
+      SUPER + V              Toggle floating
+      SUPER + F              Fullscreen
+      SUPER + M              Exit Hyprland
+      SUPER + 1..5           Switch workspace
+      SUPER + Shift + 1..5   Move window to workspace
+      SUPER + K              Show this list
+      EOF
+    '';
+  };
 
   wayland.windowManager.hyprland = {
     enable = true;
@@ -20,9 +43,9 @@
 
       config = {
         general = {
-          gaps_in     = 5;
-          gaps_out    = 10;
-          border_size = 2;
+          gaps_in     = 3;
+          gaps_out    = 5;
+          border_size = 1;
         };
         input = {
           kb_layout  = "us";
@@ -30,9 +53,19 @@
         };
       };
 
+      animation = [
+        { leaf = "windows";     enabled = true; speed = 3; curve = "default"; style = "popin 80%"; }
+        { leaf = "windowsMove"; enabled = true; speed = 3; curve = "default"; }
+        { leaf = "fade";        enabled = true; speed = 3; curve = "default"; }
+        { leaf = "workspaces";  enabled = true; speed = 3; curve = "default"; style = "slide"; }
+      ];
+
       bind =
         [
           { _args = [ (lib.generators.mkLuaInline ''mod .. " + RETURN"'') (lib.generators.mkLuaInline ''hl.dsp.exec_cmd("wezterm")'') ]; }
+          { _args = [ (lib.generators.mkLuaInline ''mod .. " + SPACE"'')      (lib.generators.mkLuaInline ''hl.dsp.exec_cmd("fuzzel")'') ]; }
+          { _args = [ (lib.generators.mkLuaInline ''mod .. " + SHIFT + S"'')  (lib.generators.mkLuaInline ''hl.dsp.exec_cmd("pavucontrol")'') ]; }
+          { _args = [ (lib.generators.mkLuaInline ''mod .. " + K"'')          (lib.generators.mkLuaInline ''hl.dsp.exec_cmd("$HOME/.local/bin/hypr-keybinds")'') ]; }
           { _args = [ (lib.generators.mkLuaInline ''mod .. " + Q"'')      (lib.generators.mkLuaInline "hl.dsp.window.close()") ]; }
           { _args = [ (lib.generators.mkLuaInline ''mod .. " + M"'')      (lib.generators.mkLuaInline "hl.dsp.exit()") ]; }
           { _args = [ (lib.generators.mkLuaInline ''mod .. " + V"'')      (lib.generators.mkLuaInline ''hl.dsp.window.float({ action = "toggle" })'') ]; }
@@ -55,6 +88,8 @@
               hl.exec_cmd("waybar")
               hl.exec_cmd("swaybg -c '#1e1e2e'")
               hl.exec_cmd("hyprpolkitagent")
+              hl.exec_cmd("nm-applet")
+              hl.exec_cmd("blueman-applet")
             end
           '')
         ];
@@ -67,7 +102,7 @@
     settings.mainBar = {
       layer    = "top";
       position = "top";
-      height   = 30;
+      height   = 16;
 
       modules-left   = [ "hyprland/workspaces" ];
       modules-center = [ "clock" ];
