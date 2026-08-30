@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   imports = [ ../common.nix ];
@@ -13,50 +13,52 @@
 
   wayland.windowManager.hyprland = {
     enable = true;
-    configType = "hyprlang";
+    configType = "lua"; # Hyprland >= 0.55 deprecated hyprlang (.conf) in favor of Lua
 
     settings = {
-      monitor = [ ",preferred,auto,1" ];
+      mod = { _var = "SUPER"; };
 
-      input = {
-        kb_layout  = "us";
-        kb_options = "caps:swapescape";
+      config = {
+        general = {
+          gaps_in     = 5;
+          gaps_out    = 10;
+          border_size = 2;
+        };
+        input = {
+          kb_layout  = "us";
+          kb_options = "caps:swapescape";
+        };
       };
 
-      general = {
-        gaps_in     = 5;
-        gaps_out    = 10;
-        border_size = 2;
+      bind =
+        [
+          { _args = [ (lib.generators.mkLuaInline ''mod .. " + RETURN"'') (lib.generators.mkLuaInline ''hl.dsp.exec_cmd("wezterm")'') ]; }
+          { _args = [ (lib.generators.mkLuaInline ''mod .. " + Q"'')      (lib.generators.mkLuaInline "hl.dsp.window.close()") ]; }
+          { _args = [ (lib.generators.mkLuaInline ''mod .. " + M"'')      (lib.generators.mkLuaInline "hl.dsp.exit()") ]; }
+          { _args = [ (lib.generators.mkLuaInline ''mod .. " + V"'')      (lib.generators.mkLuaInline ''hl.dsp.window.float({ action = "toggle" })'') ]; }
+          { _args = [ (lib.generators.mkLuaInline ''mod .. " + F"'')      (lib.generators.mkLuaInline "hl.dsp.window.fullscreen()") ]; }
+        ]
+        ++ (lib.concatLists (lib.genList
+          (i:
+            let ws = toString (i + 1); in [
+              { _args = [ (lib.generators.mkLuaInline ''mod .. " + ${ws}"'')         (lib.generators.mkLuaInline "hl.dsp.focus({ workspace = ${ws} })") ]; }
+              { _args = [ (lib.generators.mkLuaInline ''mod .. " + SHIFT + ${ws}"'') (lib.generators.mkLuaInline "hl.dsp.window.move({ workspace = ${ws} })") ]; }
+            ]
+          )
+          5));
+
+      on = {
+        _args = [
+          "hyprland.start"
+          (lib.generators.mkLuaInline ''
+            function()
+              hl.exec_cmd("waybar")
+              hl.exec_cmd("swaybg -c '#1e1e2e'")
+              hl.exec_cmd("hyprpolkitagent")
+            end
+          '')
+        ];
       };
-
-      "exec-once" = [
-        "waybar"
-        "swaybg -c '#1e1e2e'"
-        "hyprpolkitagent"
-      ];
-
-      "$terminal" = "wezterm";
-      "$mainMod"  = "SUPER";
-
-      bind = [
-        "$mainMod, Return, exec, $terminal"
-        "$mainMod, Q, killactive"
-        "$mainMod, M, exit"
-        "$mainMod, V, togglefloating"
-        "$mainMod, F, fullscreen"
-
-        "$mainMod, 1, workspace, 1"
-        "$mainMod, 2, workspace, 2"
-        "$mainMod, 3, workspace, 3"
-        "$mainMod, 4, workspace, 4"
-        "$mainMod, 5, workspace, 5"
-
-        "$mainMod SHIFT, 1, movetoworkspace, 1"
-        "$mainMod SHIFT, 2, movetoworkspace, 2"
-        "$mainMod SHIFT, 3, movetoworkspace, 3"
-        "$mainMod SHIFT, 4, movetoworkspace, 4"
-        "$mainMod SHIFT, 5, movetoworkspace, 5"
-      ];
     };
   };
 
