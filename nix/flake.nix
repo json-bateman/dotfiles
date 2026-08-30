@@ -20,7 +20,7 @@
   let
     mkHome = system: module:
       home-manager.lib.homeManagerConfiguration {
-        pkgs    = import nixpkgs { inherit system; };
+        pkgs    = import nixpkgs { inherit system; config.allowUnfree = true; };
         modules = [ module ];
       };
   in
