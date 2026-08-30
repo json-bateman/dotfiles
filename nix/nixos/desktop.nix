@@ -6,12 +6,18 @@
   services.greetd = {
     enable = true;
     settings.default_session.command =
-      "${pkgs.tuigreet}/bin/tuigreet --time --remember --cmd Hyprland";
+      "${pkgs.tuigreet}/bin/tuigreet --time --remember --cmd start-hyprland";
   };
 
   console.keyMap = "us";
 
   security.polkit.enable = true;
+
+  hardware.bluetooth = {
+    enable       = true;
+    powerOnBoot  = true;
+  };
+  services.blueman.enable = true;
 
   services.printing.enable = true;
 
