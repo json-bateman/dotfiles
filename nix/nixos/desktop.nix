@@ -1,14 +1,17 @@
 { config, pkgs, ... }:
 
 {
-  services.xserver.enable = true;
-  services.displayManager.gdm.enable = true;
-  services.desktopManager.gnome.enable = true;
+  programs.hyprland.enable = true;
 
-  services.xserver.xkb = {
-    layout  = "us";
-    variant = "";
+  services.greetd = {
+    enable = true;
+    settings.default_session.command =
+      "${pkgs.tuigreet}/bin/tuigreet --time --remember --cmd Hyprland";
   };
+
+  console.keyMap = "us";
+
+  security.polkit.enable = true;
 
   services.printing.enable = true;
 
@@ -30,5 +33,7 @@
   environment.systemPackages = with pkgs; [
     wl-clipboard
     wezterm
+    swaybg
+    hyprpolkitagent
   ];
 }
