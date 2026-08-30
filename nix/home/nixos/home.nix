@@ -19,7 +19,7 @@
     executable = true;
     text = ''
       #!/usr/bin/env bash
-      cat <<'EOF' | fuzzel --dmenu --prompt "Keybinds  "
+      cat <<'EOF' | fuzzel --dmenu --width 60 --prompt "Keybinds  "
       SUPER + Return         Terminal (wezterm)
       SUPER + Space          App launcher (fuzzel)
       SUPER + Shift + S      Audio mixer (pavucontrol)
@@ -27,9 +27,11 @@
       SUPER + V              Toggle floating
       SUPER + F              Fullscreen
       SUPER + M              Exit Hyprland
+      SUPER + Arrow keys     Move focus between windows
+      SUPER + H/J/K/L        Move focus between windows (vim-style)
+      SUPER + ?              Show this list
       SUPER + 1..5           Switch workspace
       SUPER + Shift + 1..5   Move window to workspace
-      SUPER + K              Show this list
       EOF
     '';
   };
@@ -47,6 +49,9 @@
           gaps_out    = 5;
           border_size = 1;
         };
+        xwayland = {
+          force_zero_scaling = true;
+        };
         input = {
           kb_layout  = "us";
           kb_options = "caps:swapescape";
@@ -57,7 +62,7 @@
         { leaf = "windows";     enabled = true; speed = 3; bezier = "default"; style = "popin 80%"; }
         { leaf = "windowsMove"; enabled = true; speed = 3; bezier = "default"; }
         { leaf = "fade";        enabled = true; speed = 3; bezier = "default"; }
-        { leaf = "workspaces";  enabled = true; speed = 3; bezier = "default"; style = "slide"; }
+        { leaf = "workspaces";  enabled = false; }
       ];
 
       bind =
@@ -65,11 +70,21 @@
           { _args = [ (lib.generators.mkLuaInline ''mod .. " + RETURN"'') (lib.generators.mkLuaInline ''hl.dsp.exec_cmd("wezterm")'') ]; }
           { _args = [ (lib.generators.mkLuaInline ''mod .. " + SPACE"'')      (lib.generators.mkLuaInline ''hl.dsp.exec_cmd("fuzzel")'') ]; }
           { _args = [ (lib.generators.mkLuaInline ''mod .. " + SHIFT + S"'')  (lib.generators.mkLuaInline ''hl.dsp.exec_cmd("pavucontrol")'') ]; }
-          { _args = [ (lib.generators.mkLuaInline ''mod .. " + K"'')          (lib.generators.mkLuaInline ''hl.dsp.exec_cmd("$HOME/.local/bin/hypr-keybinds")'') ]; }
+          { _args = [ (lib.generators.mkLuaInline ''mod .. " + question"'')   (lib.generators.mkLuaInline ''hl.dsp.exec_cmd("$HOME/.local/bin/hypr-keybinds")'') ]; }
           { _args = [ (lib.generators.mkLuaInline ''mod .. " + Q"'')      (lib.generators.mkLuaInline "hl.dsp.window.close()") ]; }
           { _args = [ (lib.generators.mkLuaInline ''mod .. " + M"'')      (lib.generators.mkLuaInline "hl.dsp.exit()") ]; }
           { _args = [ (lib.generators.mkLuaInline ''mod .. " + V"'')      (lib.generators.mkLuaInline ''hl.dsp.window.float({ action = "toggle" })'') ]; }
           { _args = [ (lib.generators.mkLuaInline ''mod .. " + F"'')      (lib.generators.mkLuaInline "hl.dsp.window.fullscreen()") ]; }
+
+          { _args = [ (lib.generators.mkLuaInline ''mod .. " + LEFT"'')  (lib.generators.mkLuaInline ''hl.dsp.focus({ direction = "l" })'') ]; }
+          { _args = [ (lib.generators.mkLuaInline ''mod .. " + RIGHT"'') (lib.generators.mkLuaInline ''hl.dsp.focus({ direction = "r" })'') ]; }
+          { _args = [ (lib.generators.mkLuaInline ''mod .. " + UP"'')    (lib.generators.mkLuaInline ''hl.dsp.focus({ direction = "u" })'') ]; }
+          { _args = [ (lib.generators.mkLuaInline ''mod .. " + DOWN"'')  (lib.generators.mkLuaInline ''hl.dsp.focus({ direction = "d" })'') ]; }
+
+          { _args = [ (lib.generators.mkLuaInline ''mod .. " + H"'') (lib.generators.mkLuaInline ''hl.dsp.focus({ direction = "l" })'') ]; }
+          { _args = [ (lib.generators.mkLuaInline ''mod .. " + J"'') (lib.generators.mkLuaInline ''hl.dsp.focus({ direction = "d" })'') ]; }
+          { _args = [ (lib.generators.mkLuaInline ''mod .. " + K"'') (lib.generators.mkLuaInline ''hl.dsp.focus({ direction = "u" })'') ]; }
+          { _args = [ (lib.generators.mkLuaInline ''mod .. " + L"'') (lib.generators.mkLuaInline ''hl.dsp.focus({ direction = "r" })'') ]; }
         ]
         ++ (lib.concatLists (lib.genList
           (i:
