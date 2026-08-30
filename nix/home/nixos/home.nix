@@ -95,6 +95,11 @@
           { _args = [ (lib.generators.mkLuaInline ''mod .. " + J"'') (lib.generators.mkLuaInline ''hl.dsp.focus({ direction = "d" })'') ]; }
           { _args = [ (lib.generators.mkLuaInline ''mod .. " + K"'') (lib.generators.mkLuaInline ''hl.dsp.focus({ direction = "u" })'') ]; }
           { _args = [ (lib.generators.mkLuaInline ''mod .. " + L"'') (lib.generators.mkLuaInline ''hl.dsp.focus({ direction = "r" })'') ]; }
+
+          { _args = [ "XF86AudioRaiseVolume" (lib.generators.mkLuaInline ''hl.dsp.exec_cmd("wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+")'') { repeating = true; } ]; }
+          { _args = [ "XF86AudioLowerVolume" (lib.generators.mkLuaInline ''hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-")'') { repeating = true; } ]; }
+          { _args = [ "XF86AudioMute"        (lib.generators.mkLuaInline ''hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle")'') ]; }
+          { _args = [ "XF86AudioMicMute"     (lib.generators.mkLuaInline ''hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle")'') ]; }
         ]
         ++ (lib.concatLists (lib.genList
           (i:
@@ -135,7 +140,14 @@
 
       "hyprland/workspaces" = { };
       clock                 = { format = "{:%H:%M  %a %b %d}"; };
-      pulseaudio            = { format = "{volume}% {icon}"; format-muted = "muted"; };
+      pulseaudio            = {
+        format          = "{volume}% {icon}";
+        format-muted    = "muted";
+        on-click        = "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
+        on-click-right  = "pavucontrol";
+        on-scroll-up    = "wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+";
+        on-scroll-down  = "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-";
+      };
       battery               = { format = "{capacity}% {icon}"; };
       tray                  = { icon-size = 16; };
     };
