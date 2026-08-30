@@ -54,10 +54,10 @@
       };
 
       animation = [
-        { leaf = "windows";     enabled = true; speed = 3; curve = "default"; style = "popin 80%"; }
-        { leaf = "windowsMove"; enabled = true; speed = 3; curve = "default"; }
-        { leaf = "fade";        enabled = true; speed = 3; curve = "default"; }
-        { leaf = "workspaces";  enabled = true; speed = 3; curve = "default"; style = "slide"; }
+        { leaf = "windows";     enabled = true; speed = 3; bezier = "default"; style = "popin 80%"; }
+        { leaf = "windowsMove"; enabled = true; speed = 3; bezier = "default"; }
+        { leaf = "fade";        enabled = true; speed = 3; bezier = "default"; }
+        { leaf = "workspaces";  enabled = true; speed = 3; bezier = "default"; style = "slide"; }
       ];
 
       bind =
