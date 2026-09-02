@@ -41,5 +41,6 @@
     wezterm
     swaybg
     hyprpolkitagent
+    google-chrome
   ];
 }
