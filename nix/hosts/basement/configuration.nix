@@ -4,7 +4,7 @@
   imports = [
     ./hardware-configuration.nix
     ../../nixos/common.nix
-    ../../nixos/desktop.nix
+    ../../nixos/gui.nix
     ../../nixos/webserver.nix
   ];
 

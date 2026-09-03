@@ -4,10 +4,10 @@
   imports = [
     ./hardware-configuration.nix
     ../../nixos/common.nix
-    ../../nixos/desktop.nix
+    ../../nixos/gui.nix
   ];
 
-  networking.hostName = "nixos";
+  networking.hostName = "laptop";
 
   system.stateVersion = "26.05";
 }

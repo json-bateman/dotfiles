@@ -7,7 +7,7 @@ auto-detect it).
 Shared modules to compose per host:
 - `nixos/common.nix`   — baseline (boot, locale, user, ssh, zsh, base pkgs)
 - `nixos/webserver.nix`— server role (Caddy, autoUpgrade, gc, cloudflared)
-- `nixos/desktop.nix`  — full GUI (GNOME, pipewire, printing, firefox)
+- `nixos/gui.nix`      — full GUI (GNOME, pipewire, printing, firefox)
 
 ## Steps (example host: `basement`)
 
@@ -30,7 +30,7 @@ Create `nix/hosts/basement/configuration.nix`:
     ./hardware-configuration.nix
     ../../nixos/common.nix
     ../../nixos/webserver.nix   # server role
-    ../../nixos/desktop.nix     # optional GUI
+    ../../nixos/gui.nix         # optional GUI
   ];
 
   networking.hostName = "basement";  # must match the flake attr (autoUpgrade uses it)

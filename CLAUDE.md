@@ -38,3 +38,13 @@
 - **Mocking data is only needed for tests**
   - Never mock data for dev or prod
   - Never add stubbing or fake data patterns to code that affects dev or prod environments
+
+## Agent skills
+
+### Issue tracker
+
+Issues live in GitHub Issues for json-bateman/dotfiles; skills use the `gh` CLI. See `docs/agents/issue-tracker.md`.
+
+### Domain docs
+
+Single-context layout (`CONTEXT.md` + `docs/adr/` at repo root). See `docs/agents/domain.md`.
