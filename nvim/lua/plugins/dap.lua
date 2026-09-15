@@ -68,10 +68,11 @@ return {
 			},
 			{
 				type = "go",
-				name = "Launch current package",
+				name = "Launch current package w/ optional args",
 				request = "launch",
 				program = "${fileDirname}",
 				cwd = "${workspaceFolder}",
+				args = require("dap-go").get_arguments(),
 			},
 			{
 				type = "go",
