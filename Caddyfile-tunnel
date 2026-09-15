@@ -7,6 +7,9 @@
 # Caddy would still bind 443 and nothing would listen on 80.
 #
 # Hostnames stay in the addresses so Caddy still vhost-routes on Host.
+#
+# `log` in each site enables access logs (off by default in Caddy);
+# view with: journalctl -fu caddy.service
 {
 	auto_https off
 }
@@ -17,39 +20,47 @@ http://design.jsonbateman.com {
 	root * /var/www/html/design-system
 
 	file_server
+	log
 }
 
 http://alug.us {
 	root * /var/www/html/alug.us
 
 	file_server
+	log
 }
 
 http://tsukinominori.com {
 	root * /var/www/html/tsukinominori.com
 
 	file_server
+	log
 }
 
 http://pokermon.club {
 	root * /var/www/html/poker_stats/portal/dist
 
 	file_server
+	log
 }
 
 ### Running Services ###
 http://jsonbateman.com {
 	reverse_proxy localhost:3000
+	log
 }
 
 http://api.pokermon.club {
 	reverse_proxy localhost:7777
+	log
 }
 
 http://crabspy.com {
 	reverse_proxy localhost:3012
+	log
 }
 
 http://basicauth.jsonbateman.com {
 	reverse_proxy localhost:3033
+	log
 }
