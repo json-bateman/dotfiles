@@ -1,9 +1,13 @@
 { config, pkgs, ... }:
 
 {
+  # CLI for managing tunnels (login, create, route dns); the daemon itself
+  # comes from services.cloudflared below.
+  environment.systemPackages = [ pkgs.cloudflared ];
+
   services.caddy = {
     enable     = true;
-    configFile = ../../Caddyfile;   # repo-root Caddyfile, relative to this file → part of the flake
+    configFile = ../../Caddyfile-tunnel;   # tunnel-specific Caddyfile (legacy CentOS box uses ./Caddyfile)
   };
 
   # Cloudflare Tunnel: the box makes an OUTBOUND connection to Cloudflare's edge,
