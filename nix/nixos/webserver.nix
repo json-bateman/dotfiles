@@ -17,8 +17,8 @@
   services.cloudflared = {
     enable = true;
     tunnels = {
-      # Replace with your real tunnel UUID (from `cloudflared tunnel create webserver`).
-      "REPLACE-WITH-TUNNEL-UUID" = {
+      # Tunnel UUID from `cloudflared tunnel create webserver`.
+      "180d87ed-a1df-4f6d-bc50-c4a58d0e0dc1" = {
         # Secret — NOT committed to the repo. Place the JSON on the box out-of-band
         # (or manage it with sops-nix / agenix) and point at its absolute path.
         #
