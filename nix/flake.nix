@@ -8,9 +8,11 @@
       url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    quadlet-nix.url = "github:SEIAROTg/quadlet-nix";
   };
 
-  outputs = { self, nixpkgs, home-manager, ... }:
+  outputs = { self, nixpkgs, home-manager, quadlet-nix, ... }:
   let
     mkHome = system: module:
       home-manager.lib.homeManagerConfiguration {
@@ -37,6 +39,7 @@
         system = "x86_64-linux";
         modules = [
           ./hosts/basement/configuration.nix
+          quadlet-nix.nixosModules.quadlet
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs    = true;
