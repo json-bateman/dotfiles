@@ -1,6 +1,8 @@
 { config, pkgs, ... }:
 
 {
+  imports = [ ./containers.nix ];   # podman app containers behind Caddy
+
   # CLI for managing tunnels (login, create, route dns); the daemon itself
   # comes from services.cloudflared below.
   environment.systemPackages = [ pkgs.cloudflared ];
