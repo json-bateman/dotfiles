@@ -46,12 +46,17 @@ http://pokermon.club {
 
 ### Running Services ###
 http://jsonbateman.com {
-	reverse_proxy localhost:3000
+	reverse_proxy localhost:3022
 	log
 }
 
-http://api.pokermon.club {
-	reverse_proxy localhost:7777
+http://basicauth.jsonbateman.com {
+	reverse_proxy localhost:3033
+	log
+}
+
+http://kanban.jsonbateman.com {
+	reverse_proxy localhost:3044
 	log
 }
 
@@ -60,7 +65,7 @@ http://crabspy.com {
 	log
 }
 
-http://basicauth.jsonbateman.com {
-	reverse_proxy localhost:3033
+http://api.pokermon.club {
+	reverse_proxy localhost:7777
 	log
 }

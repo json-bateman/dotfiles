@@ -24,6 +24,13 @@ in
     };
 
     containers = {
+      jsonbateman = {
+        containerConfig = updating // {
+          image        = "docker.io/jsonbateman/jsonbateman:latest";
+          publishPorts = [ "127.0.0.1:3022:3022" ];
+        };
+      };
+
       basicauth = {
         containerConfig = updating // {
           image        = "docker.io/jsonbateman/basicauth:latest";
@@ -35,12 +42,20 @@ in
         };
       };
 
+      kanban = {
+        containerConfig = updating // {
+          image        = "docker.io/jsonbateman/kanban:latest";
+          publishPorts = [ "127.0.0.1:3044:3044" ];
+          volumes      = [ "kanban-data:/app/data" ];
+          environmentFiles = [ "/etc/secrets/kanban.env" ];
+        };
+      };
+
       crabspy = {
         containerConfig = updating // {
           image        = "docker.io/jsonbateman/crabspy:latest";
           publishPorts = [ "127.0.0.1:3012:3012" ];
           volumes      = [ "crabspy-data:/app/data" ];
-          # CRABSPY_COOKIE_STORE_SECRET_KEY (kept out of this public repo)
           environmentFiles = [ "/etc/secrets/crabspy.env" ];
         };
       };
