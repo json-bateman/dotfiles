@@ -38,7 +38,7 @@ http://tsukinominori.com {
 }
 
 http://pokermon.club {
-	root * /var/www/html/poker_stats/portal/dist
+	root * /var/www/html/pokermon/portal/dist
 
 	file_server
 	log
