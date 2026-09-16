@@ -10,5 +10,12 @@
 
   networking.hostName = "basement";
 
+  swapDevices = [{
+    device = "/var/lib/swapfile";
+    size   = 8192; # 8 GB
+  }];
+
+  networking.firewall.allowedUDPPorts = [ 7777 ];
+
   system.stateVersion = "26.05";
 }

@@ -63,8 +63,18 @@ in
       pokermon = {
         containerConfig = updating // {
           image        = "docker.io/jsonbateman/poker_stats:latest";
-          publishPorts = [ "127.0.0.1:7777:7777" ];
+          publishPorts = [ "127.0.0.1:7778:7777" ];
           volumes      = [ "pokermon-data:/data" ];
+        };
+      };
+
+      dragonwilds = {
+        containerConfig = updating // {
+          image        = "docker.io/indifferentbroccoli/runescape-dragonwilds-server-docker:latest";
+          publishPorts = [ "7777:7777/udp" ];
+          volumes      = [ "dragonwilds-data:/home/steam/server-files" ];
+          podmanArgs   = [ "--memory=12g" ];
+          environmentFiles = [ "/etc/secrets/dragonwilds.env" ];
         };
       };
     };
