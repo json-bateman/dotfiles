@@ -1,7 +1,10 @@
 { config, pkgs, ... }:
 
 {
-  imports = [ ./containers.nix ];   # podman app containers behind Caddy
+  imports = [
+    ./containers.nix    # podman app containers behind Caddy
+    ./backups.nix       # restic backups to Backblaze B2
+  ];
 
   # CLI for managing tunnels (login, create, route dns); the daemon itself
   # comes from services.cloudflared below.
