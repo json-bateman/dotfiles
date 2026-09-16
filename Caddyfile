@@ -1,54 +1,70 @@
-# The Caddyfile is an easy way to configure your Caddy web server.
+# Caddyfile for the Cloudflare Tunnel box (see nix/nixos/webserver.nix).
 #
-# This box sits behind a Cloudflare Tunnel (see nix/nixos/webserver.nix).
 # Cloudflare terminates public TLS at its edge and cloudflared hands plain
-# HTTP to Caddy on localhost:80, so Caddy must NOT try to provision its own
-# certificates or redirect HTTP -> HTTPS. Hence auto_https off below.
+# HTTP to Caddy on localhost:80. Every site address is prefixed with http://
+# because auto_https off alone does NOT move a bare hostname off port 443 —
+# Caddy would still bind 443 and nothing would listen on 80.
 #
-# Site addresses stay as bare hostnames so Caddy still vhost-routes on Host.
+# Hostnames stay in the addresses so Caddy still vhost-routes on Host.
+#
+# `log` in each site enables access logs (off by default in Caddy);
+# view with: journalctl -fu caddy.service
 {
 	auto_https off
 }
 
 
 ### Raw HTML/CSS/JS ###
-design.jsonbateman.com {
+http://design.jsonbateman.com {
 	root * /var/www/html/design-system
 
 	file_server
+	log
 }
 
-alug.us {
+http://alug.us {
 	root * /var/www/html/alug.us
 
 	file_server
+	log
 }
 
-tsukinominori.com {
+http://tsukinominori.com {
 	root * /var/www/html/tsukinominori.com
 
 	file_server
+	log
 }
 
-pokermon.club {
-	root * /var/www/html/poker_stats/portal/dist
+http://pokermon.club {
+	root * /var/www/html/pokermon/portal/dist
 
 	file_server
+	log
 }
 
 ### Running Services ###
-jsonbateman.com {
-	reverse_proxy localhost:3000
+http://jsonbateman.com {
+	reverse_proxy localhost:3022
+	log
 }
 
-api.pokermon.club {
-	reverse_proxy localhost:7777
-}
-
-crabspy.com {
-	reverse_proxy localhost:3012
-}
-
-basicauth.jsonbateman.com {
+http://basicauth.jsonbateman.com {
 	reverse_proxy localhost:3033
+	log
+}
+
+http://kanban.jsonbateman.com {
+	reverse_proxy localhost:3044
+	log
+}
+
+http://crabspy.com {
+	reverse_proxy localhost:3012
+	log
+}
+
+http://api.pokermon.club {
+	reverse_proxy localhost:7777
+	log
 }

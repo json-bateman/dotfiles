@@ -12,7 +12,7 @@
 
   services.caddy = {
     enable     = true;
-    configFile = ../../Caddyfile-tunnel;   # tunnel-specific Caddyfile (legacy CentOS box uses ./Caddyfile)
+    configFile = ../../Caddyfile;
   };
 
   # Cloudflare Tunnel: the box makes an OUTBOUND connection to Cloudflare's edge,
