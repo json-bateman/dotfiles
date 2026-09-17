@@ -1,13 +1,12 @@
 # Adding a New NixOS Host
 
 Run these on the **already-installed, booted machine**. Each host = shared modules
-+ its own `hardware-configuration.nix` (machine-specific; Nix does **not**
-auto-detect it).
++ its own `hardware-configuration.nix` (machine-specific; Nix does **not** auto-detect it).
 
-Shared modules to compose per host:
-- `nixos/common.nix`   — baseline (boot, locale, user, ssh, zsh, base pkgs)
-- `nixos/webserver.nix`— server role (Caddy, autoUpgrade, gc, cloudflared)
-- `nixos/gui.nix`      — full GUI (GNOME, pipewire, printing, firefox)
+Shared modules to compose per host mix and match from
+the nixos/ folder, but always include common.nix:
+- `nixos/common.nix`
+- `nixos/*`
 
 ## Steps (example host: `basement`)
 

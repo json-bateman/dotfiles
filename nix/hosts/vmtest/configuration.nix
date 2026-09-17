@@ -4,7 +4,7 @@
   imports = [
     ../laptop/hardware-configuration.nix
     ../../nixos/common.nix
-    ../../nixos/gnome.nix
+    ../../nixos/gui.nix
   ];
 
   networking.hostName = "vmtest";

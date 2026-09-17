@@ -26,6 +26,7 @@
     size   = 8192; # 8 GB
   }];
 
+  # This is for Runescape Dragonwilds... Terraria is also on this port
   networking.firewall.allowedUDPPorts = [ 7777 ];
 
   system.stateVersion = "26.05";
