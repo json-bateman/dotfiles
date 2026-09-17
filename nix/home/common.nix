@@ -93,7 +93,8 @@
       # 14(bright cyan) 33(blue) 39(cyan) 51(aqua) 82(lime) 118(green) 154(chartreuse)
       # 196(red) 208(orange) 214(gold)
       local _c="''${PROMPT_COLOR:-2}"
-      PROMPT="%F{$_c}╭─%n@%m %{$reset_color%}%{$fg[yellow]%}in %~ %{$reset_color%}$(git_prompt_info)%{$reset_color%}$(git_remote_status)
+      local _git='$(git_prompt_info)%{$reset_color%}$(git_remote_status)'
+      PROMPT="%F{$_c}╭─%n@%m %{$reset_color%}%{$fg[yellow]%}in %~ %{$reset_color%}''${_git}
 %F{$_c}╰\$ %{$reset_color%}"
 
       # Assert vi mode here, since initContent runs after oh-my-zsh.
