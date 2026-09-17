@@ -32,7 +32,7 @@
             home-manager.useUserPackages  = true;
             home-manager.users.jack       = { ... }: {
               imports = [ ./home/nixos/home.nix ];
-              home.sessionVariables.PROMPT_COLOR = "196";
+              home.sessionVariables.PROMPT_COLOR = "196"; # neon red
             };
           }
         ];
@@ -49,7 +49,7 @@
             home-manager.useUserPackages  = true;
             home-manager.users.jack       = { ... }: {
               imports = [ ./home/nixos/home.nix ];
-              home.sessionVariables.PROMPT_COLOR = "118";
+              home.sessionVariables.PROMPT_COLOR = "39"; # neon blue
             };
           }
         ];

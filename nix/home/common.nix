@@ -88,10 +88,6 @@
 
     initContent = ''
       # Per-machine prompt color set via PROMPT_COLOR in each host's home config
-      # Available colors: 1(red) 2(green) 3(yellow) 4(blue) 5(magenta) 6(cyan)
-      # 9(bright red) 10(bright green) 11(bright yellow) 12(bright blue) 13(bright magenta)
-      # 14(bright cyan) 33(blue) 39(cyan) 51(aqua) 82(lime) 118(green) 154(chartreuse)
-      # 196(red) 208(orange) 214(gold)
       local _c="''${PROMPT_COLOR:-2}"
       local _git='$(git_prompt_info)%{$reset_color%}$(git_remote_status)'
       PROMPT="%F{$_c}╭─%n@%m %{$reset_color%}%{$fg[yellow]%}in %~ %{$reset_color%}''${_git}
