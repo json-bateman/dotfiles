@@ -87,12 +87,14 @@
     };
 
     initContent = ''
-      # Per-machine prompt color derived from hostname
-      local -a _prompt_colors=(red green yellow blue magenta cyan)
-      local _hash=$(( 0x$(echo -n "$HOST" | md5sum | cut -c1-4) ))
-      local _host_color=''${_prompt_colors[$(( _hash % ''${#_prompt_colors[@]} + 1 ))]}
-      PROMPT="%{$fg[$_host_color]%}╭─%n@%m %{$reset_color%}%{$fg[yellow]%}in %~ %{$reset_color%}$(git_prompt_info)%{$reset_color%}$(git_remote_status)
-%{$fg[$_host_color]%}╰\$ %{$reset_color%}"
+      # Per-machine prompt color set via PROMPT_COLOR in each host's home config
+      # Available colors: 1(red) 2(green) 3(yellow) 4(blue) 5(magenta) 6(cyan)
+      # 9(bright red) 10(bright green) 11(bright yellow) 12(bright blue) 13(bright magenta)
+      # 14(bright cyan) 33(blue) 39(cyan) 51(aqua) 82(lime) 118(green) 154(chartreuse)
+      # 196(red) 208(orange) 214(gold)
+      local _c="''${PROMPT_COLOR:-2}"
+      PROMPT="%F{$_c}╭─%n@%m %{$reset_color%}%{$fg[yellow]%}in %~ %{$reset_color%}$(git_prompt_info)%{$reset_color%}$(git_remote_status)
+%F{$_c}╰\$ %{$reset_color%}"
 
       # Assert vi mode here, since initContent runs after oh-my-zsh.
       bindkey -v
