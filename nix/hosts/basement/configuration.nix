@@ -14,6 +14,13 @@
   # Remove this later if we want to use the machine via wifi
   networking.networkmanager.unmanaged = [ "wlo1" ];
 
+  # Broadcast hostname via mDNS so we can ssh jack@basement.local
+  services.avahi = {
+    enable = true;
+    publish.enable = true;
+    publish.addresses = true;
+  };
+
   swapDevices = [{
     device = "/var/lib/swapfile";
     size   = 8192; # 8 GB
