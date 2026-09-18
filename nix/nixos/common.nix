@@ -43,4 +43,10 @@
   ];
 
   services.openssh.enable = true;
+
+  services.tailscale.enable = true;
+  services.tailscale.authKeyFile = "/etc/tailscale/authkey";
+
+  networking.firewall.trustedInterfaces = [ "tailscale0" ];
+  networking.firewall.allowedUDPPorts = [ 41641 ];
 }
