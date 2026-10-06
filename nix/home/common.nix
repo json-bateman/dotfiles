@@ -2,15 +2,16 @@
 
 {
   home.packages = with pkgs; [
-    claude-code
+    # claude-code intentionally omitted: managed by the native installer
+    # (~/.local/bin/claude) so `claude update` can self-update it.
     ripgrep
     tmux
     lazygit
+    gh
     tree
     wget
     neovim
     vim
-    nodejs
     fd
     jq
     bat
@@ -21,11 +22,22 @@
     lua-language-server
     pyright
     gopls
-    templ
+    delve # dlv, used by nvim-dap-go
     vscode-langservers-extracted
+    prettier   # nvim conform formatter
+    typescript # tsserver for typescript-tools.nvim
     go
+    golangci-lint
+    templ
+    sqlc
+    air
+    goose
+    go-task # provides the `task` command
+    gotools # goimports and other golang.org/x/tools commands
+    nodejs # includes npm and npx
+    python3
   ];
-  # fzf / mise / autojump come from their programs.* modules below
+  # fzf / autojump come from their programs.* modules below
 
   home.file = {
     ".gitconfig".source  = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/.gitconfig";
@@ -49,9 +61,10 @@
     enableZshIntegration = true;      # CTRL-T / CTRL-R / ALT-C + completion
   };
 
-  programs.mise = {
+  programs.pyenv = {
     enable = true;
-    enableZshIntegration = true;      # replaces eval "$(mise activate zsh)"
+    enableZshIntegration = true;
+    rootDirectory = "${config.home.homeDirectory}/.pyenv"; # keep existing installed versions
   };
 
   programs.autojump.enable = true;
@@ -87,6 +100,12 @@
     };
 
     initContent = ''
+      # macOS path_helper (/etc/zprofile) moves system dirs like /usr/bin ahead of Nix,
+      # and Nix's setup scripts skip re-running in shells that inherit their env (e.g. tmux).
+      # Put the Nix profiles back in front; typeset -U drops the later duplicates.
+      typeset -U path
+      path=("$HOME/.nix-profile/bin" /nix/var/nix/profiles/default/bin $path)
+
       # Per-machine prompt color set via PROMPT_COLOR in each host's home config
       local _c="''${PROMPT_COLOR:-2}"
       local _git='$(git_prompt_info)%{$reset_color%}$(git_remote_status)'
@@ -113,6 +132,7 @@
   };
 
   home.sessionPath = [
+    "$HOME/.local/bin"
     "$HOME/go/bin"
     "/opt/homebrew/bin"
     "$HOME/dotfiles/scripts"

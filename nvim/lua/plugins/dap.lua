@@ -61,26 +61,20 @@ return {
 		dap.configurations.go = {
 			{
 				type = "go",
-				name = "Debug test",
-				request = "launch",
-				mode = "test",
-				program = "${fileDirname}",
-			},
-			{
-				type = "go",
 				name = "Launch current package w/ optional args",
 				request = "launch",
 				program = "${fileDirname}",
 				cwd = "${workspaceFolder}",
-				args = require("dap-go").get_arguments(),
+				args = function()
+					return require("dap-go").get_arguments()
+				end,
 			},
 			{
 				type = "go",
-				name = "launch from Workspace Folder ./main.go",
+				name = "Debug test",
 				request = "launch",
-
-				program = "${workspaceFolder}/main.go",
-				cwd = "${workspaceFolder}",
+				mode = "test",
+				program = "${fileDirname}",
 			},
 		}
 
