@@ -53,7 +53,7 @@
     enable      = true;
     flake       = "github:json-bateman/dotfiles?dir=nix";  # builds .#basement via hostname
     flags       = [ "--refresh" ];                          # re-fetch the flake ref each run
-    dates       = "04:00";                                  # daily (systemd.time format)
+    dates       = "Tue 04:00";                              # weekly, the day after the Monday flake.lock update
     randomizedDelaySec = "45min";                           # avoid an exact-time stampede
     operation   = "switch";                                 # apply immediately
     persistent  = true;                                     # catch up if the box was off
