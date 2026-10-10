@@ -60,6 +60,18 @@
     allowReboot = false;                                    # never auto-reboot
   };
 
+  # Dead-man's switch: ping healthchecks.io only when the upgrade succeeds.
+  # A failed (or never-run) upgrade sends no ping, so healthchecks.io alerts
+  # once the weekly ping is overdue. ExecStartPost is skipped if the upgrade fails.
+  #
+  # Secret — NOT committed: /etc/secrets/healthchecks.env holds
+  # HC_NIXOS_UPGRADE=<check uuid>. Both "-" prefixes keep a missing file or a
+  # failed ping from marking the upgrade itself as failed.
+  systemd.services.nixos-upgrade.serviceConfig = {
+    EnvironmentFile = "-/etc/secrets/healthchecks.env";
+    ExecStartPost   = "-${pkgs.curl}/bin/curl -fsS -m 10 --retry 3 https://hc-ping.com/\${HC_NIXOS_UPGRADE}";
+  };
+
   nix.gc = {
     automatic = true;
     dates     = "weekly";
