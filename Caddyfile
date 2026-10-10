@@ -65,6 +65,6 @@ http://crabspy.com {
 }
 
 http://api.pokermon.club {
-	reverse_proxy localhost:7777
+	reverse_proxy localhost:7778 # pokermon container; host 7777 is taken by dragonwilds
 	log
 }
