@@ -8,6 +8,11 @@ return {
 		require("conform").setup({
 			log_level = vim.log.levels.DEBUG,
 			format_on_save = { lsp_format = "fallback", timeout_ms = 4000 },
+			-- Only run prettier in projects that have a prettier config
+			formatters = {
+				prettier = { require_cwd = true },
+				prettierd = { require_cwd = true },
+			},
 			formatters_by_ft = {
 				lua = { "stylua" },
 				rust = { "rustfmt" },
