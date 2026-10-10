@@ -6,6 +6,7 @@
     ../../nixos/common.nix
     ../../nixos/gui.nix
     ../../nixos/webserver.nix
+    ../../nixos/wordle-bot.nix
   ];
 
   networking.hostName = "basement";
