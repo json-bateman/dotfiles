@@ -10,6 +10,16 @@ let
   updating = { autoUpdate = "registry"; };
 in
 {
+  # UserNS=auto picks each container's UID range from the "containers" entry in
+  # /etc/subuid and /etc/subgid.
+  users.groups.containers = { };
+  users.users.containers = {
+    isSystemUser = true;
+    group        = "containers";
+    subUidRanges = [ { startUid = 2147483647; count = 2147483648; } ];
+    subGidRanges = [ { startGid = 2147483647; count = 2147483648; } ];
+  };
+
   virtualisation.podman.autoPrune = {
     enable = true;
     dates  = "weekly";
@@ -35,9 +45,11 @@ in
         containerConfig = updating // {
           image        = "docker.io/jsonbateman/basicauth:latest";
           publishPorts = [ "127.0.0.1:3033:3033" ];
-          volumes      = [ "basicauth-data:/app/data" ];
+          # Container root maps to an unprivileged host UID instead of real root.
+          # :U chowns the volume to that UID, since the range can change between starts.
+          userns       = "auto";
+          volumes      = [ "basicauth-data:/app/data:U" ];
           environments = { BASICAUTH_PRODUCTION = "true"; };
-          # BASICAUTH_COOKIE_STORE_SECRET_KEY
           environmentFiles = [ "/etc/secrets/basicauth.env" ];
         };
       };
