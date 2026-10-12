@@ -1,7 +1,7 @@
 { config, pkgs, ... }:
 
 {
-  imports = [ ../common.nix ];
+  imports = [ ../common.nix ../dev.nix ];
 
   home.username    = "jack";
   home.homeDirectory = "/home/jack";

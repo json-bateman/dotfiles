@@ -1,6 +1,7 @@
 { config, pkgs, lib, ... }:
 
 {
+  # Language toolchains and LSPs live in dev.nix, which servers don't import.
   home.packages = with pkgs; [
     # claude-code intentionally omitted: managed by the native installer
     # (~/.local/bin/claude) so `claude update` can self-update it.
@@ -15,26 +16,9 @@
     fd
     jq
     bat
-    gcc
+    gcc # nvim-treesitter compiles parsers with it
     tree-sitter
     unzip
-    stylua
-    lua-language-server
-    pyright
-    gopls
-    delve # dlv, used by nvim-dap-go
-    vscode-langservers-extracted
-    prettier   # nvim conform formatter
-    typescript # tsserver for typescript-tools.nvim
-    go
-    golangci-lint
-    templ
-    sqlc
-    air
-    goose
-    go-task # provides the `task` command
-    gotools # goimports and other golang.org/x/tools commands
-    nodejs # includes npm and npx
     python3
   ];
   # fzf / autojump come from their programs.* modules below
@@ -56,15 +40,18 @@
     nix-direnv.enable = true;
   };
 
+  programs.btop = {
+    enable = true;
+    settings = {
+      color_theme = "Default";
+      vim_keys = true;
+      update_ms = 500;
+    };
+  };
+
   programs.fzf = {
     enable = true;
     enableZshIntegration = true;      # CTRL-T / CTRL-R / ALT-C + completion
-  };
-
-  programs.pyenv = {
-    enable = true;
-    enableZshIntegration = true;
-    rootDirectory = "${config.home.homeDirectory}/.pyenv"; # keep existing installed versions
   };
 
   programs.autojump.enable = true;

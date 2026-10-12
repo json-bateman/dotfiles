@@ -31,7 +31,7 @@
             home-manager.useGlobalPkgs    = true;
             home-manager.useUserPackages  = true;
             home-manager.users.jack       = { ... }: {
-              imports = [ ./home/nixos/home.nix ];
+              imports = [ ./home/nixos/home.nix ./home/dev.nix ];
               home.sessionVariables.PROMPT_COLOR = "196"; # neon red
             };
           }

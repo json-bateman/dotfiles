@@ -29,7 +29,7 @@
 ## Environment & Configuration
 
 - **Write code that takes into account different environments:** dev, test, and prod
-- **Never overwrite the `.env` file without first asking and confirming**
+- **Never read or overwrite the `.env` file without first asking and confirming**
 - **Avoid writing scripts in files if possible**
 
 ## Testing & Data

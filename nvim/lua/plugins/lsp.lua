@@ -24,38 +24,34 @@ return {
 		},
 
 		config = function()
+			vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { silent = true, desc = "Diagnostic float" })
+			vim.keymap.set(
+				"n",
+				"<leader>q",
+				vim.diagnostic.setloclist,
+				{ silent = true, desc = "Diagnostics to loclist" }
+			)
+
 			vim.api.nvim_create_autocmd("LspAttach", {
 				group = vim.api.nvim_create_augroup("kickstart-lsp-attach", { clear = true }),
 				callback = function(event)
-					local opts = { noremap = true, silent = true }
-					vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, opts)
-					vim.keymap.set("n", "[d", function()
-						vim.diagnostic.jump({ count = -1, float = true })
-					end, opts)
-					vim.keymap.set("n", "]d", function()
-						vim.diagnostic.jump({ count = 1, float = true })
-					end, opts)
-					vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, opts)
-
-					-- For LSP related items. It sets the mode, buffer and description for us each time.
 					local map = function(keys, func, desc, mode)
-						mode = mode or "n"
-						vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
+						vim.keymap.set(mode or "n", keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
 					end
+					local tb = require("telescope.builtin")
 
 					map("grn", vim.lsp.buf.rename, "[R]e[n]ame")
 					map("gra", vim.lsp.buf.code_action, "[G]oto Code [A]ction", { "n", "x" })
-					map("grr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
-					map("gri", require("telescope.builtin").lsp_implementations, "[G]oto [I]mplementation")
-					map("grd", require("telescope.builtin").lsp_definitions, "[G]oto [D]efinition")
+					map("grr", tb.lsp_references, "[G]oto [R]eferences")
+					map("gri", tb.lsp_implementations, "[G]oto [I]mplementation")
+					map("grd", tb.lsp_definitions, "[G]oto [D]efinition")
 					map("grD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
-					map("gro", require("telescope.builtin").lsp_document_symbols, "Open Document Symbols")
-					map("grw", require("telescope.builtin").lsp_dynamic_workspace_symbols, "Open Workspace Symbols")
-					map("grt", require("telescope.builtin").lsp_type_definitions, "[G]oto [T]ype Definition")
+					map("gro", tb.lsp_document_symbols, "Open Document Symbols")
+					map("grw", tb.lsp_dynamic_workspace_symbols, "Open Workspace Symbols")
+					map("grt", tb.lsp_type_definitions, "[G]oto [T]ype Definition")
 				end,
 			})
 
-			-- See :help vim.diagnostic.Opts
 			vim.diagnostic.config({
 				severity_sort = true,
 				float = { border = "rounded", source = "if_many" },
@@ -68,40 +64,35 @@ return {
 					},
 				} or {},
 				virtual_text = false,
+				jump = {
+					on_jump = function(diagnostic, bufnr)
+						if not diagnostic then
+							return
+						end
+						vim.diagnostic.open_float({ bufnr = bufnr, scope = "cursor", focus = false })
+					end,
+				},
 			})
-
-			local capabilities = require("blink.cmp").get_lsp_capabilities()
 
 			local servers = {
 				pyright = {},
-				html = {},
+				html = { filetypes = { "html", "templ" } },
 				cssls = {},
 				css_variables = {},
 				jsonls = {},
 				templ = {},
 				gopls = {},
-				lua_ls = {
-					settings = {
-						Lua = {
-							workspace = {
-								library = {
-									vim.env.VIMRUNTIME,
-								},
-							},
-						},
-					},
-				},
+				lua_ls = {},
 			}
 
 			-- css-variables-language-server not in nixos-25.11, managed by Mason via npm
 			require("mason-tool-installer").setup({ ensure_installed = { "css-variables-language-server" } })
 			require("mason-lspconfig").setup({ automatic_enable = false })
 
-			for server_name, config in pairs(servers) do
-				config.capabilities = vim.tbl_deep_extend("force", {}, capabilities, config.capabilities or {})
-				vim.lsp.config(server_name, config)
-				vim.lsp.enable(server_name)
+			for name, cfg in pairs(servers) do
+				vim.lsp.config(name, cfg)
 			end
+			vim.lsp.enable(vim.tbl_keys(servers))
 		end,
 	},
 }

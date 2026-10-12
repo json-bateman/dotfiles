@@ -42,6 +42,7 @@ keymap("t", "<Esc>", "<C-\\><C-N>", opts)
 keymap("n", "<leader>tt", "<CMD>tabnew<CR>", opts)
 keymap("n", "<leader>tc", "<CMD>tabclose<CR>", opts)
 keymap("n", "<leader>to", "<CMD>tabonly<CR>", opts)
+keymap("n", "<leader>tn", "<CMD>tabnext<CR>", opts)
 
 -- Copy / Paste outside nvim
 keymap("v", "<leader>y", '"+y', opts)
