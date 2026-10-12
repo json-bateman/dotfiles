@@ -71,10 +71,4 @@
     EnvironmentFile = "-/etc/secrets/healthchecks.env";
     ExecStartPost   = "-${pkgs.curl}/bin/curl -fsS -m 10 --retry 3 https://hc-ping.com/\${HC_NIXOS_UPGRADE}";
   };
-
-  nix.gc = {
-    automatic = true;
-    dates     = "weekly";
-    options   = "--delete-older-than 30d";
-  };
 }
