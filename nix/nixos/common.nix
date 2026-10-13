@@ -50,6 +50,17 @@
 
   services.openssh.enable = true;
 
+  # Without resolved, tailscale overwrites /etc/resolv.conf with 100.100.100.100
+  # and all DNS breaks whenever MagicDNS can't answer. With it, tailscale only
+  # handles tailnet names and everything else uses the network's DNS.
+  services.resolved = {
+    enable = true;
+    settings.Resolve = {
+      MulticastDNS = false;   # mDNS is Avahi's job, and only basement runs it
+      LLMNR        = false;
+    };
+  };
+
   services.tailscale.enable = true;
   services.tailscale.authKeyFile = "/etc/tailscale/authkey";
 

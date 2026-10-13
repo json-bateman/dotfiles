@@ -11,16 +11,19 @@
 
   networking.hostName = "basement";
 
+  # Broadcast hostname via mDNS so we can ssh jack@basement.local, a way in
+  # from the home network when tailscale is down. 
+  # nssmdns4 lets basement look up other machines' .local names too.
+  services.avahi = {
+    enable            = true;
+    nssmdns4          = true;
+    publish.enable    = true;
+    publish.addresses = true;
+  };
+
   # Disable WiFi — hardwired via ethernet; two NICs on the same subnet causes routing issues
   # Remove this later if we want to use the machine via wifi
   networking.networkmanager.unmanaged = [ "wlo1" ];
-
-  # Broadcast hostname via mDNS so we can ssh jack@basement.local
-  services.avahi = {
-    enable = true;
-    publish.enable = true;
-    publish.addresses = true;
-  };
 
   swapDevices = [{
     device = "/var/lib/swapfile";
