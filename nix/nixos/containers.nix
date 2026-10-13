@@ -33,11 +33,15 @@ in
       calendar = "*:30";   # hourly at :30, clear of system.autoUpgrade at 04:00
     };
 
+    # userns = "auto": container root maps to an unprivileged host UID instead of
+    # real root. :U chowns each volume to that UID on start, since the range can
+    # change between starts. dragonwilds isn't migrated yet (large volume).
     containers = {
       jsonbateman = {
         containerConfig = updating // {
           image        = "docker.io/jsonbateman/jsonbateman:latest";
           publishPorts = [ "127.0.0.1:3022:3022" ];
+          userns       = "auto";
         };
       };
 
@@ -45,8 +49,6 @@ in
         containerConfig = updating // {
           image        = "docker.io/jsonbateman/basicauth:latest";
           publishPorts = [ "127.0.0.1:3033:3033" ];
-          # Container root maps to an unprivileged host UID instead of real root.
-          # :U chowns the volume to that UID, since the range can change between starts.
           userns       = "auto";
           volumes      = [ "basicauth-data:/app/data:U" ];
           environments = { BASICAUTH_PRODUCTION = "true"; };
@@ -58,7 +60,8 @@ in
         containerConfig = updating // {
           image        = "docker.io/jsonbateman/kanban:latest";
           publishPorts = [ "127.0.0.1:3044:3044" ];
-          volumes      = [ "kanban-data:/app/data" ];
+          userns       = "auto";
+          volumes      = [ "kanban-data:/app/data:U" ];
           environmentFiles = [ "/etc/secrets/kanban.env" ];
         };
       };
@@ -67,7 +70,8 @@ in
         containerConfig = updating // {
           image        = "docker.io/jsonbateman/crabspy:latest";
           publishPorts = [ "127.0.0.1:3012:3012" ];
-          volumes      = [ "crabspy-data:/app/data" ];
+          userns       = "auto";
+          volumes      = [ "crabspy-data:/app/data:U" ];
           environmentFiles = [ "/etc/secrets/crabspy.env" ];
         };
       };
@@ -76,7 +80,8 @@ in
         containerConfig = updating // {
           image        = "docker.io/jsonbateman/poker_stats:latest";
           publishPorts = [ "127.0.0.1:7778:7777" ];
-          volumes      = [ "pokermon-data:/data" ];
+          userns       = "auto";
+          volumes      = [ "pokermon-data:/data:U" ];
         };
       };
 
