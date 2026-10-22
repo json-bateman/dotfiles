@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, unstable, ... }:
 
 # Dev toolchains, language servers and formatters. Imported on machines where
 # code gets written (mac, redhat, laptop), not on servers.
@@ -7,19 +7,19 @@
     stylua
     lua-language-server
     pyright
-    gopls
-    delve # dlv, used by nvim-dap-go
+    unstable.gopls
+    unstable.delve # dlv, used by nvim-dap-go
     vscode-langservers-extracted
     prettier   # nvim conform formatter
     typescript # tsserver for typescript-tools.nvim
-    go
-    golangci-lint
+    unstable.go_latest # newest Go release; stable and unstable `go` lag behind
+    unstable.golangci-lint
     templ
     sqlc
     air
     goose
     go-task # provides the `task` command
-    gotools # goimports and other golang.org/x/tools commands
+    unstable.gotools # goimports and other golang.org/x/tools commands
     nodejs # includes npm and npx
   ];
 
