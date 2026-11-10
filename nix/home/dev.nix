@@ -20,12 +20,19 @@
     goose
     go-task # provides the `task` command
     unstable.gotools # goimports and other golang.org/x/tools commands
-    nodejs # includes npm and npx
   ];
 
   programs.pyenv = {
     enable = true;
     enableZshIntegration = true;
     rootDirectory = "${config.home.homeDirectory}/.pyenv"; # keep existing installed versions
+  };
+
+  # Node versions are per-project (legacy apps on 16, monorepo on 22), so mise
+  # manages them instead of a single nixpkgs nodejs.
+  programs.mise = {
+    enable = true;
+    enableZshIntegration = true;
+    globalConfig.tools.node = "22.17.1"; # default outside projects
   };
 }

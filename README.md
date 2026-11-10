@@ -51,7 +51,7 @@ Sets up the system (packages, user, SSH hardening, mDNS), then prints next steps
 | Machine | Command |
 |---|---|
 | NixOS | `sudo nixos-rebuild switch --flake ~/dotfiles/nix#basement` |
-| macOS | `home-manager switch --flake ~/dotfiles/nix#mac` |
+| macOS | `home-manager switch --flake ~/dotfiles/nix` |
 | Red Hat | `home-manager switch --flake ~/dotfiles/nix#redhat` |
 
 

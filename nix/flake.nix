@@ -24,6 +24,14 @@
         extraSpecialArgs.unstable = unstableFor system;
         modules = [ module ];
       };
+
+    # Macs use different account names, so each gets its own output named after
+    # the user; `home-manager switch --flake .` picks the one matching $USER.
+    mkMac = username: mkHome "aarch64-darwin" {
+      imports = [ ./home/mac/home.nix ];
+      home.username      = username;
+      home.homeDirectory = "/Users/${username}";
+    };
   in
   {
     nixosConfigurations = {
@@ -76,8 +84,9 @@
     };
 
     homeConfigurations = {
-      redhat = mkHome "x86_64-linux"   ./home/redhat/home.nix;
-      mac    = mkHome "aarch64-darwin" ./home/mac/home.nix;
+      redhat      = mkHome "x86_64-linux" ./home/redhat/home.nix;
+      jack        = mkMac "jack";
+      jacktrusler = mkMac "jacktrusler";
     };
   };
 }

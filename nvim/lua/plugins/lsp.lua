@@ -80,6 +80,7 @@ return {
 				cssls = {},
 				css_variables = {},
 				jsonls = {},
+				eslint = {},
 				templ = {},
 				gopls = {},
 				lua_ls = {},
