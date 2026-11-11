@@ -33,7 +33,8 @@ brew install --cask \
   spotify \
   google-chrome \
   telegram \
-  docker
+  docker \
+  raycast
 
 echo ""
 echo "==> Done. Open a new shell to pick up your environment."

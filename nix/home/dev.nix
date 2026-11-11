@@ -20,6 +20,7 @@
     goose
     go-task # provides the `task` command
     unstable.gotools # goimports and other golang.org/x/tools commands
+    awscli2 # `aws codeartifact` token for the work npm registry
   ];
 
   programs.pyenv = {
@@ -33,6 +34,6 @@
   programs.mise = {
     enable = true;
     enableZshIntegration = true;
-    globalConfig.tools.node = "22.17.1"; # default outside projects
+    globalConfig.settings.idiomatic_version_file_enable_tools = [ "node" ];
   };
 }

@@ -107,6 +107,9 @@
 
       # tmux sets its own TERM, but preserve the explicit logic:
       if [[ -n "$TMUX" ]]; then export TERM=tmux-256color; else export TERM=xterm-256color; fi
+
+      # Per-machine, unmanaged overrides (work-only tools, tokens). Not in git.
+      [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
     '';
   };
 
