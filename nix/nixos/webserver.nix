@@ -1,0 +1,74 @@
+{ config, pkgs, ... }:
+
+{
+  imports = [
+    ./containers.nix    # podman app containers behind Caddy
+    ./backups.nix       # restic backups to Backblaze B2
+  ];
+
+  # CLI for managing tunnels (login, create, route dns); the daemon itself
+  # comes from services.cloudflared below.
+  environment.systemPackages = [ pkgs.cloudflared ];
+
+  services.caddy = {
+    enable     = true;
+    configFile = ../../Caddyfile;
+  };
+
+  # Cloudflare Tunnel: the box makes an OUTBOUND connection to Cloudflare's edge,
+  # so no router port-forward and no open inbound ports are needed. All public
+  # hostnames are routed here and handed to Caddy on localhost:80, which does the
+  # real vhost routing / file serving. Cloudflare terminates public TLS.
+  services.cloudflared = {
+    enable = true;
+    tunnels = {
+      # Tunnel UUID from `cloudflared tunnel create webserver`.
+      "180d87ed-a1df-4f6d-bc50-c4a58d0e0dc1" = {
+        # Secret — NOT committed to the repo. Place the JSON on the box out-of-band
+        # (or manage it with sops-nix / agenix) and point at its absolute path.
+        #
+        # The unit runs with DynamicUser=true and reads this via systemd
+        # LoadCredential=, i.e. as root before dropping privileges. So the file
+        # must be root-owned 0600 — do NOT chown it to a service user.
+        credentialsFile = "/etc/cloudflared/webserver.json";
+
+        # Every site lives on this one Caddy box, so send everything to Caddy.
+        ingress = {
+          "jsonbateman.com"   = "http://localhost:80";
+          "*.jsonbateman.com" = "http://localhost:80";
+          "alug.us"           = "http://localhost:80";
+          "tsukinominori.com" = "http://localhost:80";
+          "pokermon.club"     = "http://localhost:80";
+          "api.pokermon.club" = "http://localhost:80";
+          "crabspy.com"       = "http://localhost:80";
+        };
+
+        # Catch-all for anything that doesn't match above.
+        default = "http_status:404";
+      };
+    };
+  };
+
+  system.autoUpgrade = {
+    enable      = true;
+    flake       = "github:json-bateman/dotfiles?dir=nix";  # builds .#basement via hostname
+    flags       = [ "--refresh" ];                          # re-fetch the flake ref each run
+    dates       = "Tue 04:00";                              # weekly, the day after the Monday flake.lock update
+    randomizedDelaySec = "45min";                           # avoid an exact-time stampede
+    operation   = "switch";                                 # apply immediately
+    persistent  = true;                                     # catch up if the box was off
+    allowReboot = false;                                    # never auto-reboot
+  };
+
+  # Dead-man's switch: ping healthchecks.io only when the upgrade succeeds.
+  # A failed (or never-run) upgrade sends no ping, so healthchecks.io alerts
+  # once the weekly ping is overdue. ExecStartPost is skipped if the upgrade fails.
+  #
+  # Secret — NOT committed: /etc/secrets/healthchecks.env holds
+  # HC_NIXOS_UPGRADE=<check uuid>. Both "-" prefixes keep a missing file or a
+  # failed ping from marking the upgrade itself as failed.
+  systemd.services.nixos-upgrade.serviceConfig = {
+    EnvironmentFile = "-/etc/secrets/healthchecks.env";
+    ExecStartPost   = "-${pkgs.curl}/bin/curl -fsS -m 10 --retry 3 https://hc-ping.com/\${HC_NIXOS_UPGRADE}";
+  };
+}

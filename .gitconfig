@@ -1,0 +1,31 @@
+[color]
+    ui = "true"
+[user]
+	email = jtrus93@gmail.com
+	name = Json Bateman 
+[core]
+	editor = nvim
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+[init]
+	defaultBranch = main
+[github]
+	user = json-bateman 
+[alias]
+        a = add .
+        c = commit -m
+        ac = ! git add . && git commit -m
+        s = status
+        co = checkout
+        graph = log --graph --pretty=format:'%C(yellow)%h%Creset -%C(cyan)%d%Creset %s %Cgreen(%cr) %C(bold blue)%an%Creset' --abbrev-commit --date=relative
+        rh = reset --hard HEAD
+        rhp = reset --hard HEAD^
+        rs = reset --soft HEAD
+        rsp = reset --soft HEAD^
+        last = ! git log -1 HEAD | cat
+        l = log --oneline --decorate --graph
+[credential]
+	helper = store
