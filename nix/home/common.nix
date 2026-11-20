@@ -12,6 +12,7 @@
     tree
     wget
     neovim
+    nodejs
     vim
     fd
     jq
