@@ -27,6 +27,11 @@ else
   home-manager switch --flake ~/dotfiles/nix
 fi
 
+echo "==> mise tools (global node)"
+# Fresh shell hasn't picked up the Home Manager profile yet
+export PATH="$HOME/.nix-profile/bin:$HOME/.local/state/nix/profile/bin:$PATH"
+mise install
+
 echo "==> GUI apps (Cask)"
 brew install --cask \
   wezterm \

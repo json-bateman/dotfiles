@@ -35,6 +35,9 @@
   programs.mise = {
     enable = true;
     enableZshIntegration = true;
-    globalConfig.settings.idiomatic_version_file_enable_tools = [ "node" ];
+    globalConfig = {
+      tools.node = "lts"; # global fallback; project .nvmrc / .node-version still win
+      settings.idiomatic_version_file_enable_tools = [ "node" ];
+    };
   };
 }
